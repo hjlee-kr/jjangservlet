@@ -7,6 +7,7 @@ import com.jjangplay.main.dao.DAO;
 import com.jjangplay.member.vo.LoginVO;
 import com.jjangplay.member.vo.MemberVO;
 import com.jjangplay.util.db.DB;
+import com.jjangplay.util.page.PageObject;
 
 public class MemberDAO extends DAO {
 
@@ -17,7 +18,7 @@ public class MemberDAO extends DAO {
 	
 	// 1. 리스트 (회원리스트)
 	// MemberController("1")->Execute->MemberListService->여기까지 왔어요
-	public List<MemberVO> list() throws Exception {
+	public List<MemberVO> list(PageObject obj) throws Exception {
 		// 결과를 저장할 객체선언
 		List<MemberVO> list = null;
 		
@@ -28,6 +29,8 @@ public class MemberDAO extends DAO {
 			// 3.SQL (LIST)
 			// 4.실행객체에 데이터세팅
 			pstmt = con.prepareStatement(LIST);
+			pstmt.setLong(1, obj.getStartRow());
+			pstmt.setLong(2, obj.getEndRow());
 			// 5.실행
 			rs = pstmt.executeQuery();
 			// 6.데이터저장
@@ -44,6 +47,7 @@ public class MemberDAO extends DAO {
 					vo.setGradeNo(rs.getInt("gradeNo"));
 					vo.setGradeName(rs.getString("gradeName"));
 					vo.setStatus(rs.getString("status"));
+					vo.setPhoto(rs.getString("photo"));
 					
 					list.add(vo);
 				} // end of while
@@ -357,12 +361,23 @@ public class MemberDAO extends DAO {
 		return result;
 	}
 	
-	final String LIST = "select m.id, m.name, "
-			+ " to_char(m.birth, 'yyyy-mm-dd') birth, m.tel, "
-			+ " m.gradeNo, g.gradeName, m.status "
-			+ " from member m, grade g "
-			+ " where m.gradeNo = g.gradeNo "
-			+ " order by id asc";
+	final String LIST = ""
+			+ " select id, name, birth, tel, gradeNo, "
+			+ " gradeName, status, photo from "
+				+ " (select rownum rnum, id, name, birth, tel,"
+				+ " gradeNo, gradeName, status, photo from "
+					+ " (select m.id, m.name, "
+					+ " to_char(m.birth, 'yyyy-mm-dd') birth, m.tel, "
+					+ " m.gradeNo, g.gradeName, m.status, m.photo "
+					+ " from member m, grade g "
+					+ " where m.gradeNo = g.gradeNo "
+					+ " order by id asc"
+					+ ")"
+				+ ")"
+			+ " where rnum>=? and rnum<=?";
+	
+	
+	
 	final String VIEW = "select m.id, m.pw, m.name, m.gender, "
 			+ " to_char(m.birth, 'yyyy-mm-dd') birth, m.tel, m.email,"
 			+ " to_char(m.regDate, 'yyyy-mm-dd') regDate, "

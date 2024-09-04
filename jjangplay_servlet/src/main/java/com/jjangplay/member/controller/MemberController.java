@@ -23,6 +23,7 @@ import com.jjangplay.member.vo.MemberVO;
 import com.jjangplay.util.exe.Execute;
 import com.jjangplay.util.io.In;
 import com.jjangplay.util.io.MemberPrint;
+import com.jjangplay.util.page.PageObject;
 
 // 회원관리를 위한 모듈
 public class MemberController {
@@ -92,28 +93,37 @@ public class MemberController {
 							Execute.execute(Init.get(uri), loginVO));
 
 					
-					if (Main.login != null) {
-						System.out.println();
-						System.out.println("**************************");
-						System.out.println("** 로그인 되었습니다.       **");
-						System.out.println("**************************");
-						
-						// 최근 접속일 변경
-						// 여기서 -> Execute -> MemberConUpdateService -> MemberDAO().conUpdate(id)
-						Execute.execute(new MemberConUpdateService(), Main.login.getId());
-					}
+//					if (Main.login != null) {
+//						System.out.println();
+//						System.out.println("**************************");
+//						System.out.println("** 로그인 되었습니다.       **");
+//						System.out.println("**************************");
+//						
+//						// 최근 접속일 변경
+//						// 여기서 -> Execute -> MemberConUpdateService -> MemberDAO().conUpdate(id)
+//						Execute.execute(new MemberConUpdateService(), Main.login.getId());
+//					}
+					// 로그인 완료 메시지 처리
+					session.setAttribute("msg", "로그인 처리가 되었습니다");
 					
-					
+					// 원래는 main page로 가야하나 구현 전이어서
+					// 일반게시판 list로 이동합니다. 
+					jsp = "redirect:/board/list.do";
 					break;
 				case "/member/list.do":
 					System.out.println("1.회원 리스트");
+					
+					PageObject pageObject = PageObject.getInstance(request);
 					// MemberController->Execute.execute()->
 					// MemberListService->MemberDAO().list()
 					// DB처리해서 데이터를 받는다.
-					result = Execute.execute(new MemberListService(), null);
+					result = Execute.execute(Init.get(uri), pageObject);
 					
-					// 받은데이터 출력
-					new MemberPrint().print((List<MemberVO>)result);
+					// 받아온 데이터를 requset에 담는다.
+					request.setAttribute("list", result);
+					
+
+					jsp = "member/list";
 					break;
 				case "2":
 					System.out.println("2.내 정보 보기");

@@ -12,6 +12,7 @@ import com.jjangplay.board.service.BoardWriteService;
 import com.jjangplay.main.dao.DAO;
 import com.jjangplay.main.service.Service;
 import com.jjangplay.member.dao.MemberDAO;
+import com.jjangplay.member.service.MemberListService;
 import com.jjangplay.member.service.MemberLoginService;
 import com.jjangplay.notice.dao.NoticeDAO;
 import com.jjangplay.notice.service.NoticeDeleteService;
@@ -77,8 +78,10 @@ public class Init {
 		daoMap.put("memberDAO", new MemberDAO());
 		// 서비스생성
 		serviceMap.put("/member/login.do", new MemberLoginService());
+		serviceMap.put("/member/list.do", new MemberListService());
 		// 조립 dao->service
 		serviceMap.get("/member/login.do").setDAO(daoMap.get("memberDAO"));
+		serviceMap.get("/member/list.do").setDAO(daoMap.get("memberDAO"));
 	}
 	
 	
