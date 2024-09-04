@@ -102,6 +102,9 @@ $(function(){
 		</td>
 	</tr>
   </table>
+  <div>
+  	<pageNav:pageNav listURI="list.do" pageObject="${pageObject}"></pageNav:pageNav>
+  </div>
 </div>
 
 

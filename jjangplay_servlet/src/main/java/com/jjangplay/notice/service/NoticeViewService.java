@@ -17,7 +17,7 @@ public class NoticeViewService implements Service {
 		// TODO Auto-generated method stub
 		// NoticeDAO().view()
 		// view() 호출할 때 글번호를 넘겨준다.
-		return new NoticeDAO().view((Long)obj);
+		return dao.view((Long)obj);
 		
 	}
 

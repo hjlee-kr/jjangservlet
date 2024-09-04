@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>일반 게시판 글보기</title>
+<title>공지사항 글보기</title>
 
 <!-- 2.라이브러리 확인 -->
 <script type="text/javascript">
@@ -36,9 +36,9 @@ $(function(){
 
 </head>
 <body>
-글번호 : ${param.no }, 조회수 증가 : ${param.inc }<br>
+글번호 : ${param.no }<br>
 <div class="container">
-  <h1><i class="fa fa-file-text-o"></i> 일반 게시판 글보기</h1>
+  <h1><i class="fa fa-file-text-o"></i> 공지사항 글보기</h1>
   
   <div class="container">
     <!-- Control the column width, and how they should appear on different devices -->
@@ -62,9 +62,15 @@ $(function(){
     </div>
     <div class="row">
       <div class="col-sm-4" style="background-color:yellow;">
-      작성자</div>
+      게시일</div>
       <div class="col-sm-8" style="background-color:orange;">
-      ${vo.writer}</div>
+      ${vo.startDate}</div>
+    </div>
+    <div class="row">
+      <div class="col-sm-4" style="background-color:yellow;">
+      종료일</div>
+      <div class="col-sm-8" style="background-color:orange;">
+      ${vo.endDate}</div>
     </div>
     <div class="row">
       <div class="col-sm-4" style="background-color:yellow;">
@@ -74,9 +80,9 @@ $(function(){
     </div>
     <div class="row">
       <div class="col-sm-4" style="background-color:yellow;">
-      조회수</div>
+      수정일</div>
       <div class="col-sm-8" style="background-color:orange;">
-      ${ vo.hit }</div>
+      ${ vo.updateDate }</div>
     </div>
     <div class="row">
       <a href="updateForm.do?no=${param.no }">

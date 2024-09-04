@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>일반 게시판 글 등록 폼</title>
+<title>공지사항 글 등록 폼</title>
 
 <!-- 4. 우리가 만든 라이브러리 등록 -->
 <script type="text/javascript" src="boardInputUtil.js"></script>
@@ -51,7 +51,7 @@ $(function() {
 <body>
 <!-- 3. 내용작성 -->
 <div class="container">
-  <h2><i class="fa fa-edit"></i> 일반 게시판 글 등록 폼</h2>
+  <h2><i class="fa fa-edit"></i> 공지사항 글 등록 폼</h2>
   <form action="write.do" method="post" id="writeForm">
     <div class="form-group">
       <label for="title">제목</label>
@@ -64,14 +64,14 @@ $(function() {
       	name="content" placeholder="내용 입력"></textarea>
     </div>
     <div class="form-group">
-      <label for="writer">작성자</label>
-      <input type="text" class="form-control" id="writer"
-       placeholder="작성자 입력" name="writer">
+      <label for="startDate">게시일</label>
+      <input type="text" class="form-control datepicker" id="startDate"
+        name="startDate">
     </div>
     <div class="form-group">
-      <label for="pw">비밀번호</label>
-      <input type="password" class="form-control" id="pw"
-       placeholder="비밀번호 입력" name="pw">
+      <label for="endDate">종료일</label>
+      <input type="text" class="form-control datepicker" id="endDate"
+        name="endDate">
     </div>
     <div class="form-group">
       <label for="pw2">비밀번호 확인</label>

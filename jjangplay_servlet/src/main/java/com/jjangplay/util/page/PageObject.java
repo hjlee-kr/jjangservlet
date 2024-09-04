@@ -13,11 +13,11 @@ public class PageObject {
 	
 	// 페이지 계산을 위한 정보들
 	// JSP 하단에 page로 이동하는 태그들 보여줄때 사용
-	private long perGroupPageNum;
+	private long perGroupPageNum; //하단에 몇개의 페이지링크를 보여줄 것인가?
 	private long startPage;
 	private long endPage;
 	private long totalPage;
-	private long tatalRow; // 전체데이터 수
+	private long totalRow; // 전체데이터 수
 	
 	// 검색을 위한 변수선언
 	private String key; // twc
@@ -29,7 +29,7 @@ public class PageObject {
 		this.startRow = 1;
 		this.endRow = 10;
 		
-		perGroupPageNum = 10;
+		setPerGroupPageNum(10);
 		startPage = 1;
 		endPage = 1;
 	}
@@ -50,9 +50,7 @@ public class PageObject {
 		if (strPage != null && !strPage.equals("")) {
 			pageObject.setPage(Long.parseLong(strPage));
 		}
-		// 한페이지에 표시할 데이터 수를 받는다.
-		String strPerPageNum = request.getParameter(perPageNumName);
-		// 있으면 세팅한대로 없으면 10으로
+		String strPerPageNum = request.getParameter("perPageNum");
 		if (strPerPageNum != null && !strPerPageNum.equals("")) {
 			pageObject.setPerPageNum(Long.parseLong(strPerPageNum));
 		}
@@ -108,11 +106,11 @@ public class PageObject {
 	public void setTotalPage(long totalPage) {
 		this.totalPage = totalPage;
 	}
-	public long getTatalRow() {
-		return tatalRow;
+	public long getTotalRow() {
+		return totalRow;
 	}
-	public void setTatalRow(long tatalRow) {
-		this.tatalRow = tatalRow;
+	public void setTatalRow(long totalRow) {
+		this.totalRow = totalRow;
 		
 		System.out.println("page = " + page);
 		
@@ -122,12 +120,12 @@ public class PageObject {
 		System.out.println("startRow = " + startRow);
 		System.out.println("endRow = " + endRow);
 		
-		// 페이지 계산
-		// 전체페이지
-		totalPage = (tatalRow-1)/perPageNum + 1;
+		// 리스트 하단에 나타나는 페이지링크를 처리하기 위한 데이터 계산
+		totalPage = (totalRow-1)/perPageNum +1;
 		// startPage, endPage
-		startPage = (page-1) / perGroupPageNum * perGroupPageNum + 1;
+		startPage = (page-1)/perGroupPageNum*perGroupPageNum + 1;
 		endPage = startPage + perGroupPageNum - 1;
+		// endPage는 totalPage보다 클 수 없다.
 		if (endPage > totalPage) endPage = totalPage;
 	}
 
@@ -146,21 +144,28 @@ public class PageObject {
 	public void setWord(String word) {
 		this.word = word;
 	}
+
+	public long getPerGroupPageNum() {
+		return perGroupPageNum;
+	}
+
+	public void setPerGroupPageNum(long perGroupPageNum) {
+		this.perGroupPageNum = perGroupPageNum;
+	}
 	
 	public String getNotPageQuery() throws Exception {
 		return ""
 			+ "perPageNum=" + getPerPageNum()
 			+ "&key=" + ((getKey() == null)?"":getKey())
-			+ "&word=" + 
-			((getWord() == null)?"":
-				URLEncoder.encode(getWord(), "utf-8"));
-		
+			+ "&word="
+			+ ((getWord() == null)?"":URLEncoder.encode(getWord(), "utf-8"));
 	}
 	
 	public String getPageQuery() throws Exception {
 		return "page=" + getPage()
 			+ "&" + getNotPageQuery();
 	}
+
 }
 
 

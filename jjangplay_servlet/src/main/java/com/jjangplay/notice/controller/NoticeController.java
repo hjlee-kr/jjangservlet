@@ -49,19 +49,25 @@ public class NoticeController {
 					request.setAttribute("pageObject", pageObject);
 					jsp = "notice/list";
 					break;
-				case "2":
+				case "/notice/view.do":
 					System.out.println("2. 공지사항 글보기");
 					// NoticeController -> execute -> NoticeViewService
 					// -> NoticeDAO.view()
 					// 공지사항은 조회수가 없으므로 increase()메서드가 없다.
-					no = In.getLong("보고 싶은 공지글 번호 입력");
+					no = Long.parseLong(request.getParameter("no"));
 					// DB에서 데이터를 가져오기
-					result = Execute.execute(new NoticeViewService(), no);
-					// 가져온 데이터 출력
-					new NoticePrint().print((NoticeVO) result);
+					result = Execute.execute(Init.get(uri), no);
+					// 가져온 데이터를 담는다.(저장한다)
+					request.setAttribute("vo", result);
+					// 데이터를 화면에 보여준다.
+					jsp = "notice/view"; //jsp 파일 + 경로
 					break;
-				case "3":
-					System.out.println("3. 공지사항 글쓰기");
+				case "/notice/writeForm.do":
+					System.out.println("3. 공지사항 글쓰기 폼");
+					jsp = "notice/writeForm";
+					break;
+				case "/notice/write.do":
+					System.out.println("3. 공지사항 글쓰기 처리");
 					// 데이터 수집
 					// 제목, 내용, 게시시작일, 게시종료일
 					String title = In.getStr("제목");
