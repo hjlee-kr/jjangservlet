@@ -1,10 +1,14 @@
 package com.jjangplay.member.controller;
 
 import java.awt.Label;
+import java.io.File;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.swing.plaf.synth.SynthOptionPaneUI;
 
+import com.jjangplay.main.controller.Init;
 import com.jjangplay.main.controller.Main;
 import com.jjangplay.member.service.MemberConUpdateService;
 import com.jjangplay.member.service.MemberDeleteService;
@@ -23,38 +27,85 @@ import com.jjangplay.util.io.MemberPrint;
 // 회원관리를 위한 모듈
 public class MemberController {
 
-	public void execute() {
-		// 무한반복
-		while (true) {
-			System.out.println();
-			System.out.println("<<<---   회원관리   --->>>");
-			System.out.println("************************************************");
-			System.out.println("** 1.회원리스트(관리자) 2.회원정보보기(회원), 3.회원가입 **");
-			System.out.println("** 4.회원정보수정(회원) 5.회원탈퇴(회원)  **");
-			if (Main.login == null) {
-				System.out.println("** 6.로그인 **");
-			} else {
-				System.out.println("** 6.로그아웃 **");
-			}
-			System.out.println("** 7.회원권한 및 상태변경(관리자) **");
-			System.out.println("** 0.이전메뉴 **");
-			System.out.println("************************************************");
+	public String execute(HttpServletRequest request) {
+
+		System.out.println("MemberController.execute()----------------");
+		
+		// 로그인 처리를 session으로 한다.
+		HttpSession session = request.getSession();
+		
+		// id를 기준으로 회원정보를 관리합니다.
+		String id = null;
+		LoginVO login = (LoginVO) session.getAttribute("login");
+		// 로그인이 되어있는 경우에만 id를 가져옵니다.
+		if (login != null) id = login.getId();
 			
-			// 메뉴입력
-			String menu = In.getStr("메뉴");
+			
+			// uri
+			String uri = request.getRequestURI();
+			
+			// jsp
+			String jsp = null;
 			
 			// 결과저장용
 			Object result = null;
 			
 			// 입력받는데이터
 			Long no = 0L;
-			String id;
 			String pw;
 			MemberVO vo;
 			
+			// 파일업로드 설정
+			// 파일의 절대위치를 지정
+			String savePath = "/upload/member";
+			String realSavePath
+				= request.getServletContext().getRealPath(savePath);
+			// 업로드 파일용량 제한
+			int sizeLimit = 100 * 1024 * 1024; // 100MByte
+			
+			File realSavePathFile = new File(realSavePath);
+			// 폴더가 존재하지 않으면 만들어 준다.
+			if (!realSavePathFile.exists()) {
+				realSavePathFile.mkdir();
+			}
+			
 			try {
-				switch (menu) {
-				case "1":
+				switch (uri) {
+				case "/member/loginForm.do":
+					System.out.println("---로그인 폼---");
+					jsp = "member/loginForm";
+					break;
+				case "/member/login.do":
+					System.out.println("---로그인 처리---");
+					id = request.getParameter("id");
+					pw = request.getParameter("pw");
+					
+					LoginVO loginVO = new LoginVO();
+					loginVO.setId(id);
+					loginVO.setPw(pw);
+					
+					// DB처리
+					// 여기(MemberController)에서 -> Execute
+					// -> MemberLoginService -> MemberDAO().login()
+					// 로그인한 데이터를  session 담는다.
+					session.setAttribute("login",
+							Execute.execute(Init.get(uri), loginVO));
+
+					
+					if (Main.login != null) {
+						System.out.println();
+						System.out.println("**************************");
+						System.out.println("** 로그인 되었습니다.       **");
+						System.out.println("**************************");
+						
+						// 최근 접속일 변경
+						// 여기서 -> Execute -> MemberConUpdateService -> MemberDAO().conUpdate(id)
+						Execute.execute(new MemberConUpdateService(), Main.login.getId());
+					}
+					
+					
+					break;
+				case "/member/list.do":
 					System.out.println("1.회원 리스트");
 					// MemberController->Execute.execute()->
 					// MemberListService->MemberDAO().list()
@@ -159,7 +210,7 @@ public class MemberController {
 						// 로그인을 위한 데이터 수집 (id, pw)
 						id = In.getStr("아이디");
 						pw = In.getStr("비밀번호");
-						LoginVO loginVO = new LoginVO();
+						loginVO = new LoginVO();
 						loginVO.setId(id);
 						loginVO.setPw(pw);
 						
@@ -201,8 +252,7 @@ public class MemberController {
 					// 회원등급 및 상태수정을 위한 메서드
 					update_admin(vo);
 					break;
-				case "0":
-					return;
+
 				default:
 					System.out.println("###########################");
 					System.out.println("## 메뉴를 잘못 입력하셨습니다. ##");
@@ -224,7 +274,7 @@ public class MemberController {
 				System.out.println("$%@$%@$%@$%@$%@$%@$%@$%@$%@$%@");
 			}
 			
-		} // end of while(true)
+		return jsp;
 	} // end of execute()
 	
 	// 정보수정DB처리를 위한 메서드

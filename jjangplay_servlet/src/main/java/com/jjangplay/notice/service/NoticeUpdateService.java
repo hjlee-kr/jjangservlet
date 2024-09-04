@@ -16,7 +16,7 @@ public class NoticeUpdateService implements Service {
 	@Override
 	public Integer service(Object obj) throws Exception {
 		// NoticeDAO().update()
-		return new NoticeDAO().update((NoticeVO)obj);
+		return dao.update((NoticeVO)obj);
 	}
 
 }

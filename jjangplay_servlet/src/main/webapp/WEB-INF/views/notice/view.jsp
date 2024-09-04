@@ -16,13 +16,11 @@ $(function(){
 	$("#deleteBtn").click(function(){
 		console.log("deleteBtn event......");
 		// 비밀번호 입력창 clear
-		$("#pw").val("");
 		$("#deleteModal").modal("show");
 	});
 	
 	$("#deleteCancelBtn").click(function(){
 		console.log("deleteCancelBtn event......");
-		$("#pw").val("");
 		$("#deleteModal").modal("hide");
 	});
 	
@@ -104,7 +102,7 @@ $(function(){
       
         <!-- Modal Header -->
         <div class="modal-header">
-          <h4 class="modal-title">비밀번호 확인</h4>
+          <h4 class="modal-title">삭제하시겠습니까?</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         
@@ -116,15 +114,6 @@ $(function(){
 				값을 같이 넘겨야 할때 사용합니다.
 				값을 넘길때 가장중요한 프로퍼티는 name 이다. -->
 				<input type="hidden" name="no" value="${param.no }">
-				<!-- required : 반드시 작성되어야 한다는 의미 -->
-				<!-- pattern ^로 시작해서 $로 끝난다. -->
-				<!-- .은 \n 빼로 전부 다 사용가능 -->
-				<!-- pw는 3자에서 20자 이내로 써야한다. -->
-				<!-- title의 내용은 툴팁으로 모여준다. -->
-				<input name="pw" required maxlength="20"
-					pattern="^.{3,20}$"
-					title="3~20자 입력 가능"
-					placeHolder="본인 확인용 비밀번호">
 				<button  class="btn btn-danger">삭제</button>
 				<button type="button" class="btn btn-success"
 					id="deleteCancelBtn">취소</button>

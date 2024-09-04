@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.jjangplay.board.controller.BoardController;
+import com.jjangplay.member.controller.MemberController;
 import com.jjangplay.notice.controller.NoticeController;
 
 // Servlet Project 만드는 순서
@@ -33,6 +34,7 @@ public class DispatcherServlet extends HttpServlet {
 	// Controller 선언과 생성 - 1번만 처리된다.
 	private BoardController boardController= new BoardController();
 	private NoticeController noticeController= new NoticeController();
+	private MemberController memberController = new MemberController();
        
 	/**
 	 * @see Servlet#init(ServletConfig)
@@ -88,6 +90,10 @@ public class DispatcherServlet extends HttpServlet {
 			System.out.println("===공지사항===");
 			jsp = noticeController.execute(request);
 			break;
+		case "/member":
+			System.out.println("===회원 관리===");
+			jsp = memberController.execute(request);
+			
 		}
 		
 		if (jsp.indexOf("redirect:") == 0) {

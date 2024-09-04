@@ -4,8 +4,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>일반 게시판 글 수정 폼</title>
+<title>공지사항 글 수정 폼</title>
 
+	<!-- datepicker -->
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.14.0/themes/base/jquery-ui.css">
+	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+	<script src="https://code.jquery.com/ui/1.14.0/jquery-ui.js"></script>
+
+	
 <!-- 4. 우리가 만든 라이브러리 등록 -->
 <script type="text/javascript" src="boardInputUtil.js"></script>
 
@@ -13,6 +19,29 @@
 <script type="text/javascript">
 $(function(){
 	console.log("jquery loading.........");
+	
+	// 날짜입력 -datepicker 시작
+	let now = new Date();
+	let startYear = now.getFullYear();
+	let yearRange = (startYear - 10) + ":" + (startYear + 10);
+	
+	// 날짜입력 설정 - datepicker
+	$(".datepicker").datepicker({
+		// 입력란의 데이터 포맷
+		dateFormat: "yy-mm-dd",
+		// 월 선택 입력 추가
+		changeMonth: true,
+		// 년 선택 입력 추가
+		changeYear: true,
+		// 월 선택 입력 (기본은 영어->한글로 변경)
+		monthNamesShort: ["1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"],
+		// 달력의 요일 표시 (기본은 영어->한글로)
+		dayNamesMin: ["일","월","화","수","목","금","토"],
+		// 선택할 수 있는 년도의 범위
+		yearRange: yearRange,
+		
+	});
+	// 날짜입력 -datepicker 끝
 	
 	// 5.이벤트 실행
 	$("#updateForm").submit(function(){
@@ -22,15 +51,11 @@ $(function(){
 		// isEmpty(객체, 항목, 트림유무)
 		if (isEmpty("#title", "제목", 1)) return false;
 		if (isEmpty("#content", "내용", 1)) return false;
-		if (isEmpty("#writer", "작성자", 1)) return false;
-		if (isEmpty("#pw", "비밀번호확인", 0)) return false;
 		
 		// 7.길이체크 (제목, 내용, 작성자, 비밀번호확인)
 		// lengthCheck(객체, 항목, 최소, 최대, 트림유무)
 		if (lengthCheck("#title", "제목", 3, 100, 1)) return false;
 		if (lengthCheck("#content", "내용", 3, 100, 1)) return false;
-		if (lengthCheck("#writer", "작성자", 3, 100, 1)) return false;
-		if (lengthCheck("#pw", "비밀번호확인", 3, 100, 0)) return false;
 		
 	});
 	
@@ -50,7 +75,7 @@ $(function(){
 글번호 : ${param.no }<br>
 
 <div class="container">
-  <h2><i class="fa fa-pencil-square-o"></i> 일반 게시판 글 수정 폼</h2>
+  <h2><i class="fa fa-pencil-square-o"></i> 공지사항 글 수정 폼</h2>
   <form action="update.do" method="post" id="updateForm">
     <div class="form-group">
       <label for="no">번호</label>
@@ -74,21 +99,14 @@ $(function(){
       </pre>
     </div>
     <div class="form-group">
-      <label for="writer">작성자</label>
-      <input type="text" class="form-control"
-       id="writer" name="writer"value="${ vo.writer }"
-       pattern="^[a-zA-Z가-힝]{2,10}$"
-       title="한글과 영어만 입력 : 2~10자 입력"
-       placeholder="이름은 한글과 영어만 입력가능합니다."
-       >
+      <label for="startDate">게시일</label>
+      <input type="text" class="form-control datepicker" id="startDate"
+        name="startDate" value="${ vo.startDate }">
     </div>
     <div class="form-group">
-      <label for="pw">비밀번호확인</label>
-      <input type="password" class="form-control" id="pw"
-       placeholder="비밀번호입력" name="pw"
-       pattern="^.{3,20}$"
-       title="3~20자 입력가능"
-       placeholder="본인확인용 비밀번호">
+      <label for="endDate">종료일</label>
+      <input type="text" class="form-control datepicker" id="endDate"
+        name="endDate" value="${ vo.endDate }">
     </div>
     <button type="submit" class="btn btn-primary">수정</button>
     <button type="reset" class="btn btn-secondary">다시쓰기</button>

@@ -11,6 +11,8 @@ import com.jjangplay.board.service.BoardViewService;
 import com.jjangplay.board.service.BoardWriteService;
 import com.jjangplay.main.dao.DAO;
 import com.jjangplay.main.service.Service;
+import com.jjangplay.member.dao.MemberDAO;
+import com.jjangplay.member.service.MemberLoginService;
 import com.jjangplay.notice.dao.NoticeDAO;
 import com.jjangplay.notice.service.NoticeDeleteService;
 import com.jjangplay.notice.service.NoticeListService;
@@ -69,6 +71,14 @@ public class Init {
 		serviceMap.get("/notice/write.do").setDAO(daoMap.get("noticeDAO"));
 		serviceMap.get("/notice/update.do").setDAO(daoMap.get("noticeDAO"));
 		serviceMap.get("/notice/delete.do").setDAO(daoMap.get("noticeDAO"));
+		
+		// 3. 회원관리
+		// dao를 생성
+		daoMap.put("memberDAO", new MemberDAO());
+		// 서비스생성
+		serviceMap.put("/member/login.do", new MemberLoginService());
+		// 조립 dao->service
+		serviceMap.get("/member/login.do").setDAO(daoMap.get("memberDAO"));
 	}
 	
 	

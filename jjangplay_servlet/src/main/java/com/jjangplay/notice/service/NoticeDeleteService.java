@@ -16,7 +16,7 @@ public class NoticeDeleteService implements Service {
 	public Integer service(Object obj) throws Exception {
 		// TODO Auto-generated method stub
 		// NoticeDeleteService -> NoticeDAO().delete()
-		return new NoticeDAO().delete((Long)obj);
+		return dao.delete((Long)obj);
 	}
 
 }
