@@ -59,6 +59,7 @@ public class PageObject {
 		pageObject.setKey(request.getParameter("key"));
 		pageObject.setWord(request.getParameter("word"));
 		
+		System.out.println("PageObject.getInstance() end");
 		return pageObject;
 		
 	}

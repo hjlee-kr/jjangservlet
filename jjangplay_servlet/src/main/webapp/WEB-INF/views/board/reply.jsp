@@ -52,11 +52,12 @@
         </div>
         
         <form id="boardReplyForm" method="post">
+          	<input type="hidden" name="rno" id="rno">
+          	<input type="hidden" name="no" value="${param.no }">
+          	<input type="hidden" name="page" value="${param.page }">
+          	<input type="hidden" name="perPageNum" value="${param.perPageNum }">
         <!-- Modal body 시작 -->
         <div class="modal-body">
-          	<input type="hidden" name="rno" id="rno">
-          	<input type="hidden" name="page" id="page">
-          	<input type="hidden" name="perPageNum" id="perPageNum">
           
           
           <!-- 내용 / 작성자 / 비밀번호 -->
@@ -71,9 +72,9 @@
           	id="writer" name="writer">
           </div>
           <div class="form-group" id="pwDiv">
-          	<label for="pw">비밀번호</label>
+          	<label for="pwr">비밀번호</label>
           	<input type="password" class="form-gruop"
-          	id="pw" name="pw">
+          	id="pwr" name="pw">
           </div>
         </div>
         <!-- Modal body 끝 -->
@@ -127,14 +128,72 @@ $(function() {
 		$("#boardReplyForm")
 		.find(".form-group->input .form-group->textarea").val("");
 		
+		// 댓글번호, 내용, 작성자데이터 수집해서 value값에 세팅
+		let replyDataRow = $(this).closest(".replyDataRow");
+		let rno = replyDataRow.data("rno");
+		let content = replyDataRow.find(".replyContent").text();
+		let writer = replyDataRow.find(".replyWriter").text();
+		
+		// 모달창 입력난에 기존값 적는다.
+		$("#rno").val(rno);
+		$("#content").val(content);
+		$("#writer").val(writer);
+		
 		// 버튼선택
 		// 먼저 다 보이도록 설정
 		$("#boardReplyForm button").show();
 		// 필요없는버튼은 안보이도록 설정
-		$("#replyModalUpdateBtn, #replyModalDeleteBtn").hide();
+		$("#replyModalWriteBtn, #replyModalDeleteBtn").hide();
 		
 		// 모달창이 보이도록
 		$("#boardReplyModal").modal("show");
+	});
+	// 댓글 삭제
+	$(".replyDeleteBtn").click(function(){
+		// 제목을 댓글 삭제
+		$("#boardReplyModal").find(".modal-title").text("댓글삭제");
+		// input / text 선택
+		$("#boardReplyForm").find(".form-group").hide();
+		$("#pwDiv").show();
+		// 데이터 지우기 (빈데이터를 넣는다.)
+		$("#boardReplyForm")
+		.find(".form-group->input .form-group->textarea").val("");
+		
+		// 댓글번호
+		let replyDataRow = $(this).closest(".replyDataRow");
+		let rno = replyDataRow.data("rno");
+		// 모달창 입력난에 기존값 적는다.
+		$("#rno").val(rno);
+		//$("rno").val($(this).closest(".replyDataRow").data("rno"));
+		
+		// 버튼선택
+		// 먼저 다 보이도록 설정
+		$("#boardReplyForm button").show();
+		// 필요없는버튼은 안보이도록 설정
+		$("#replyModalWriteBtn, #replyModalUpdateBtn").hide();
+		
+		// 모달창이 보이도록
+		$("#boardReplyModal").modal("show");
+	});
+	// 모달창 안의 버튼을 클릭하는 이벤트 처리
+	$("#replyModalWriteBtn").click(function(){
+		console.log("replyModalWriteBtn click event");
+		// 데이터를 전송해서 처리하는 경로 세팅
+		$("#boardReplyForm").attr("action", "/boardreply/write.do");
+		// 데이터 전송하고 처리
+		$("#boardReplyForm").submit();
+	});
+	$("#replyModalUpdateBtn").click(function(){
+		// 데이터를 전송해서 처리하는 경로 세팅
+		$("#boardReplyForm").attr("action", "/boardreply/update.do");
+		// 데이터 전송하고 처리
+		$("#boardReplyForm").submit();
+	});
+	$("#replyModalDeleteBtn").click(function(){
+		// 데이터를 전송해서 처리하는 경로 세팅
+		$("#boardReplyForm").attr("action", "/boardreply/delete.do");
+		// 데이터 전송하고 처리
+		$("#boardReplyForm").submit();
 	});
 	
 	

@@ -11,6 +11,7 @@ import com.jjangplay.board.service.BoardViewService;
 import com.jjangplay.board.service.BoardWriteService;
 import com.jjangplay.boardreply.dao.BoardReplyDAO;
 import com.jjangplay.boardreply.service.BoardReplyListService;
+import com.jjangplay.boardreply.service.BoardReplyWriteService;
 import com.jjangplay.main.dao.DAO;
 import com.jjangplay.main.service.Service;
 import com.jjangplay.member.dao.MemberDAO;
@@ -62,8 +63,10 @@ public class Init {
 		daoMap.put("boardReplyDAO", new BoardReplyDAO());
 		// service 생성
 		serviceMap.put("/boardreply/list.do", new BoardReplyListService());
+		serviceMap.put("/boardreply/write.do", new BoardReplyWriteService());
 		// 조립 dao->service
 		serviceMap.get("/boardreply/list.do").setDAO(daoMap.get("boardReplyDAO"));
+		serviceMap.get("/boardreply/write.do").setDAO(daoMap.get("boardReplyDAO"));
 		
 		// 2. 공지사항
 		// dao를 생성
