@@ -1,10 +1,11 @@
 <!-- sitemesh 사용을 위한 설정 파일 -->
-<!-- 작성자 : 김승준 -->
+<!-- 작성자 : 이현진 -->
 <!-- 작성일 : 2017-01-12 -->
-<!-- 최종수정일 : 2017-01-16 -->
+<!-- 최종수정일 : 2024-09-05 -->
 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="decorator"
 	uri="http://www.opensymphony.com/sitemesh/decorator"%>
 <!DOCTYPE html>
@@ -75,29 +76,73 @@
 <body>
 	<header>
 		<nav class="navbar navbar-expand-md bg-dark navbar-dark">
-  <!-- Brand -->
-  <a class="navbar-brand" href="#">Navbar</a>
+			<!-- Brand -->
+			<a class="navbar-brand" href="/">JJANGPLAY</a>
 
-  <!-- Toggler/collapsibe Button -->
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+			<!-- Toggler/collapsibe Button -->
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+				<span class="navbar-toggler-icon"></span>
+			</button>
 
-  <!-- Navbar links -->
-  <div class="collapse navbar-collapse" id="collapsibleNavbar">
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link" href="#">Link</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Link</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Link</a>
-      </li>
-    </ul>
-  </div>
-</nav>
+			<!-- Navbar links -->
+			<div class="collapse navbar-collapse" id="collapsibleNavbar">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item">
+					<a class="nav-link" href="/notice/list.do">공지사항</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/shop/list.do">쇼핑몰</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/image/list.do">Gallery</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/board/list.do">일반게시판</a>
+				</li>
+			</ul>
+			<ul class="navbar-nav">
+				<c:if test="${ empty login }">
+					<!-- 로그인 하지 않았을 때 -->
+					<li class="nav-item">
+						<a class="nav-link" href="/member/loginForm.do">
+						<i class="fa fa-sign-in"></i>로그인</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="/member/write.do">
+						<i class="fa fa-address-card-o"></i>회원가입</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="/member/searchID.do">
+						<i class="fa fa-search"></i>아이디/비밀번호 찾기</a>
+					</li>
+				</c:if>
+				<c:if test="${ !empty login }">
+					<!-- 로그인 했을 때 -->
+					<li class="nav-item">
+						<span class="nav-link">
+							<c:if test="${ empty login.photo }">
+								<i class="fa fa-user-circle-o"></i>
+							</c:if>
+							<c:if test="${ !empty login.photo }">
+								<img src="${login.photo }" class="round-circle"
+								style="width:30px; height:30px">
+							</c:if>
+						</span>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="/member/logout.do">
+						<i class="fa fa-sign-out"></i>로그아웃</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="/member/view.do">내정보보기</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="/card/list.do">장바구니</a>
+					</li>
+				</c:if>
+			</ul>
+			</div>
+		</nav>
 	
 	</header>
 	<article>
@@ -107,5 +152,47 @@
 	<footer class="container-fluid text-center">
 		<p>이 홈페이지의 저작권은 이현진에게 있습니다.</p>
 	</footer>
+	
+	<!-- session 담은 msg를 보여주는 모달창 -->
+	<c:if test="${!empty msg}">
+	  <!-- The Modal -->
+	  <div class="modal fade" id="myModal">
+	    <div class="modal-dialog">
+	      <div class="modal-content">
+	      
+	        <!-- Modal Header -->
+	        <div class="modal-header">
+	          <h4 class="modal-title">처리 결과 모달 창</h4>
+	          <button type="button" class="close" data-dismiss="modal">&times;</button>
+	        </div>
+	        
+	        <!-- Modal body -->
+	        <div class="modal-body">
+	          ${msg}
+	        </div>
+	        
+	        <!-- Modal footer -->
+	        <div class="modal-footer">
+	          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+	        </div>
+	        
+	      </div>
+	    </div>
+	  </div>
+  
+
+		
+		
+	
+	</c:if>
+	
 </body>
 </html>
+
+
+
+
+
+
+
+
