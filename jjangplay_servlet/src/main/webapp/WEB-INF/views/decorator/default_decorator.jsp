@@ -156,7 +156,7 @@
 	<!-- session 담은 msg를 보여주는 모달창 -->
 	<c:if test="${!empty msg}">
 	  <!-- The Modal -->
-	  <div class="modal fade" id="myModal">
+	  <div class="modal fade" id="msgModal">
 	    <div class="modal-dialog">
 	      <div class="modal-content">
 	      
@@ -181,14 +181,18 @@
 	  </div>
   
 
-		
-		
-	
+		<!-- 모달을 보이게하는 javascript -->
+		<script type="text/javascript">
+			$(function() {
+				$("#msgModal").modal("show");
+				
+			})
+		</script>
 	</c:if>
 	
 </body>
 </html>
-
+<%session.removeAttribute("msg"); %>
 
 
 

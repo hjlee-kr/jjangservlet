@@ -109,7 +109,7 @@ public class PageObject {
 	public long getTotalRow() {
 		return totalRow;
 	}
-	public void setTatalRow(long totalRow) {
+	public void setTotalRow(long totalRow) {
 		this.totalRow = totalRow;
 		
 		System.out.println("page = " + page);
@@ -166,6 +166,14 @@ public class PageObject {
 			+ "&" + getNotPageQuery();
 	}
 
+	@Override
+	public String toString() {
+		return "PageObject [page=" + page + ", perPageNum=" + perPageNum + ", startRow=" + startRow + ", endRow="
+				+ endRow + ", perGroupPageNum=" + perGroupPageNum + ", startPage=" + startPage + ", endPage=" + endPage
+				+ ", totalPage=" + totalPage + ", totalRow=" + totalRow + ", key=" + key + ", word=" + word + "]";
+	}
+
+	
 }
 
 

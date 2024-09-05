@@ -110,6 +110,16 @@ public class MemberController {
 					// 일반게시판 list로 이동합니다. 
 					jsp = "redirect:/board/list.do";
 					break;
+				case "/member/logout.do":
+					System.out.println("---로그아웃 처리---");
+					// session의 login 정보 지우기 -> 로그아웃처리
+					session.removeAttribute("login");
+					
+					session.setAttribute("msg", "로그아웃 되었습니다.");
+					
+					// 임시 이동 경로
+					jsp = "redirect:/board/list.do";
+					break;
 				case "/member/list.do":
 					System.out.println("1.회원 리스트");
 					

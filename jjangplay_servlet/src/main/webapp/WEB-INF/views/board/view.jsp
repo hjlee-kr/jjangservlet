@@ -139,11 +139,13 @@ $(function(){
    
    
    
+   <!-- 댓글처리시작 -->
+   <jsp:include page="reply.jsp"></jsp:include>
+   <!-- 댓글처리끝 -->
    
    
    
-   
-</div>
+</div> <!-- end of class="container" -->
 </body>
 </html>
 

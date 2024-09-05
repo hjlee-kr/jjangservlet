@@ -22,7 +22,7 @@ public class NoticeListService implements Service {
 		PageObject pageObject = (PageObject) obj;
 		
 		// DB에서 처리된 totalrow값을 pageObject에 보관
-		pageObject.setTatalRow(dao.getTotalRow(pageObject));
+		pageObject.setTotalRow(dao.getTotalRow(pageObject));
 		
 		return dao.list(pageObject);
 	}
