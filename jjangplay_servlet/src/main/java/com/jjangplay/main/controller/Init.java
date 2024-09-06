@@ -119,7 +119,7 @@ public class Init {
 		// 조립 dao->service
 		serviceMap.get("/image/list.do").setDAO(daoMap.get("imageDAO"));
 		serviceMap.get("/image/view.do").setDAO(daoMap.get("boardDAO"));
-		serviceMap.get("/image/write.do").setDAO(daoMap.get("boardDAO"));
+		serviceMap.get("/image/write.do").setDAO(daoMap.get("imageDAO"));
 		serviceMap.get("/image/update.do").setDAO(daoMap.get("boardDAO"));
 		serviceMap.get("/image/delete.do").setDAO(daoMap.get("boardDAO"));
 	}

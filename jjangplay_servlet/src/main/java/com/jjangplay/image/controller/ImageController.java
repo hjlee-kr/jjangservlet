@@ -11,6 +11,7 @@ import com.jjangplay.board.service.BoardUpdateService;
 import com.jjangplay.board.service.BoardViewService;
 import com.jjangplay.board.service.BoardWriteService;
 import com.jjangplay.board.vo.BoardVO;
+import com.jjangplay.image.vo.ImageVO;
 import com.jjangplay.main.controller.Init;
 import com.jjangplay.member.vo.LoginVO;
 import com.jjangplay.util.exe.Execute;
@@ -18,6 +19,8 @@ import com.jjangplay.util.io.BoardPrint;
 import com.jjangplay.util.io.In;
 import com.jjangplay.util.page.PageObject;
 import com.jjangplay.util.page.ReplyPageObject;
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 // Image(이미지게시판) 의 메뉴를 선택하고, 데이터 수집(기능별), 예외처리
 public class ImageController {
@@ -115,27 +118,35 @@ public class ImageController {
 					jsp="board/view";
 					break;
 				case "/image/writeForm.do":
-					System.out.println("3. 일반게시판 글쓰기 폼");
-					jsp="board/writeForm";
+					System.out.println("3. 이미지게시판 글쓰기 폼");
+					jsp="image/writeForm";
 					break;
 				case "/image/write.do":
-					System.out.println("3. 일반게시판 글쓰기 처리");
+					System.out.println("3. 이미지게시판 글쓰기 처리");
 					
-					// 데이터 수집(키보드) : 제목, 내용, 작성자, 비밀번호
-					String title = request.getParameter("title");
-					String content = request.getParameter("content");
-					String writer = request.getParameter("writer");
-					String pw = request.getParameter("pw");
+					// 이미지 업로드 처리
+					// new MultipartRequest(request, 실제저장위치, 사이즈제한,
+					//	encoding, 중복처리객체-다른이름으로)
+					MultipartRequest multi =
+						new MultipartRequest(request, realSavePath, sizeLimit,
+							"utf-8", new DefaultFileRenamePolicy());
 					
+					// 데이터 수집(사용자 -> 서버 -> Multi)
+					String title = multi.getParameter("title");
+					String content = multi.getParameter("content");
+					String fileName = multi.getParameter("imageFile");
+					// id는 session에서 받아옴 -> 위에서 처리함(switch들어오기전)
+						
 					// 입력받은 데이터를 BoardVO 안에 저장(세팅) => DB에 넘겨주기위한
-					BoardVO vo = new BoardVO();
+					ImageVO vo = new ImageVO();
 					vo.setTitle(title);
 					vo.setContent(content);
-					vo.setWriter(writer);
-					vo.setPw(pw);
+					// "/upload/image/파일이름" - 위치정보+파일이름
+					vo.setFileName(savePath + "/" + fileName);
+					vo.setId(id);
 					
-					//[BoardController] -> (Execute) ->
-					// BoardWriteService -> BoardDAO.write()
+					//[ImageController] -> (Execute) ->
+					// ImageWriteService -> ImageDAO.write()
 					Execute.execute(Init.get(uri), vo);
 					
 					// jsp 정보앞에 "redirect:" 가 붙어있으면 redirect로 처리
@@ -162,17 +173,13 @@ public class ImageController {
 					no = Long.parseLong(request.getParameter("no"));
 					title = request.getParameter("title");
 					content = request.getParameter("content");
-					writer = request.getParameter("writer");
-					pw = request.getParameter("pw");
+
 					
-					vo = new BoardVO();
+					vo = new ImageVO();
 					vo.setNo(no);
 					vo.setTitle(title);
 					vo.setContent(content);
-					vo.setWriter(writer);
-					vo.setPw(pw);
-					
-					
+
 					Execute.execute(Init.get(uri), vo);
 					
 					jsp="redirect:view.do?no="+no+"&inc=0";
@@ -180,10 +187,10 @@ public class ImageController {
 				case "/image/delete.do":
 					System.out.println("5. 일반게시판 글삭제");
 					// 데이터 수집 : 삭제할 글번호, 확인용 비밀번호
-					vo = new BoardVO();
+					vo = new ImageVO();
 					
 					vo.setNo(Long.parseLong(request.getParameter("no")));
-					vo.setPw(request.getParameter("pw"));
+
 					
 					// DB처리
 					result =Execute.execute(Init.get(uri), vo);

@@ -208,8 +208,8 @@ public class ImageDAO extends DAO {
 	} // end of view()
 	
 	// 3. 글쓰기
-	// [BoardController] -> (Execute) -> BoardWriteService -> [BoardDAO.write()]
-	public int write(BoardVO vo) throws Exception {
+	// [ImageController] -> (Execute) -> ImageWriteService -> [ImageDAO.write()]
+	public int write(ImageVO obj) throws Exception {
 		// 결과를 저장하는 변수선언
 		int result = 0;
 		
@@ -221,10 +221,9 @@ public class ImageDAO extends DAO {
 			// 4. 실행객체에 데이터 세팅
 			pstmt = con.prepareStatement(WRITE);
 			// BoardVO vo변수 안에 있는 값을 getter를 이용해서 세팅합니다.
-			pstmt.setString(1, vo.getTitle());
-			pstmt.setString(2, vo.getContent());
-			pstmt.setString(3, vo.getWriter());
-			pstmt.setString(4, vo.getPw());
+			pstmt.setString(1, obj.getTitle());
+			pstmt.setString(2, obj.getContent());
+
 			// 5. 실행 // insert, update, delete => executeUpdate()
 			result = pstmt.executeUpdate();
 			// 6. 데이터 보기 및 저장(보관)
