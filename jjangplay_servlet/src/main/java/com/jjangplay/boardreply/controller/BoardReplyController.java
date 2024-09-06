@@ -76,18 +76,19 @@ public class BoardReplyController {
 						// 댓글의 페이지 정보
 						+ "&" + pageObject.getPageQuery()
 						;
+					session.setAttribute("msg", "댓글이 등록되었습니다.");
 					break;
-				case "/board/update.do":
-					System.out.println("4. 일반게시판 글수정 처리");
+				case "/boardreply/update.do":
+					System.out.println("4. 일반게시판 댓글수정 처리");
 					
 					// updateForm 적은 데이터를 가져온다. (DB에 저장하기 위해)
-					no = Long.parseLong(request.getParameter("no"));
+					Long rno = Long.parseLong(request.getParameter("rno"));
 					content = request.getParameter("content");
 					writer = request.getParameter("writer");
 					pw = request.getParameter("pw");
 					
 					vo = new BoardReplyVO();
-					vo.setNo(no);
+					vo.setRno(rno);
 					vo.setContent(content);
 					vo.setWriter(writer);
 					vo.setPw(pw);
@@ -95,7 +96,14 @@ public class BoardReplyController {
 					
 					Execute.execute(Init.get(uri), vo);
 					
-					jsp="redirect:view.do?no="+no+"&inc=0";
+					jsp="redirect:/board/view.do?no="
+						+ pageObject.getNo() + "&inc=0"
+						// 일반게시판 글보기의 페이지 및 검색정보 붙이기
+						+ "&" + pageObject.getPageObject().getPageQuery()
+						// 댓글의 페이지 정보
+						+ "&" + pageObject.getPageQuery();
+					
+					session.setAttribute("msg", "댓글이 수정되었습니다.");
 					break;
 				case "/board/delete.do":
 					System.out.println("5. 일반게시판 글삭제");

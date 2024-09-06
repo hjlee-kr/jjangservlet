@@ -58,8 +58,6 @@
           	<input type="hidden" name="perPageNum" value="${param.perPageNum }">
         <!-- Modal body 시작 -->
         <div class="modal-body">
-          
-          
           <!-- 내용 / 작성자 / 비밀번호 -->
           <div class="form-group" id="contentDiv">
           	<label for="content">내용</label>
@@ -106,6 +104,8 @@ $(function() {
 		// input / text 선택
 		$("#boardReplyForm").find(".form-group").show();
 		// 데이터 지우기 (빈데이터를 넣는다.)
+		// 모달창에 보이는 데이터만 지운다.
+		// hidden세팅한것이 지워지지 않도록 주의
 		$("#boardReplyForm")
 		.find(".form-group->input .form-group->textarea").val("");
 		
@@ -125,6 +125,8 @@ $(function() {
 		// input / text 선택
 		$("#boardReplyForm").find(".form-group").show();
 		// 데이터 지우기 (빈데이터를 넣는다.)
+		// 모달창에 보이는 데이터만 지운다.
+		// hidden세팅한것이 지워지지 않도록 주의
 		$("#boardReplyForm")
 		.find(".form-group->input .form-group->textarea").val("");
 		
@@ -156,6 +158,8 @@ $(function() {
 		$("#boardReplyForm").find(".form-group").hide();
 		$("#pwDiv").show();
 		// 데이터 지우기 (빈데이터를 넣는다.)
+		// 모달창에 보이는 데이터만 지운다.
+		// hidden세팅한것이 지워지지 않도록 주의
 		$("#boardReplyForm")
 		.find(".form-group->input .form-group->textarea").val("");
 		

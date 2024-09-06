@@ -247,8 +247,9 @@ public class BoardReplyDAO extends DAO {
 	
 	
 	// 4. 글수정
-	// [BoardController] -> (Execute) -> BoardUpdateService -> [BoardDAO.update()]
-	public int update(BoardVO vo) throws Exception {
+	// [BoardReplyController] -> (Execute)
+	// -> BoardReplyUpdateService -> [BoardReplyDAO.update()]
+	public int update(BoardReplyVO vo) throws Exception {
 		// 결과 저장 변수
 		int result = 0; // SQL문이 실행성공 : 1, 실행실패 : 0
 		
@@ -259,11 +260,10 @@ public class BoardReplyDAO extends DAO {
 			// 3. SQL (UPDATE)
 			// 4. 실행객체에 데이터세팅
 			pstmt = con.prepareStatement(UPDATE);
-			pstmt.setString(1, vo.getTitle());
-			pstmt.setString(2, vo.getContent());
-			pstmt.setString(3, vo.getWriter());
-			pstmt.setLong(4, vo.getNo());
-			pstmt.setString(5, vo.getPw());
+			pstmt.setString(1, vo.getContent());
+			pstmt.setString(2, vo.getWriter());
+			pstmt.setLong(3, vo.getRno());
+			pstmt.setString(4, vo.getPw());
 			// 5. 실행
 			result = pstmt.executeUpdate();
 			// 6. 보기 및 데이터저장 (실행결과확인)
@@ -342,9 +342,9 @@ public class BoardReplyDAO extends DAO {
 	final String WRITE = "insert into board_reply "
 			+ " (rno, no, content, writer, pw) "
 			+ " values (board_reply_seq.nextval, ?, ?, ?, ?)";
-	final String UPDATE = "update board "
-			+ " set title = ?, content = ?, writer = ? "
-			+ " where no = ? and pw = ?";
+	final String UPDATE = "update board_reply "
+			+ " set content = ?, writer = ? "
+			+ " where rno = ? and pw = ?";
 	
 	final String DELETE = "delete from board "
 			+ " where no = ? and pw = ?";
