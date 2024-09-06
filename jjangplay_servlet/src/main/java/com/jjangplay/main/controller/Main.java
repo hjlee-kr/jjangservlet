@@ -61,7 +61,7 @@ public class Main {
 					System.out.println("1. 공지사항");
 					// NoticeController.execute()
 					// 생성하고 실행한다.
-					new NoticeController().execute();
+//					new NoticeController().execute();
 					break;
 				case "2":
 					System.out.println("2. 쇼핑몰");
@@ -76,7 +76,7 @@ public class Main {
 					// 생성하고 메서드실행하도록 -1번만 실행
 					// new BoardController() - 생성자 실행되서 참조주소가 나오고
 					// 그주소에서 execute()호출해서 실행됩니다.
-					new BoardController().execute();
+//					new BoardController().execute();
 					// BoardController.execute() 실행이 끝나면 이곳으로 옵니다.
 					break;
 				case "4":
@@ -85,7 +85,7 @@ public class Main {
 				case "5":
 					System.out.println("5. 회원관리");
 					// 회원관리 모듈로 이동 (MemberController)
-					new MemberController().execute();
+//					new MemberController().execute();
 					break;
 				case "0":
 					System.out.println("!!!!!!!!!!!!!!!!!!!!");

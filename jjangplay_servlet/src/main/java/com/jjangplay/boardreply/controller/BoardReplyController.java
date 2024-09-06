@@ -1,22 +1,13 @@
 package com.jjangplay.boardreply.controller;
 
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.jjangplay.board.service.BoardDeleteService;
-import com.jjangplay.board.service.BoardListService;
-import com.jjangplay.board.service.BoardUpdateService;
-import com.jjangplay.board.service.BoardViewService;
-import com.jjangplay.board.service.BoardWriteService;
-import com.jjangplay.board.vo.BoardVO;
+
 import com.jjangplay.boardreply.vo.BoardReplyVO;
 import com.jjangplay.main.controller.Init;
 import com.jjangplay.util.exe.Execute;
-import com.jjangplay.util.io.BoardPrint;
-import com.jjangplay.util.io.In;
-import com.jjangplay.util.page.PageObject;
 import com.jjangplay.util.page.ReplyPageObject;
 
 // Board(일반게시판) 의 메뉴를 선택하고, 데이터 수집(기능별), 예외처리
@@ -105,12 +96,12 @@ public class BoardReplyController {
 					
 					session.setAttribute("msg", "댓글이 수정되었습니다.");
 					break;
-				case "/board/delete.do":
-					System.out.println("5. 일반게시판 글삭제");
-					// 데이터 수집 : 삭제할 글번호, 확인용 비밀번호
+				case "/boardreply/delete.do":
+					System.out.println("5. 일반게시판 댓글삭제");
+					// 데이터 수집 : 삭제할 댓글번호, 확인용 비밀번호
+					// vo 객체에 담는다.
 					vo = new BoardReplyVO();
-					
-					vo.setNo(Long.parseLong(request.getParameter("no")));
+					vo.setRno(Long.parseLong(request.getParameter("rno")));
 					vo.setPw(request.getParameter("pw"));
 					
 					// DB처리
@@ -129,7 +120,14 @@ public class BoardReplyController {
 						System.out.println("## " + vo.getNo() + "번 글이 삭제되지 않았습니다.");
 						System.out.println("########################");
 					}
-					jsp = "redirect:list.do";
+					jsp = "redirect:/board/view.do?no=" + pageObject.getNo()
+					+ "&inc=0"
+					// 일반게시판 글보기의 페이지 및 검색정보 붙이기
+					+ "&" + pageObject.getPageObject().getPageQuery()
+					// 댓글의 페이지 정보
+					+ "&" + pageObject.getPageQuery()
+					;
+				session.setAttribute("msg", "댓글이 삭제되었습니다.");
 					break;
 
 				default:

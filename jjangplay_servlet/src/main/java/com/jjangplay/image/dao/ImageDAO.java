@@ -1,4 +1,4 @@
-package com.jjangplay.boardreply.dao;
+package com.jjangplay.image.dao;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -7,33 +7,31 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import com.jjangplay.board.vo.BoardVO;
-import com.jjangplay.boardreply.vo.BoardReplyVO;
+import com.jjangplay.image.vo.ImageVO;
 import com.jjangplay.main.dao.DAO;
 import com.jjangplay.util.db.DB;
 import com.jjangplay.util.page.PageObject;
-import com.jjangplay.util.page.ReplyPageObject;
 
-public class BoardReplyDAO extends DAO {
+public class ImageDAO extends DAO {
 
 	// 필요한 객체는 상속을 받아 사용합니다. : extends DAO
 	// 접속정보는 DB클래스를 사용해서 Connection 을 가져오는 메서드만 사용
 
 	// 1-1.전체 데이터 갯수
-	// [BoardController] -> (Execute) -> BoardListService -> [BoardDAO.list()]
-	public Long getTotalRow(ReplyPageObject pageObject) throws Exception {
+	// [ImageController] -> (Execute) -> ImageListService -> [ImageDAO.list()]
+	public Long getTotalRow(PageObject pageObject) throws Exception {
 		// 결과를 저장할 수 있는 변수
 		Long totalRow = null;
 		
-		System.out.println("---- BoardDAO.getTotalRow() 시작 ----");
+		System.out.println("---- ImageDAO.getTotalRow() 시작 ----");
 		try {
 			// 1. 드라이버확인
 			// 드라이버 확인은 프로그램이 시작될 때 한번만 필요 - MAIN에 구현
 			// 2. DB 연결
 			con = DB.getConnection();
-			// 3. SQL - BoardDAO 클래스에 final 변수로 설정 - TOTALROW
+			// 3. SQL - ImageDAO 클래스에 final 변수로 설정 - TOTALROW
 			// 4. 실행객체에 데이터 넘기기
 			pstmt = con.prepareStatement(TOTALROW);
-			pstmt.setLong(1, pageObject.getNo());
 			// 5. 실행 및 데이터 받기
 			rs = pstmt.executeQuery();
 			// 6. 표시 및 저장
@@ -53,16 +51,16 @@ public class BoardReplyDAO extends DAO {
 			}
 		}
 		
-		System.out.println("---- BoardDAO.getTotalRow() 끝 ----");
+		System.out.println("---- ImageDAO.getTotalRow() 끝 ----");
 		return totalRow;
 	} // end of getTotalRow()
 
 	// 1.리스트
-	// [BoardController] -> (Execute) -> BoardListService -> [BoardDAO.list()]
-	public List<BoardReplyVO> list(ReplyPageObject pageObject) throws Exception {
-		List<BoardReplyVO> list = null;
+	// [ImageController] -> (Execute) -> ImageListService -> [ImageDAO.list()]
+	public List<ImageVO> list(PageObject pageObject) throws Exception {
+		List<ImageVO> list = null;
 		
-		System.out.println("---- BoardDAO.list() 시작 ----");
+		System.out.println("---- ImageDAO.list() 시작 ----");
 		try {
 			// 1. 드라이버확인
 			// 드라이버 확인은 프로그램이 시작될 때 한번만 필요 - MAIN에 구현
@@ -70,26 +68,28 @@ public class BoardReplyDAO extends DAO {
 			con = DB.getConnection();
 			// 3. SQL - BoardDAO 클래스에 final 변수로 설정 - LIST
 			// 4. 실행객체에 데이터 넘기기
-			pstmt = con.prepareStatement(LIST);
+			pstmt = con.prepareStatement(getListSQL(pageObject));
 			// 검색에 대한 데이터 세팅
-			pstmt.setLong(1, pageObject.getNo());
-			pstmt.setLong(2, pageObject.getStartRow());
-			pstmt.setLong(3, pageObject.getEndRow());
+			int idx = 0;
+		//	idx = setSearchDate(pageObject, pstmt, idx);
+			pstmt.setLong(++idx, pageObject.getStartRow());
+			pstmt.setLong(++idx, pageObject.getEndRow());
 			// 5. 실행 및 데이터 받기
 			rs = pstmt.executeQuery();
 			// 6. 표시 및 저장
 			if (rs != null) {
 				while (rs.next()) {
 					// list 가 null 이면 ArrayList를 생성해서 저장할 수 있도록 만든다.
-					if (list == null) list = new ArrayList<BoardReplyVO>();
-					//rs -> BoardReplyVO
-					BoardReplyVO vo = new BoardReplyVO(); // 클래스를 사용하는 기본형식
-					// BoardReplyVO 안의 no 변수에 rs 안에 no 컬럼에 저장되어있는 값을 넘겨받는다  
-					vo.setRno(rs.getLong("rno"));
+					if (list == null) list = new ArrayList<ImageVO>();
+					//rs -> BoardVO
+					ImageVO vo = new ImageVO(); // 클래스를 사용하는 기본형식
+					// BoardVO 안의 no 변수에 rs 안에 no 컬럼에 저장되어있는 값을 넘겨받는다  
 					vo.setNo(rs.getLong("no"));
-					vo.setContent(rs.getString("content"));
-					vo.setWriter(rs.getString("writer"));
+					vo.setTitle(rs.getString("title"));
+					vo.setId(rs.getString("id"));
+					vo.setName(rs.getString("name"));
 					vo.setWriteDate(rs.getString("writeDate"));
+					vo.setFileName(rs.getString("fileName"));
 					
 					// vo->list 에 담는다.
 					list.add(vo);
@@ -108,7 +108,7 @@ public class BoardReplyDAO extends DAO {
 			}
 		}
 		
-		System.out.println("---- BoardDAO.list() 끝 ----");
+		System.out.println("---- ImageDAO.list() 끝 ----");
 		return list;
 	} // end of list()
 	
@@ -208,9 +208,8 @@ public class BoardReplyDAO extends DAO {
 	} // end of view()
 	
 	// 3. 글쓰기
-	// [BoardReplyController] -> (Execute)
-	// -> BoardReplyWriteService -> [BoardReplyDAO.write()]
-	public int write(BoardReplyVO obj) throws Exception {
+	// [BoardController] -> (Execute) -> BoardWriteService -> [BoardDAO.write()]
+	public int write(BoardVO vo) throws Exception {
 		// 결과를 저장하는 변수선언
 		int result = 0;
 		
@@ -221,11 +220,11 @@ public class BoardReplyDAO extends DAO {
 			// 3. sql(WRITE)
 			// 4. 실행객체에 데이터 세팅
 			pstmt = con.prepareStatement(WRITE);
-			// BoardReplyVO vo변수 안에 있는 값을 getter를 이용해서 세팅합니다.
-			pstmt.setLong(1, obj.getNo());
-			pstmt.setString(2, obj.getContent());
-			pstmt.setString(3, obj.getWriter());
-			pstmt.setString(4, obj.getPw());
+			// BoardVO vo변수 안에 있는 값을 getter를 이용해서 세팅합니다.
+			pstmt.setString(1, vo.getTitle());
+			pstmt.setString(2, vo.getContent());
+			pstmt.setString(3, vo.getWriter());
+			pstmt.setString(4, vo.getPw());
 			// 5. 실행 // insert, update, delete => executeUpdate()
 			result = pstmt.executeUpdate();
 			// 6. 데이터 보기 및 저장(보관)
@@ -247,9 +246,8 @@ public class BoardReplyDAO extends DAO {
 	
 	
 	// 4. 글수정
-	// [BoardReplyController] -> (Execute)
-	// -> BoardReplyUpdateService -> [BoardReplyDAO.update()]
-	public int update(BoardReplyVO vo) throws Exception {
+	// [BoardController] -> (Execute) -> BoardUpdateService -> [BoardDAO.update()]
+	public int update(BoardVO vo) throws Exception {
 		// 결과 저장 변수
 		int result = 0; // SQL문이 실행성공 : 1, 실행실패 : 0
 		
@@ -260,10 +258,11 @@ public class BoardReplyDAO extends DAO {
 			// 3. SQL (UPDATE)
 			// 4. 실행객체에 데이터세팅
 			pstmt = con.prepareStatement(UPDATE);
-			pstmt.setString(1, vo.getContent());
-			pstmt.setString(2, vo.getWriter());
-			pstmt.setLong(3, vo.getRno());
-			pstmt.setString(4, vo.getPw());
+			pstmt.setString(1, vo.getTitle());
+			pstmt.setString(2, vo.getContent());
+			pstmt.setString(3, vo.getWriter());
+			pstmt.setLong(4, vo.getNo());
+			pstmt.setString(5, vo.getPw());
 			// 5. 실행
 			result = pstmt.executeUpdate();
 			// 6. 보기 및 데이터저장 (실행결과확인)
@@ -283,9 +282,8 @@ public class BoardReplyDAO extends DAO {
 	}
 	
 	// 5. 글삭제
-	// [BoardReplyController] -> (Execute)
-	// -> BoardReplyDeleteService -> [BoardReplyDAO.delete()]
-	public int delete(BoardReplyVO obj) throws Exception {
+	// [BoardController] -> (Execute) -> BoardDeleteService -> [BoardDAO.delete()]
+	public int delete(BoardVO vo) throws Exception {
 		int result = 0;
 		
 		try {
@@ -295,8 +293,8 @@ public class BoardReplyDAO extends DAO {
 			// 3. SQL (DELETE)
 			// 4. 실행객체에 데이터 세팅
 			pstmt = con.prepareStatement(DELETE);
-			pstmt.setLong(1, obj.getRno());
-			pstmt.setString(2, obj.getPw());
+			pstmt.setLong(1, vo.getNo());
+			pstmt.setString(2, vo.getPw());
 			// 5. 실행
 			result = pstmt.executeUpdate();
 			// 6. 결과확인
@@ -317,38 +315,70 @@ public class BoardReplyDAO extends DAO {
 	}
 	
 	
+	private String getSearch(PageObject pageObject) {
+		String sql = "";
+		String key = pageObject.getKey();
+		String word = pageObject.getWord();
+		if (word != null && !word.equals("")) {
+			sql += " where 1=0 "; //or 조건을 만들때 1=0을 준다.
+			// key 값에 조건이 있다 t : title, w : writer, c : content
+			if (key.indexOf("t") >= 0) sql += " or title like ? ";
+			if (key.indexOf("c") >= 0) sql += " or content like ? ";
+			if (key.indexOf("w") >= 0) sql += " or writer like ? ";
+		}
+		
+		return sql;
+	}
+	
+	// pstmt에 데이터 세팅하는 메서드
+	private int setSearchDate(PageObject pageObject,
+			PreparedStatement pstmt, int idx) throws SQLException  {
+		String key = pageObject.getKey();
+		String word = pageObject.getWord();
+		if (word != null && !word.equals("")) {
+			if (key.indexOf("t") >= 0) pstmt.setString(++idx, "%" + word +"%");
+			if (key.indexOf("c") >= 0) pstmt.setString(++idx, "%" + word +"%");
+			if (key.indexOf("w") >= 0) pstmt.setString(++idx, "%" + word +"%");
+		}
+		
+		return idx;
+	}
+	
+	private String getListSQL(PageObject pageObject) {
+		String sql = LIST;
+		//	sql += getSearch(pageObject);
+		sql += " and (m.id=i.writerid) ";
+		sql += " order by no desc)) ";
+		sql += " where rnum>=? and rnum<=?";
+		return sql;
+	}
+	
 	// SQL 문
 	// LIST의 페이지 처리
 	final String LIST = ""
-		+ " select rno, no, content, writer, writeDate from "
-			+ " (select rownum rnum, rno, no, content, writer, writeDate from "
-				+ " (select rno, no, content, writer, "
-				+ " to_char(writeDate, 'yyyy-dd-mm') writeDate "
-				+ " from board_reply "
-				+ " where no = ? "//일반게시판 글번호에 맞는 댓글만 보여주기위해
-				+ " order by rno desc"
-				+ ")"
-			+ ") "
-		+ " where rnum>=? and rnum<=?";
+			+ " select no, title, id, name, writeDate, fileName from "
+			+ " (select rownum rnum, no, title, id, name, writeDate, fileName from "
+			+ " (select i.no, i.title, i.writerid id, m.name, "
+			+ " to_char(i.writeDate, 'yyyy-dd-mm') writeDate, i.fileName "
+			+ " from image i, member m "
+			// where 1=1 and (일반조건) and (조인조건)
+			+ " where 1=1 ";
 	
-
-	
-	final String TOTALROW = "select count(*) from board_reply "
-			+ " where no = ? ";
+	final String TOTALROW = "select count(*) from image";
 
 	final String INCREASE = "update board set hit = hit + 1 "
 			+ " where no = ?";
 	final String VIEW = "select no, title, content, writer, writeDate, hit "
 			+ " from board where no = ?"; 
-	final String WRITE = "insert into board_reply "
-			+ " (rno, no, content, writer, pw) "
-			+ " values (board_reply_seq.nextval, ?, ?, ?, ?)";
-	final String UPDATE = "update board_reply "
-			+ " set content = ?, writer = ? "
-			+ " where rno = ? and pw = ?";
+	final String WRITE = "insert into board "
+			+ " (no, title, content, writer, pw) "
+			+ " values (board_seq.nextval, ?, ?, ?, ?)";
+	final String UPDATE = "update board "
+			+ " set title = ?, content = ?, writer = ? "
+			+ " where no = ? and pw = ?";
 	
-	final String DELETE = "delete from board_reply "
-			+ " where rno = ? and pw = ?";
+	final String DELETE = "delete from board "
+			+ " where no = ? and pw = ?";
 			
 	
 	

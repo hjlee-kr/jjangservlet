@@ -1,10 +1,10 @@
-package com.jjangplay.boardreply.service;
+package com.jjangplay.image.service;
 
 import com.jjangplay.board.dao.BoardDAO;
 import com.jjangplay.main.dao.DAO;
 import com.jjangplay.main.service.Service;
 
-public class BoardReplyViewService implements Service {
+public class ImageViewService implements Service {
 
 	private BoardDAO dao;
 	

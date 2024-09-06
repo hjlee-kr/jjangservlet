@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.jjangplay.board.controller.BoardController;
 import com.jjangplay.boardreply.controller.BoardReplyController;
+import com.jjangplay.image.controller.ImageController;
 import com.jjangplay.member.controller.MemberController;
 import com.jjangplay.notice.controller.NoticeController;
 
@@ -38,6 +39,7 @@ public class DispatcherServlet extends HttpServlet {
 		= new BoardReplyController();
 	private NoticeController noticeController= new NoticeController();
 	private MemberController memberController = new MemberController();
+	private ImageController imageController = new ImageController();
        
 	/**
 	 * @see Servlet#init(ServletConfig)
@@ -100,7 +102,11 @@ public class DispatcherServlet extends HttpServlet {
 		case "/member":
 			System.out.println("===회원 관리===");
 			jsp = memberController.execute(request);
-			
+			break;
+		case "/image":
+			System.out.println("===이미지게시판===");
+			jsp = imageController.execute(request);
+			break;
 		}
 		
 		if (jsp.indexOf("redirect:") == 0) {
