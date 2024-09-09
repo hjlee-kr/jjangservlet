@@ -222,6 +222,8 @@ public class ImageDAO extends DAO {
 			// BoardVO vo변수 안에 있는 값을 getter를 이용해서 세팅합니다.
 			pstmt.setString(1, obj.getTitle());
 			pstmt.setString(2, obj.getContent());
+			pstmt.setString(3, obj.getId());
+			pstmt.setString(4, obj.getFileName());
 
 			// 5. 실행 // insert, update, delete => executeUpdate()
 			result = pstmt.executeUpdate();
@@ -368,9 +370,9 @@ public class ImageDAO extends DAO {
 			+ " where no = ?";
 	final String VIEW = "select no, title, content, writer, writeDate, hit "
 			+ " from board where no = ?"; 
-	final String WRITE = "insert into board "
-			+ " (no, title, content, writer, pw) "
-			+ " values (board_seq.nextval, ?, ?, ?, ?)";
+	final String WRITE = "insert into image "
+			+ " (no, title, content, id, fileName) "
+			+ " values (image_seq.nextval, ?, ?, ?, ?)";
 	final String UPDATE = "update board "
 			+ " set title = ?, content = ?, writer = ? "
 			+ " where no = ? and pw = ?";

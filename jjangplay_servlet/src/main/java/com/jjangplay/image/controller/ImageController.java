@@ -127,17 +127,18 @@ public class ImageController {
 					// 이미지 업로드 처리
 					// new MultipartRequest(request, 실제저장위치, 사이즈제한,
 					//	encoding, 중복처리객체-다른이름으로)
+					// request를 multi에 담으면 request의 내용은 사라진다.
 					MultipartRequest multi =
 						new MultipartRequest(request, realSavePath, sizeLimit,
 							"utf-8", new DefaultFileRenamePolicy());
 					
-					// 데이터 수집(사용자 -> 서버 -> Multi)
+					// 데이터 수집(사용자 -> 서버(request) -> Multi)
 					String title = multi.getParameter("title");
 					String content = multi.getParameter("content");
-					String fileName = multi.getParameter("imageFile");
+					String fileName = multi.getFilesystemName("imageFile");
 					// id는 session에서 받아옴 -> 위에서 처리함(switch들어오기전)
 						
-					// 입력받은 데이터를 BoardVO 안에 저장(세팅) => DB에 넘겨주기위한
+					// 입력받은 데이터를 ImageVO 안에 저장(세팅) => DB에 넘겨주기위한
 					ImageVO vo = new ImageVO();
 					vo.setTitle(title);
 					vo.setContent(content);
@@ -149,9 +150,11 @@ public class ImageController {
 					// ImageWriteService -> ImageDAO.write()
 					Execute.execute(Init.get(uri), vo);
 					
+					session.setAttribute("msg", "이미지글이 등록되었습니다.");
 					// jsp 정보앞에 "redirect:" 가 붙어있으면 redirect로 처리
 					// 없으면 forword
-					jsp = "redirect:list.do";
+					jsp = "redirect:list.do?perPageNum="
+						+multi.getParameter("perPageNum");
 					break;
 				case "/image/updateForm.do":
 					System.out.println("4-1. 일반게시판 글수정 폼");
