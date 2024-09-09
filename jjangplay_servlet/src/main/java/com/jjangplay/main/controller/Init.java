@@ -15,6 +15,7 @@ import com.jjangplay.boardreply.service.BoardReplyListService;
 import com.jjangplay.boardreply.service.BoardReplyUpdateService;
 import com.jjangplay.boardreply.service.BoardReplyWriteService;
 import com.jjangplay.image.dao.ImageDAO;
+import com.jjangplay.image.service.ImageChangeService;
 import com.jjangplay.image.service.ImageDeleteService;
 import com.jjangplay.image.service.ImageListService;
 import com.jjangplay.image.service.ImageUpdateService;
@@ -116,12 +117,14 @@ public class Init {
 		serviceMap.put("/image/write.do", new ImageWriteService());
 		serviceMap.put("/image/update.do", new ImageUpdateService());
 		serviceMap.put("/image/delete.do", new ImageDeleteService());
+		serviceMap.put("/image/imageChange.do", new ImageChangeService());
 		// 조립 dao->service
 		serviceMap.get("/image/list.do").setDAO(daoMap.get("imageDAO"));
 		serviceMap.get("/image/view.do").setDAO(daoMap.get("imageDAO"));
 		serviceMap.get("/image/write.do").setDAO(daoMap.get("imageDAO"));
-		serviceMap.get("/image/update.do").setDAO(daoMap.get("boardDAO"));
-		serviceMap.get("/image/delete.do").setDAO(daoMap.get("boardDAO"));
+		serviceMap.get("/image/update.do").setDAO(daoMap.get("imageDAO"));
+		serviceMap.get("/image/delete.do").setDAO(daoMap.get("imageDAO"));
+		serviceMap.get("/image/imageChange.do").setDAO(daoMap.get("imageDAO"));
 	}
 	
 	

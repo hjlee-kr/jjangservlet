@@ -248,8 +248,9 @@ public class ImageDAO extends DAO {
 	
 	
 	// 4. 글수정
-	// [BoardController] -> (Execute) -> BoardUpdateService -> [BoardDAO.update()]
-	public int update(BoardVO vo) throws Exception {
+	// [ImageController] -> (Execute)
+	// -> ImageUpdateService -> [ImageDAO.update()]
+	public int update(ImageVO vo) throws Exception {
 		// 결과 저장 변수
 		int result = 0; // SQL문이 실행성공 : 1, 실행실패 : 0
 		
@@ -262,9 +263,8 @@ public class ImageDAO extends DAO {
 			pstmt = con.prepareStatement(UPDATE);
 			pstmt.setString(1, vo.getTitle());
 			pstmt.setString(2, vo.getContent());
-			pstmt.setString(3, vo.getWriter());
-			pstmt.setLong(4, vo.getNo());
-			pstmt.setString(5, vo.getPw());
+			pstmt.setLong(3, vo.getNo());
+			pstmt.setString(4, vo.getId());
 			// 5. 실행
 			result = pstmt.executeUpdate();
 			// 6. 보기 및 데이터저장 (실행결과확인)
@@ -284,8 +284,9 @@ public class ImageDAO extends DAO {
 	}
 	
 	// 5. 글삭제
-	// [BoardController] -> (Execute) -> BoardDeleteService -> [BoardDAO.delete()]
-	public int delete(BoardVO vo) throws Exception {
+	// [ImageController] -> (Execute)
+	// -> ImageDeleteService -> [ImageDAO.delete()]
+	public int delete(ImageVO vo) throws Exception {
 		int result = 0;
 		
 		try {
@@ -296,12 +297,12 @@ public class ImageDAO extends DAO {
 			// 4. 실행객체에 데이터 세팅
 			pstmt = con.prepareStatement(DELETE);
 			pstmt.setLong(1, vo.getNo());
-			pstmt.setString(2, vo.getPw());
+			pstmt.setString(2, vo.getId());
 			// 5. 실행
 			result = pstmt.executeUpdate();
 			// 6. 결과확인
 			if (result == 0) {
-				throw new Exception("예외발생 : 글번호나 비밀번호가 맞지 않습니다.");
+				throw new Exception("예외발생 : 글번호나 ID가 맞지 않습니다.");
 			}
 			
 		} catch (Exception e) {
@@ -328,18 +329,16 @@ public class ImageDAO extends DAO {
 			con = DB.getConnection(); 
 			// 3. sql(WRITE)
 			// 4. 실행객체에 데이터 세팅
-			pstmt = con.prepareStatement(WRITE);
-			// BoardVO vo변수 안에 있는 값을 getter를 이용해서 세팅합니다.
-			pstmt.setString(1, obj.getTitle());
-			pstmt.setString(2, obj.getContent());
-			pstmt.setString(3, obj.getId());
-			pstmt.setString(4, obj.getFileName());
+			pstmt = con.prepareStatement(IMAGECHANGE);
+			// ImageVO vo변수 안에 있는 값을 getter를 이용해서 세팅합니다.
+			pstmt.setString(1, obj.getFileName());
+			pstmt.setLong(2, obj.getNo());
 
 			// 5. 실행 // insert, update, delete => executeUpdate()
 			result = pstmt.executeUpdate();
 			// 6. 데이터 보기 및 저장(보관)
 			System.out.println();
-			System.out.println("*** 글등록이 완료 되었습니다. ***");
+			System.out.println("*** 이미지 변경이 완료 되었습니다. ***");
 			
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -418,14 +417,16 @@ public class ImageDAO extends DAO {
 	final String WRITE = "insert into image "
 			+ " (no, title, content, id, fileName) "
 			+ " values (image_seq.nextval, ?, ?, ?, ?)";
-	final String UPDATE = "update board "
-			+ " set title = ?, content = ?, writer = ? "
-			+ " where no = ? and pw = ?";
+	final String UPDATE = "update image "
+			+ " set title = ?, content = ? "
+			+ " where no = ? and id = ?";
 	
-	final String DELETE = "delete from board "
-			+ " where no = ? and pw = ?";
+	final String DELETE = "delete from image "
+			+ " where no = ? and id = ?";
 			
-	
+	final String IMAGECHANGE = "update image "
+			+ " set fileName = ? "
+			+ " where no = ? ";
 	
 	
 } // end of class

@@ -14,20 +14,12 @@
 $(function(){
 	console.log("jquery loading......");
 	
+	$('[data-toggle="tooltip"]').tooltip();   
+	
 	$("#deleteBtn").click(function(){
 		console.log("deleteBtn event......");
-		// 비밀번호 입력창 clear
-		$("#pw").val("");
-		$("#deleteModal").modal("show");
+		if (!confirm("정말삭제하시겠습니까?")) return false;
 	});
-	
-	$("#deleteCancelBtn").click(function(){
-		console.log("deleteCancelBtn event......");
-		$("#pw").val("");
-		$("#deleteModal").modal("hide");
-	});
-	
-	
 	
 	
 	
@@ -69,6 +61,24 @@ $(function(){
 	  	${vo.name }(${vo.id })
 	  </div>
 	</div>
+	<!-- a tag : 데이터를 클릭하면 href 정보를 가져와서 페이지이동 -->
+	<c:if test="${!empty login && login.id == vo.id }">
+		<a href="updateForm.do?no=${param.no }&page=${param.page}&perPageNum=${param.perPageNum}&key=${param.key}&word=${param.word}"
+		class="btn btn-primary" title="이미지를 제외한 정보만 수정합니다."
+		data-toggle="tooltip" data-placement="top"
+		id="updateBtn">수정</a>
+		<a href="delete.do?no=${param.no }&deleteFileName=${vo.fileName}&perPageNum=${param.perPageNum}"
+		class="btn btn-danger" id="deleteBtn">삭제</a>
+	</c:if>
+	<a href="list.do?no=${param.no }&page=${param.page}&perPageNum=${param.perPageNum}&key=${param.key}&word=${param.word}"
+		class="btn btn-info">리스트</a>
+	
+	
+</div> <!-- end of class="container" -->
+
+
+
+
 
 
 	<!-- The Modal -->
@@ -113,7 +123,7 @@ $(function(){
 	</div>
 
    
-</div> <!-- end of class="container" -->
+
 </body>
 </html>
 

@@ -1,9 +1,11 @@
 package com.jjangplay.image.controller;
 
+import java.io.File;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
 
 import com.jjangplay.board.service.BoardDeleteService;
 import com.jjangplay.board.service.BoardListService;
@@ -145,20 +147,19 @@ public class ImageController {
 						+multi.getParameter("perPageNum");
 					break;
 				case "/image/updateForm.do":
-					System.out.println("4-1. 일반게시판 글수정 폼");
+					System.out.println("4-1. 이미지 글수정 폼");
 					//수정할 글번호 입력
 					no = Long.parseLong(request.getParameter("no"));
-				//	inc = 0L;
-					// BoardViewService()를 실행하기 위한 uri를 직접코딩한다.
-				//	result = Execute.execute(Init.get("/image/view.do"),
-				//			new Long[]{no, inc});
+					// ImageViewService()를 실행하기 위한 uri를 직접코딩한다.
+					result = Execute.execute(Init.get("/image/view.do"), no);
+
 					// 가져온 데이터를 updateForm.jsp로 보내기 위해 담는다.
 					request.setAttribute("vo", result);
 					// 이동한다.
-					jsp = "board/updateForm";
+					jsp = "image/updateForm";
 					break;
 				case "/image/update.do":
-					System.out.println("4. 일반게시판 글수정 처리");
+					System.out.println("4. 이미지게시판 글수정 처리");
 					
 					// updateForm 적은 데이터를 가져온다. (DB에 저장하기 위해)
 					no = Long.parseLong(request.getParameter("no"));
@@ -170,18 +171,26 @@ public class ImageController {
 					vo.setNo(no);
 					vo.setTitle(title);
 					vo.setContent(content);
+					vo.setId(id); //session에 있는 id정보를 꺼내온다.
 
+					// DB처리 ImageUpdateService()
 					Execute.execute(Init.get(uri), vo);
 					
-					jsp="redirect:view.do?no="+no+"&inc=0";
+					session.setAttribute("msg", "이미지 게시판 정보가 수정되었습니다.");
+					
+					// 페이지 정보 받고 & uri에 추가
+					pageObject = PageObject.getInstance(request);
+					
+					jsp="redirect:view.do?no=" + no + "&"
+							+ pageObject.getPageQuery();
 					break;
 				case "/image/delete.do":
-					System.out.println("5. 일반게시판 글삭제");
-					// 데이터 수집 : 삭제할 글번호, 확인용 비밀번호
+					System.out.println("5. 이미지게시판 글삭제");
+					// 데이터 수집 : 삭제할 글번호, 아이디
 					vo = new ImageVO();
 					
 					vo.setNo(Long.parseLong(request.getParameter("no")));
-
+					vo.setId(id);
 					
 					// DB처리
 					result =Execute.execute(Init.get(uri), vo);
@@ -199,7 +208,18 @@ public class ImageController {
 						System.out.println("## " + vo.getNo() + "번 글이 삭제되지 않았습니다.");
 						System.out.println("########################");
 					}
-					jsp = "redirect:list.do";
+					
+					// 이미지파일도 삭제한다.
+					String deleteFileName = request.getParameter("deleteFileName");
+					// 기존 이미지 파일을 지운다. (존재하면)
+					File deleteFile = new File(request.getServletContext()
+							.getRealPath(deleteFileName));
+					if (deleteFile.exists()) deleteFile.delete();
+					
+					session.setAttribute("msg", "이미지 게시판 글삭제가 완료되었습니다.");
+					
+					jsp = "redirect:list.do?perPageNum="
+						+ request.getParameter("perPageNum");
 					break;
 				case "/image/imageChange.do":
 					System.out.println("6. 이미지 바꾸기 처리");
@@ -216,17 +236,29 @@ public class ImageController {
 					no = Long.parseLong(multi.getParameter("no"));
 					fileName = multi.getFilesystemName("imageFile");
 					
-					String deleteFileName = multi.getParameter("deleteFileName");
+					deleteFileName = multi.getParameter("deleteFileName");
 					
 					// 변수 vo에 no와 fileName을 담는다.
 					vo = new ImageVO();
 					vo.setNo(no);
-					vo.setFileName(fileName);
+					vo.setFileName(savePath + "/" +fileName);
 					
 					// 서비스로 간다.
 					// ImageControll -> Execute
 					// -> ImageChangeService() -> ImageDAO.imageChange()
 					Execute.execute(Init.get(uri), vo);
+					
+					// 기존 이미지 파일을 지운다. (존재하면)
+					deleteFile = new File(request.getServletContext()
+							.getRealPath(deleteFileName));
+					if (deleteFile.exists()) deleteFile.delete();
+					
+					session.setAttribute("msg", "이미지 바꾸기가 성공했습니다.");
+					
+					// 페이지 정보 받기 & uri에 붙이기
+					pageObject = PageObject.getInstance(request);
+					jsp = "redirect:view.do?no=" + no
+						+ "&" + pageObject.getPageQuery();
 					break;
 				default:
 					System.out.println("잘못된 메뉴를 선택하셨습니다.");
