@@ -88,34 +88,22 @@ public class ImageController {
 					jsp = "image/list";
 					break;
 				case "/image/view.do":
-					System.out.println("2. 일반게시판 글보기");
-					// 조회수증가, 상세글보기
-					//[BoardController] -> (Execute) ->
-					// BoardViewService -> BoardDAO.increase()
-					// BoardViewService -> BoardDAO.view()
+					System.out.println("2. 이미지 글보기");
+					// 상세글보기
+					//[ImageController] -> (Execute) ->
+					// ImageViewService -> BoardDAO.view()
 					no = Long.parseLong(request.getParameter("no"));
-					Long inc = Long.parseLong(request.getParameter("inc"));
 					
-					// 전달데이터는 글번호, 증가를 위한 값 1 (1:증가, 0:증가안함)
-					result = Execute.execute(Init.get(uri),
-							new Long[]{no, inc});
+					// 전달데이터는 글번호만
+					result = Execute.execute(Init.get(uri), no);
+					
 					// DB에서 가져온 데이터를 담는다.
 					request.setAttribute("vo", result);
-					
-					// 댓글 페이지 객체
-					// 데이터 전달 - page / perPageNum /
-					// no / replyPage / replyPerPageNum
-					ReplyPageObject replyPageObject
-						= ReplyPageObject.getInstance(request);
-					// 가지온데이터를 request에 담는다.
-					request.setAttribute("replyList",
-						Execute.execute(Init.get("/imagereply/list.do"), replyPageObject)
-						);
 					
 					// DispatcherServlet에서
 					// "/WEB-INF/views/image/view.jsp" 경로를 만들어서
 					// forword 한다.
-					jsp="board/view";
+					jsp="image/view";
 					break;
 				case "/image/writeForm.do":
 					System.out.println("3. 이미지게시판 글쓰기 폼");
@@ -160,10 +148,10 @@ public class ImageController {
 					System.out.println("4-1. 일반게시판 글수정 폼");
 					//수정할 글번호 입력
 					no = Long.parseLong(request.getParameter("no"));
-					inc = 0L;
+				//	inc = 0L;
 					// BoardViewService()를 실행하기 위한 uri를 직접코딩한다.
-					result = Execute.execute(Init.get("/image/view.do"),
-							new Long[]{no, inc});
+				//	result = Execute.execute(Init.get("/image/view.do"),
+				//			new Long[]{no, inc});
 					// 가져온 데이터를 updateForm.jsp로 보내기 위해 담는다.
 					request.setAttribute("vo", result);
 					// 이동한다.
@@ -213,7 +201,33 @@ public class ImageController {
 					}
 					jsp = "redirect:list.do";
 					break;
-
+				case "/image/imageChange.do":
+					System.out.println("6. 이미지 바꾸기 처리");
+					// 이미지 업로드 처리
+					// new MultipartRequest(request, 실제저장위치, 사이즈제한,
+					//	encoding, 중복처리객체-다른이름으로)
+					// request를 multi에 담으면 request의 내용은 사라진다.
+					multi =
+						new MultipartRequest(request, realSavePath, sizeLimit,
+							"utf-8", new DefaultFileRenamePolicy());
+					
+					// 데이터 수집(사용자:form->서버->request->multi)
+					// 글번호, 새로운 이미지 경로+파일이름
+					no = Long.parseLong(multi.getParameter("no"));
+					fileName = multi.getFilesystemName("imageFile");
+					
+					String deleteFileName = multi.getParameter("deleteFileName");
+					
+					// 변수 vo에 no와 fileName을 담는다.
+					vo = new ImageVO();
+					vo.setNo(no);
+					vo.setFileName(fileName);
+					
+					// 서비스로 간다.
+					// ImageControll -> Execute
+					// -> ImageChangeService() -> ImageDAO.imageChange()
+					Execute.execute(Init.get(uri), vo);
+					break;
 				default:
 					System.out.println("잘못된 메뉴를 선택하셨습니다.");
 					System.out.println("[0~5] 번호를 선택해야 합니다.");

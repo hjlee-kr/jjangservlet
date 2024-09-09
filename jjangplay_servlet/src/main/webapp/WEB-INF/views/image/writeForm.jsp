@@ -9,7 +9,7 @@
 <body>
 
 <div class="container">
-  <h2><i class="fa fa-edit"></i> 일반 게시판 글 등록 폼</h2>
+  <h2><i class="fa fa-edit"></i> 이미지 게시판 글 등록 폼</h2>
   <form action="write.do" method="post" enctype="multipart/form-data">
   	<input type="hidden" name="perPageNum" value="${param.perPageNum }">
     <div class="form-group">

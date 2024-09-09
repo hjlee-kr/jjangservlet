@@ -64,10 +64,16 @@ $(function(){
 		
 	});
 	
-	
-	
-	
 	// 이벤트 처리
+	$(".dataRow").click(function() {
+		let no = $(this).find(".no").text();
+		console.log("no=" + no);
+		location="view.do?no=" + no + "&${pageObject.pageQuery}";
+	});
+	
+	
+	
+	
 	$("#perPageNum").change(function(){
 		$("#searchForm").submit();
 	});
@@ -137,7 +143,8 @@ $(function(){
 					${"</div>"}
 					${"<div class='row'>"}
 				</c:if>
-				<div class="col-md-4">
+				<!-- 데이터 표시 시작 -->
+				<div class="col-md-4 dataRow">
 					<div class="card" style="width:100%">
 						<div class="imageDiv align-content-center text-center">
 					  	<img class="card-img-top" src="${vo.fileName }" alt="Card image">
@@ -153,6 +160,7 @@ $(function(){
 					  </div>
 					</div><!-- end of card -->
 				</div>
+				<!-- 데이터 표시 끝 -->
 			</c:forEach>
 			<!-- 이미지 데이터 반복 표시 끝 -->
 		</div>

@@ -158,11 +158,12 @@ public class ImageDAO extends DAO {
 	} // end of increase
 	
 	// 2-2. 글보기 (글번호의 상세페이지)
-	// [BoardController] -> (Execute) -> BoardViewService -> [BoardDAO.view()]
-	// Board table 에서 한줄의 데이터를 가져옵니다. 
-	public BoardVO view(Long no) throws Exception {
+	// [ImageController] -> (Execute) -> ImageViewService
+	// -> [ImageDAO.view()]
+	// Image table 에서 한줄의 데이터를 가져옵니다. 
+	public ImageVO view(Long no) throws Exception {
 		// 결과를 저장할 수 있는 변수선언
-		BoardVO vo = null;
+		ImageVO vo = null;
 		
 		try {
 			// 1. 드라이버 확인 // 이미완료
@@ -176,14 +177,15 @@ public class ImageDAO extends DAO {
 			rs = pstmt.executeQuery();
 			
 			if (rs != null && rs.next()) {
-				vo = new BoardVO(); // 클래스를 사용하는 기본형식
-				// BoardVO 안의 no 변수에 rs 안에 no 컬럼에 저장되어있는 값을 넘겨받는다  
+				vo = new ImageVO(); // 클래스를 사용하는 기본형식
+				// IamgeVO 안의 no 변수에 rs 안에 no 컬럼에 저장되어있는 값을 넘겨받는다  
 				vo.setNo(rs.getLong("no"));
 				vo.setTitle(rs.getString("title"));
 				vo.setContent(rs.getString("content"));
-				vo.setWriter(rs.getString("writer"));
+				vo.setId(rs.getString("id"));
+				vo.setName(rs.getString("name"));
 				vo.setWriteDate(rs.getString("writeDate"));
-				vo.setHit(rs.getLong("hit"));
+				vo.setFileName(rs.getString("fileName"));
 			} // end of if(rs)
 			
 		} catch (Exception e) {
@@ -313,6 +315,45 @@ public class ImageDAO extends DAO {
 		
 		return result;
 	}
+
+	// 6. 이미지 변경 처리
+	// [ImageController] -> (Execute) -> ImageChangeService -> [ImageDAO.write()]
+	public int imageChange(ImageVO obj) throws Exception {
+		// 결과를 저장하는 변수선언
+		int result = 0;
+		
+		try {
+			// 1. 드라이버확인 (MAIN에서 한번처리로 끝)
+			// 2. 연결 - DB class에 getConnection() static 메서드로 구현 
+			con = DB.getConnection(); 
+			// 3. sql(WRITE)
+			// 4. 실행객체에 데이터 세팅
+			pstmt = con.prepareStatement(WRITE);
+			// BoardVO vo변수 안에 있는 값을 getter를 이용해서 세팅합니다.
+			pstmt.setString(1, obj.getTitle());
+			pstmt.setString(2, obj.getContent());
+			pstmt.setString(3, obj.getId());
+			pstmt.setString(4, obj.getFileName());
+
+			// 5. 실행 // insert, update, delete => executeUpdate()
+			result = pstmt.executeUpdate();
+			// 6. 데이터 보기 및 저장(보관)
+			System.out.println();
+			System.out.println("*** 글등록이 완료 되었습니다. ***");
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		} finally {
+			// 7. DB닫기
+			DB.close(con, pstmt);
+		}
+		
+		
+		// 결과를 리턴합니다.
+		return result;
+	}
+
 	
 	
 	private String getSearch(PageObject pageObject) {
@@ -368,8 +409,12 @@ public class ImageDAO extends DAO {
 
 	final String INCREASE = "update board set hit = hit + 1 "
 			+ " where no = ?";
-	final String VIEW = "select no, title, content, writer, writeDate, hit "
-			+ " from board where no = ?"; 
+	final String VIEW = "select i.no, i.title, i.content,"
+			+ " i.id, m.name, "
+			+ " to_char(i.writeDate, 'yyyy-mm-dd') writeDate"
+			+ " , i.fileName "
+			+ " from image i, member m"
+			+ " where (i.no = ?) and (i.id = m.id)"; 
 	final String WRITE = "insert into image "
 			+ " (no, title, content, id, fileName) "
 			+ " values (image_seq.nextval, ?, ?, ?, ?)";
