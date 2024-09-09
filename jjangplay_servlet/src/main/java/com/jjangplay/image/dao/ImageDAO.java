@@ -4,7 +4,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import com.jjangplay.board.vo.BoardVO;
 import com.jjangplay.image.vo.ImageVO;
@@ -346,7 +345,7 @@ public class ImageDAO extends DAO {
 	private String getListSQL(PageObject pageObject) {
 		String sql = LIST;
 		//	sql += getSearch(pageObject);
-		sql += " and (m.id=i.writerid) ";
+		sql += " and (m.id=i.id) ";
 		sql += " order by no desc)) ";
 		sql += " where rnum>=? and rnum<=?";
 		return sql;
@@ -357,7 +356,7 @@ public class ImageDAO extends DAO {
 	final String LIST = ""
 			+ " select no, title, id, name, writeDate, fileName from "
 			+ " (select rownum rnum, no, title, id, name, writeDate, fileName from "
-			+ " (select i.no, i.title, i.writerid id, m.name, "
+			+ " (select i.no, i.title, i.id, m.name, "
 			+ " to_char(i.writeDate, 'yyyy-dd-mm') writeDate, i.fileName "
 			+ " from image i, member m "
 			// where 1=1 and (일반조건) and (조인조건)
