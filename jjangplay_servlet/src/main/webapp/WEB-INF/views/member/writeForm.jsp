@@ -37,6 +37,84 @@ $(function() {
 		yearRange: yearRange,
 	});
 	
+	$("#id").keyup(function() {
+		console.log("id keyup event----");
+		let id = $("#id").val();
+		if(id.length < 3) {
+			$("#checkIdDiv").removeClass("alert-success alert-danger")
+				.addClass("alert-danger");
+			// 글자를 바꾸자
+			$("#checkIdDiv").text("아이디는 필수입력입니다. 3자이상 입력하세요");
+		}
+		else {
+			// 중복id체크
+			// 서버에가서 데이터 확인하고 결과를 jsp로 가져온다.
+			// #checkIdDiv 안에 넣을 문구를 가져와서 넣는다.
+			// ajax, load()함수이용
+			$("#checkIdDiv").load("/ajax/checkId.do?id=" + id, 
+				function(result) {
+					// id가 중복이면 alert을 분홍색배경으로
+					// id가 중복되지 않으면 alert을 녹색배경으로
+					if (result.indexOf("중복") >= 0) {
+						$("#checkIdDiv").removeClass("alert-success alert-danger")
+							.addClass("alert-danger");
+					}
+					else {
+						$("#checkIdDiv").removeClass("alert-success alert-danger")
+							.addClass("alert-success");
+					}
+			});//end of $("#checkIdDiv").load()
+		}// end of if~else
+	});// end of $("#id").keyup()
+	
+	// 비밀번호와 비밀번호 확인 이벤트
+	$("#pw, #pw2").keyup(function(){
+		let pw = $("#pw").val();
+		let pw2 = $("#pw2").val();
+		
+		// 비밀번호 길이 체크
+		if (pw.length < 3) {
+			// 디자인관련 class적용
+			$("#pwDiv").removeClass("alert-success alert-danger")
+				.addClass("alert-danger");
+			// 글자
+			$("#pwDiv").text("비밀번호는 필수입력입니다. 3자이상 입력하세요.");
+		}
+		else {
+			// 디자인관련 class적용
+			$("#pwDiv").removeClass("alert-success alert-danger")
+				.addClass("alert-success");
+			// 글자
+			$("#pwDiv").text("사용할 수 있는 비밀번호 입니다.");
+		}
+		
+		// 비밀번호 확인 길이 체크
+		if (pw2.length < 3) {
+			// 디자인관련 class적용
+			$("#pw2Div").removeClass("alert-success alert-danger")
+				.addClass("alert-danger");
+			// 글자
+			$("#pw2Div").text("비밀번호확인은 필수입력입니다. 3자이상 입력하세요.");
+		}
+		else {
+			if (pw != pw2) {
+				// 디자인관련 class적용
+				$("#pw2Div").removeClass("alert-success alert-danger")
+					.addClass("alert-danger");
+				// 글자
+				$("#pw2Div").text("비밀번호와 일치하지 않습니다.");
+			}
+			else {
+				// 디자인관련 class적용
+				$("#pw2Div").removeClass("alert-success alert-danger")
+					.addClass("alert-success");
+				// 글자
+				$("#pw2Div").text("비밀번호와 일치합니다.");
+			}
+		}
+		
+	});// end of $("#pw, #pw2").keyup()
+	
 });
 </script>
 

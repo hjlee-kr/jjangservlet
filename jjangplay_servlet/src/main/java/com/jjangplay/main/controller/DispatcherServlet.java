@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.jjangplay.ajax.controller.AjaxController;
 import com.jjangplay.board.controller.BoardController;
 import com.jjangplay.boardreply.controller.BoardReplyController;
 import com.jjangplay.image.controller.ImageController;
@@ -41,6 +42,7 @@ public class DispatcherServlet extends HttpServlet {
 	private MemberController memberController = new MemberController();
 	private ImageController imageController = new ImageController();
 	private MainController mainController = new MainController();
+	private AjaxController ajaxControlller = new AjaxController();
        
 	/**
 	 * @see Servlet#init(ServletConfig)
@@ -112,6 +114,10 @@ public class DispatcherServlet extends HttpServlet {
 		case "/member":
 			System.out.println("===회원 관리===");
 			jsp = memberController.execute(request);
+			break;
+		case "/ajax":
+			System.out.println("===아이디 중복 체크===");
+			jsp = ajaxControlller.execute(request);
 			break;
 		case "/image":
 			System.out.println("===이미지게시판===");

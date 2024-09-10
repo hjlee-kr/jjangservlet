@@ -24,6 +24,7 @@ import com.jjangplay.image.service.ImageWriteService;
 import com.jjangplay.main.dao.DAO;
 import com.jjangplay.main.service.Service;
 import com.jjangplay.member.dao.MemberDAO;
+import com.jjangplay.member.service.MemberCheckIdService;
 import com.jjangplay.member.service.MemberListService;
 import com.jjangplay.member.service.MemberLoginService;
 import com.jjangplay.member.service.MemberWriteService;
@@ -106,10 +107,12 @@ public class Init {
 		serviceMap.put("/member/login.do", new MemberLoginService());
 		serviceMap.put("/member/list.do", new MemberListService());
 		serviceMap.put("/member/write.do", new MemberWriteService());
+		serviceMap.put("/ajax/checkId.do", new MemberCheckIdService());
 		// 조립 dao->service
 		serviceMap.get("/member/login.do").setDAO(daoMap.get("memberDAO"));
 		serviceMap.get("/member/list.do").setDAO(daoMap.get("memberDAO"));
 		serviceMap.get("/member/write.do").setDAO(daoMap.get("memberDAO"));
+		serviceMap.get("/ajax/checkId.do").setDAO(daoMap.get("memberDAO"));
 		
 		
 		// dao를 생성

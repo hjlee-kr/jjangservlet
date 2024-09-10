@@ -154,7 +154,43 @@ public class MemberDAO extends DAO {
 		// 결과값 리턴(호출한 메서드에 넘겨줌)
 		return result;
 	}
-	
+
+	// 3-1. 아이디 중복체크 처리
+	// MemberController("3")->Execute->MemberCheckIdService->여기까지 왔습니다.
+ 	public String checkId(String id) throws Exception {
+		// 결과를 저장할 수 있는 변수
+		String result = null;
+		try {
+			// 1.드라이버확인
+			// 2.DB연결
+			con = DB.getConnection();
+			// 3.SQL (WRITE)
+			// 4.실행객체에 데이터세팅
+			pstmt = con.prepareStatement(CHECKID);
+			pstmt.setString(1, id);
+
+			// 5.실행
+			rs = pstmt.executeQuery();
+			
+			// 6.결과담기
+			if (rs != null && rs.next()) {
+				result = rs.getString("id");
+			}
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			throw new Exception("예외발생 : 아이디중복체크 중 DB처리중 예외가 발생했습니다.");
+		} finally {
+			// 7.DB닫기
+			DB.close(con, pstmt);
+		}
+		
+		// 결과값 리턴(호출한 메서드에 넘겨줌)
+		return result;
+	}
+
+ 	
  	// 4. 회원정보 수정
  	// MemberController("4")->Execute->MemberUpdateService->여기까지
  	public int update(MemberVO vo) throws Exception {
@@ -389,6 +425,8 @@ public class MemberDAO extends DAO {
 	final String WRITE = "insert into member "
 			+ " (id, pw, name, gender, birth, tel, email, photo) "
 			+ " values (?, ?, ?, ?, ?, ?, ?, ?)";
+	
+	final String CHECKID = "select id from member where id=?";
 	
 	final String UPDATE = "update member "
 			+ " set name = ?, gender = ?, birth = ?, "
