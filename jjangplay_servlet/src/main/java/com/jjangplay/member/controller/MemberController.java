@@ -24,6 +24,8 @@ import com.jjangplay.util.exe.Execute;
 import com.jjangplay.util.io.In;
 import com.jjangplay.util.io.MemberPrint;
 import com.jjangplay.util.page.PageObject;
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 // 회원관리를 위한 모듈
 public class MemberController {
@@ -154,31 +156,47 @@ public class MemberController {
 					new MemberPrint().print((MemberVO)result);
 					
 					break;
-				case "3":
-					System.out.println("3.회원가입");
-					// 데이터 수집 
-					id = In.getStr("아이디");
-					pw = In.getStr("비밀번호");
-					String name = In.getStr("이름");
-					String gerder = In.getStr("성별(남자/여자)");
-					String birth = In.getStr("생년월일(YYYY-MM-DD)");
-					String tel = In.getStr("연락처(선택)");
-					String email = In.getStr("이메일");
-					String photo = In.getStr("사진(선택)");
+				case "/member/writeForm.do":
+					System.out.println("3-1.회원가입 폼");
+					jsp="member/writeForm";
+					break;
+				case "/member/write.do":
+					System.out.println("3.회원가입 처리");
+					
+					MultipartRequest multi = 
+						new MultipartRequest(request, realSavePath, sizeLimit,
+							"utf-8", new DefaultFileRenamePolicy());
+					
+					// 데이터 수집 (사용자(form) -> 서버 -> request -> multi) 
+					id = multi.getParameter("id");
+					pw = multi.getParameter("pw");
+					String name = multi.getParameter("name");
+					String gender = multi.getParameter("gender");
+					String birth = multi.getParameter("birth");
+					String tel = multi.getParameter("tel");
+					String email = multi.getParameter("email");
+					String photo = multi.getFilesystemName("photo");
 					
 					vo = new MemberVO();
 					vo.setId(id);
 					vo.setPw(pw);
 					vo.setName(name);
-					vo.setGender(gerder);
+					vo.setGender(gender);
 					vo.setBirth(birth);
 					vo.setTel(tel);
 					vo.setEmail(email);
-					vo.setPhoto(photo);
-					
+
+					if (!(photo == null || photo.equals("") ) ) {
+						vo.setPhoto(savePath + "/" + photo);
+					}
 					// MemberController->Execute->MemberWriteService
 					// ->MemberDAO().write()
-					Execute.execute(new MemberWriteService(), vo);
+					Execute.execute(Init.get(uri), vo);
+					
+					session.setAttribute("msg", "회원가입이 완료되었습니다.");
+					// 원래는 main으로 가야하나 임시로
+					// /board/list.do로 이동한다.
+					jsp="redirect:/board/list.do";
 					break;
 				case "4":
 					System.out.println("4.내 정보 수정");

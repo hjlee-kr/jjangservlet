@@ -20,7 +20,7 @@ public class MemberWriteService implements Service{
 		// TODO Auto-generated method stub
 		// MemberController->Execute->여기까지왔습니다.
 		// 여기에서 -> MemberDAO().write()
-		return new MemberDAO().write((MemberVO)obj);
+		return dao.write((MemberVO)obj);
 	}
 
 }

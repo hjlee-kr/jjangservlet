@@ -1,0 +1,6 @@
+@charset "UTF-8";
+
+/* 게시판 사이의 여백을 준다 */
+.module{
+	padding: 15px 5px;
+}

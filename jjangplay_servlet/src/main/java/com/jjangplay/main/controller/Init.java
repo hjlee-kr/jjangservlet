@@ -26,6 +26,7 @@ import com.jjangplay.main.service.Service;
 import com.jjangplay.member.dao.MemberDAO;
 import com.jjangplay.member.service.MemberListService;
 import com.jjangplay.member.service.MemberLoginService;
+import com.jjangplay.member.service.MemberWriteService;
 import com.jjangplay.notice.dao.NoticeDAO;
 import com.jjangplay.notice.service.NoticeDeleteService;
 import com.jjangplay.notice.service.NoticeListService;
@@ -104,9 +105,11 @@ public class Init {
 		// 서비스생성
 		serviceMap.put("/member/login.do", new MemberLoginService());
 		serviceMap.put("/member/list.do", new MemberListService());
+		serviceMap.put("/member/write.do", new MemberWriteService());
 		// 조립 dao->service
 		serviceMap.get("/member/login.do").setDAO(daoMap.get("memberDAO"));
 		serviceMap.get("/member/list.do").setDAO(daoMap.get("memberDAO"));
+		serviceMap.get("/member/write.do").setDAO(daoMap.get("memberDAO"));
 		
 		
 		// dao를 생성

@@ -40,6 +40,7 @@ public class DispatcherServlet extends HttpServlet {
 	private NoticeController noticeController= new NoticeController();
 	private MemberController memberController = new MemberController();
 	private ImageController imageController = new ImageController();
+	private MainController mainController = new MainController();
        
 	/**
 	 * @see Servlet#init(ServletConfig)
@@ -72,6 +73,11 @@ public class DispatcherServlet extends HttpServlet {
 		String uri = request.getRequestURI();
 		System.out.println("uri = " + uri);
 		
+		// main처리 - localhost, localhost/main.do,
+		if (uri.equals("/") || uri.equals("/main.do")) {
+			response.sendRedirect("/main/main.do");
+		}
+		
 		// uri : /module/기능 -> /board/list.do
 		// 두번째 /의 위치값이 pos에 저장된다. 없으면 -1
 		int pos = uri.indexOf("/", 1);
@@ -87,6 +93,10 @@ public class DispatcherServlet extends HttpServlet {
 		String jsp = null;
 		
 		switch (module) {
+		case "/main":
+			System.out.println("===메인===");
+			jsp = mainController.execute(request);
+			break;
 		case "/board":
 			System.out.println("===일반게시판===");
 			jsp = boardController.execute(request);
@@ -108,6 +118,8 @@ public class DispatcherServlet extends HttpServlet {
 			jsp = imageController.execute(request);
 			break;
 		}
+		
+		System.out.println("jsp=" + jsp);
 		
 		if (jsp.indexOf("redirect:") == 0) {
 			// 리스트로 이동하기 위해 "redirect:"는 자른후 경로를 적어준다.

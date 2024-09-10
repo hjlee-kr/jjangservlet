@@ -108,7 +108,7 @@
 						<i class="fa fa-sign-in"></i>로그인</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="/member/write.do">
+						<a class="nav-link" href="/member/writeForm.do">
 						<i class="fa fa-address-card-o"></i>회원가입</a>
 					</li>
 					<li class="nav-item">
@@ -127,6 +127,7 @@
 								<img src="${login.photo }" class="round-circle"
 								style="width:30px; height:30px">
 							</c:if>
+							${login.id }
 						</span>
 					</li>
 					<li class="nav-item">
