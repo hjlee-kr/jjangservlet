@@ -50,7 +50,25 @@
   	<url-pattern>*.do</url-pattern>
   </filter-mapping>
   
+  <!-- 예외와 에러처리 - error-page tag 설정
+  		- error-code : 브라우저나 통신에서 보여지는 에러 코드로 서버에서 처리
+  		- exception-type : 내부오류 500dml Exception종류에 따라 처리
+   -->
+  <error-page>
+  	<error-code>404</error-code>
+  	<location>/WEB-INF/views/error/noModule_404.jsp</location>
+  </error-page>
+  <error-page>
+  	<error-code>500</error-code>
+  	
+  	<location>/WEB-INF/views/error/noModule_500.jsp</location>
+  </error-page>
+  
 </web-app>
+
+
+
+
 
 
 

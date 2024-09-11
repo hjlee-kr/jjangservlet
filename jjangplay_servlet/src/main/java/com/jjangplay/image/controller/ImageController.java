@@ -261,22 +261,13 @@ public class ImageController {
 						+ "&" + pageObject.getPageQuery();
 					break;
 				default:
-					System.out.println("잘못된 메뉴를 선택하셨습니다.");
-					System.out.println("[0~5] 번호를 선택해야 합니다.");
+					jsp = "error/404";
 				} // end of switch
 			} catch (Exception e) {
 				// TODO: handle exception
 				e.printStackTrace();
-				System.out.println("$%@$%@$%@$%@$%@$%@$%@$%@$%@$%@");
-				System.out.println("$%@    <오류 출력> ");
-				System.out.println("$%@$%@$%@$%@$%@$%@$%@$%@$%@$%@");
-				// getSimpleName() : 클래스 이름만 보여주는 메서드(패키지는 안보여준다)
-				System.out.println("$%@ 타입 : " + e.getClass().getSimpleName());
-				// getMessage() : 예외의 내용을 보여주는 메서드
-				System.out.println("$%@ 내용 : " + e.getMessage() );
-				System.out.println("$%@ 조치 : 데이터 확인해 보세요");
-				System.out.println("$%@       계속 오류가 나면 전산담당자에게 문의하세요.");
-				System.out.println("$%@$%@$%@$%@$%@$%@$%@$%@$%@$%@");
+				request.setAttribute("e", e);
+				jsp = "error/500";
 			}
 		
 			return jsp;

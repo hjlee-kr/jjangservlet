@@ -110,6 +110,13 @@ public class AuthorityFilter extends HttpFilter implements Filter {
 		
 		// 회원관리의 권한지정
 		authMap.put("/member/list.do", 9);
+		
+		// 공지사항 권한지정
+		authMap.put("/notice/writeForm.do", 9);
+		authMap.put("/notice/write.do", 9);
+		authMap.put("/notice/updateForm.do", 9);
+		authMap.put("/notice/update.do", 9);
+		authMap.put("/notice/delete.do", 9);
 	}
 
 }

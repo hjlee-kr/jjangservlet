@@ -188,6 +188,7 @@ public class BoardDAO extends DAO {
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
+			throw new Exception("예외발생 : 게시판 글보기 DB 처리중 예외발생");
 		} finally {
 			try {
 				// 7.DB닫기
@@ -197,8 +198,6 @@ public class BoardDAO extends DAO {
 				e.printStackTrace();
 			}
 		}
-		
-		
 		
 		
 		// DB에서 받은 데이터를 리턴
@@ -371,7 +370,7 @@ public class BoardDAO extends DAO {
 
 	final String INCREASE = "update board set hit = hit + 1 "
 			+ " where no = ?";
-	final String VIEW = "select no, title, content, writer, writeDate, hit "
+	final String VIEW = "select no, title, content, writer, writeDate, hit, "
 			+ " from board where no = ?"; 
 	final String WRITE = "insert into board "
 			+ " (no, title, content, writer, pw) "

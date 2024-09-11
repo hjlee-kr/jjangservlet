@@ -86,6 +86,9 @@ public class DispatcherServlet extends HttpServlet {
 		System.out.println("pos = " + pos);
 		
 		if (pos == -1) {
+			request.setAttribute("uri", uri);
+			request.getRequestDispatcher("/WEB-INF/views/error/noModule_404.jsp")
+			.forward(request, response);
 			return;
 		}
 		
@@ -123,6 +126,11 @@ public class DispatcherServlet extends HttpServlet {
 			System.out.println("===이미지게시판===");
 			jsp = imageController.execute(request);
 			break;
+		default:
+			request.setAttribute("uri", uri);
+			request.getRequestDispatcher("/WEB-INF/views/error/noModule_404.jsp")
+			.forward(request, response);
+			return;
 		}
 		
 		System.out.println("jsp=" + jsp);
