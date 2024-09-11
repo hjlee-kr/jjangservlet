@@ -358,8 +358,8 @@ public class MemberDAO extends DAO {
 	}// end of conUpdate()
 	
 	
-	// 7. 회원등급 및 상태변경
-	public int update_admin(MemberVO vo) throws Exception {
+	// 회원등급 변경
+	public int changeGradeNo(MemberVO vo) throws Exception {
 		// 결과 저장 변수
 		int result = 0;
 		
@@ -369,10 +369,9 @@ public class MemberDAO extends DAO {
 			con = DB.getConnection();
 			// 3.SQL (UPDATE_ADMIN)
 			// 4.실행객체에 데이터세팅
-			pstmt = con.prepareStatement(UPDATE_ADMIN);
+			pstmt = con.prepareStatement(CHANGEGRADENO);
 			pstmt.setInt(1, vo.getGradeNo());
-			pstmt.setString(2, vo.getStatus());
-			pstmt.setString(3, vo.getId());
+			pstmt.setString(2, vo.getId());
 			// 5.실행
 			result = pstmt.executeUpdate();
 			// 6.결과확인
@@ -386,7 +385,7 @@ public class MemberDAO extends DAO {
 				throw e;
 			}
 			else {
-				throw new Exception("예외발생 : 회원등급 및 상태 DB처리 중 예외발생");
+				throw new Exception("예외발생 : 회원등급 DB처리 중 예외발생");
 			}
 		} finally {
 			// 7.DB닫기
@@ -395,7 +394,10 @@ public class MemberDAO extends DAO {
 		
 		// 결과 리턴
 		return result;
-	}
+	}// end of changeGradeNo()
+	
+
+	
 	
 	final String LIST = ""
 			+ " select id, name, birth, tel, gradeNo, "
@@ -446,11 +448,9 @@ public class MemberDAO extends DAO {
 	final String UPDATE_CONDATE = "update member "
 			+ " set conDate = sysDate where id = ?";
 	
-	final String UPDATE_ADMIN = "update member "
-			+ " set gradeNo = ?, status = ? "
-			+ " where id = ?";
 	
-	
+	final String CHANGEGRADENO = "update member "
+			+ " set gradeNo = ? where id = ?";
 	
 	
 	

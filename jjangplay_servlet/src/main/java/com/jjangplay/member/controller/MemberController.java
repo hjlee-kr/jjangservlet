@@ -242,40 +242,38 @@ public class MemberController {
 						System.out.println("******************************");
 					}
 					break;
-				case "6":
-					System.out.println("6.로그인 or 로그아웃");
-					if (Main.login == null) {
-						// 로그인을 위한 데이터 수집 (id, pw)
-						id = In.getStr("아이디");
-						pw = In.getStr("비밀번호");
-						loginVO = new LoginVO();
-						loginVO.setId(id);
-						loginVO.setPw(pw);
-						
-						// DB처리
-						// 여기(MemberController)에서 -> Execute
-						// -> MemberLoginService -> MemberDAO().login()
-						Main.login =
-							(LoginVO) Execute.execute(new MemberLoginService(), loginVO);
-						
-						if (Main.login != null) {
-							System.out.println();
-							System.out.println("**************************");
-							System.out.println("** 로그인 되었습니다.       **");
-							System.out.println("**************************");
-							
-							// 최근 접속일 변경
-							// 여기서 -> Execute -> MemberConUpdateService -> MemberDAO().conUpdate(id)
-							Execute.execute(new MemberConUpdateService(), Main.login.getId());
-						}
-					}
-					else {
-						Main.login = null;
-						System.out.println();
-						System.out.println("**************************");
-						System.out.println("** 로그아웃 되었습니다.     **");
-						System.out.println("**************************");
-					} // end of if~else
+
+				case "/member/changeGradeNo.do":
+					System.out.println("회원 등급 수정 처리");
+					
+					// 데이터 수집 (사용자(form)->서버(request)->DB
+					id = request.getParameter("id");
+					Integer gradeNo = Integer.parseInt(request.getParameter("gradeNo"));
+					
+					// vo에 저장 
+					vo = new MemberVO();
+					vo.setId(id);
+					vo.setGradeNo(gradeNo);
+					
+					// DB처리 MemberChangeGradeNoService->MemberDAO.changeGradeNo()
+					Execute.execute(Init.get(uri), vo);
+					
+					// 페이지 정보 받기 & uri 에 붙이기
+					pageObject = PageObject.getInstance(request);
+					
+					// 메시지 출력 (사용자가 보도록)
+					// 1: ((gradeNo==1)?"일반회원으로":"관리자로")
+					// 2: if (gradeNo == 1) "일반회원으로";
+					//    else "관리자로";
+					// 1과 2는 처리결과가 동일합니다.
+					session.setAttribute("msg",
+						"회원 [" + id + "] 등급이 " + ((gradeNo==1)?"일반회원으로":"관리자로")
+						+ " 변경되었습니다.");
+					
+					// 페이지 이동 (회원리스트로)
+					jsp = "redirect:list.do?" + pageObject.getPageQuery();
+					break;
+				case "/member/changeStatus.do":
 					break;
 				case "7":
 					// 권한을 확인

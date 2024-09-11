@@ -17,6 +17,20 @@ $(function(){
 	//  2. 라이브러리 등록확인 
 	console.log("jquery loading......");
 	
+	$(".dataRow").on("change", ".grade", function() {
+		// 변경된 값을 알아내는 것
+		let changeData = $(this).val();
+		let data = $(this).data("data");
+		console.log("원래데이터=" + data + ", 변경데이터=" + changeData);
+		if (changeData == data) {
+			$(this).next().find("button").prop("disabled", true);
+		}
+		else {
+			$(this).next().find("button").prop("disabled", false);
+		}
+	});
+	
+	
 	// 이벤트 처리
 	$("#perPageNum").change(function(){
 		$("#searchForm").submit();
@@ -111,7 +125,7 @@ $(function(){
 				<form action="changeGrade.do">
 					<input name="id" value="${vo.id }" type="hidden">
 					<div class="input-group mb-3">
-					  <select class="form-control" name="gradeNo" data-data="${vo.gradeNo }">
+					  <select class="form-control grade" name="gradeNo" data-data="${vo.gradeNo }">
 					    <option value="1" ${(vo.gradeNo==1)?"selected":"" }>일반회원</option>
 					    <option value="9" ${(vo.gradeNo==9)?"selected":"" }>관리자</option>
 					  </select>
@@ -125,7 +139,7 @@ $(function(){
 				<form action="changeStatus.do">
 					<input name="id" value="${vo.id }" type="hidden">
 					<div class="input-group mb-3">
-					  <select class="form-control" name="status" data-data="${vo.status }">
+					  <select class="form-control status" name="status" data-data="${vo.status }">
 					    <option ${(vo.status == "정상")?"selected":"" }>정상</option>
 					    <option ${(vo.status == "탈퇴")?"selected":"" }>탈퇴</option>
 					    <option ${(vo.status == "휴면")?"selected":"" }>휴면</option>
