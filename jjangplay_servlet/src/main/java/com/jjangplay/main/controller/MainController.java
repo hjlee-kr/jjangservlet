@@ -49,6 +49,7 @@ public class MainController {
 				jsp = "main/main";
 				break;
 			default:
+				request.setAttribute("uri", uri);
 				jsp = "error/404";
 			}
 			

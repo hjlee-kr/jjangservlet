@@ -367,7 +367,7 @@ public class MemberDAO extends DAO {
 			// 1.드라이버확인
 			// 2.DB연결
 			con = DB.getConnection();
-			// 3.SQL (UPDATE_ADMIN)
+			// 3.SQL (CHANGEGRADENO)
 			// 4.실행객체에 데이터세팅
 			pstmt = con.prepareStatement(CHANGEGRADENO);
 			pstmt.setInt(1, vo.getGradeNo());
@@ -397,6 +397,44 @@ public class MemberDAO extends DAO {
 	}// end of changeGradeNo()
 	
 
+	// 회원상태 변경
+	public int changeStatus(MemberVO vo) throws Exception {
+		// 결과 저장 변수
+		int result = 0;
+		
+		try {
+			// 1.드라이버확인
+			// 2.DB연결
+			con = DB.getConnection();
+			// 3.SQL (CHANGESTATUS)
+			// 4.실행객체에 데이터세팅
+			pstmt = con.prepareStatement(CHANGESTATUS);
+			pstmt.setString(1, vo.getStatus());
+			pstmt.setString(2, vo.getId());
+			// 5.실행
+			result = pstmt.executeUpdate();
+			// 6.결과확인
+			if (result == 0) {
+ 				throw new Exception("예외발생 : 아이디가 맞지 않습니다.");
+ 			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			if (e.getMessage().indexOf("예외발생")>=0) {
+				throw e;
+			}
+			else {
+				throw new Exception("예외발생 : 회원상태 DB처리 중 예외발생");
+			}
+		} finally {
+			// 7.DB닫기
+			DB.close(con, pstmt);
+		}
+		
+		// 결과 리턴
+		return result;
+	}// end of changeStatus()
+	
 	
 	
 	final String LIST = ""
@@ -452,7 +490,8 @@ public class MemberDAO extends DAO {
 	final String CHANGEGRADENO = "update member "
 			+ " set gradeNo = ? where id = ?";
 	
-	
+	final String CHANGESTATUS = "update member "
+			+ " set status = ? where id = ?";
 	
 	
 	

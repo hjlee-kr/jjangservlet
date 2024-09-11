@@ -20,7 +20,7 @@ public class MemberViewService implements Service{
 		// TODO Auto-generated method stub
 		// MemberController->Execute->여기에 왔습니다.
 		// 여기서 -> MemberDAO.view(String id) 로 넘어갑니다.
-		return new MemberDAO().view((String)obj);
+		return dao.view((String)obj);
 		
 	//	1. new MemberDAO().view((String) obj);
 	

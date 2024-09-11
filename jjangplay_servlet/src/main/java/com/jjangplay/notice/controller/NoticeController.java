@@ -141,6 +141,7 @@ public class NoticeController {
 					jsp = "redirect:list.do";
 					break;
 				default:
+					request.setAttribute("uri", uri);
 					jsp = "error/404";
 					break;
 				} // end of switch(menu)

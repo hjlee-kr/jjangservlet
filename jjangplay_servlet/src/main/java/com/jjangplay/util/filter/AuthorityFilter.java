@@ -21,10 +21,10 @@ import com.jjangplay.member.vo.LoginVO;
 /**
  * Servlet Filter implementation class AuthorityFilter
  */
+// 권한 처리를 필터를 통해 하는 이유는?
+// 웹브라우저에서 url을 직접 쳐서 접근하는 것을 제한하기 위해
 //@WebFilter("/AuthorityFilter")
 public class AuthorityFilter extends HttpFilter implements Filter {
-       
-
 	/**
 	 * 
 	 */
@@ -110,6 +110,7 @@ public class AuthorityFilter extends HttpFilter implements Filter {
 		
 		// 회원관리의 권한지정
 		authMap.put("/member/list.do", 9);
+		authMap.put("/member/view.do", 1);
 		
 		// 공지사항 권한지정
 		authMap.put("/notice/writeForm.do", 9);

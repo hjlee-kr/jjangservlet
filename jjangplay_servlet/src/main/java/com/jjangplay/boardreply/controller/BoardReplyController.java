@@ -131,6 +131,7 @@ public class BoardReplyController {
 					break;
 
 				default:
+					request.setAttribute("uri", uri);
 					jsp = "error/404";
 				} // end of switch
 			} catch (Exception e) {

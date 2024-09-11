@@ -16,8 +16,28 @@
 $(function(){
 	//  2. 라이브러리 등록확인 
 	console.log("jquery loading......");
+
+	// 이벤트 처리
+	function dataRowClick() {
+		alert("dataRow 클릭");
+	};
+		
+	$(".dataRow").on("click", function() {
+		dataRowClick();
+	});
+		
+		
+	$(".grade, .status").parent().on("mouseover", function() {
+		$(".dataRow").off("click");
+	}).on("mouseout", function() {
+		//dataRow click이벤트를 다시 설정한다.
+		$(".dataRow").on("click", function() {
+			dataRowClick();			
+		});
+	});
+
 	
-	$(".dataRow").on("change", ".grade", function() {
+	$(".dataRow").on("change", ".grade, .status", function() {
 		// 변경된 값을 알아내는 것
 		let changeData = $(this).val();
 		let data = $(this).data("data");
@@ -122,7 +142,7 @@ $(function(){
 			<td>${vo.birth}</td>
 			<td>${vo.tel}</td>
 			<td> <!-- 회원등급 시작 -->
-				<form action="changeGrade.do">
+				<form action="changeGradeNo.do">
 					<input name="id" value="${vo.id }" type="hidden">
 					<div class="input-group mb-3">
 					  <select class="form-control grade" name="gradeNo" data-data="${vo.gradeNo }">

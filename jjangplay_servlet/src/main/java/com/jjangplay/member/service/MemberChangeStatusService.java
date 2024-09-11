@@ -5,8 +5,8 @@ import com.jjangplay.main.service.Service;
 import com.jjangplay.member.dao.MemberDAO;
 import com.jjangplay.member.vo.MemberVO;
 
-public class MemberUpdateAdminService implements Service{
-
+public class MemberChangeStatusService implements Service {
+	
 	private MemberDAO dao;
 	
 	@Override
@@ -18,9 +18,10 @@ public class MemberUpdateAdminService implements Service{
 	@Override
 	public Integer service(Object obj) throws Exception {
 		// TODO Auto-generated method stub
-		// MemberController("7")->Execute->여기
-		// 여기 -> MemberDAO().update_admin(MemberVO)
-		return new MemberDAO().update_admin((MemberVO)obj);
+		// MemberController->Execute->여기에 왔습니다.
+		// 여기에서 -> MemberDAO.changeGredeNo() 로 넘어 갈 예정입니다.
+		return dao.changeStatus((MemberVO) obj);
 	}
+
 
 }
