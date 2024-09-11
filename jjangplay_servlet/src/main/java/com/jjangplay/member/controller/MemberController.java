@@ -110,7 +110,7 @@ public class MemberController {
 					
 					// 원래는 main page로 가야하나 구현 전이어서
 					// 일반게시판 list로 이동합니다. 
-					jsp = "redirect:/board/list.do";
+					jsp = "redirect:/main/main.do";
 					break;
 				case "/member/logout.do":
 					System.out.println("---로그아웃 처리---");
@@ -120,7 +120,7 @@ public class MemberController {
 					session.setAttribute("msg", "로그아웃 되었습니다.");
 					
 					// 임시 이동 경로
-					jsp = "redirect:/board/list.do";
+					jsp = "redirect:/main/main.do";
 					break;
 				case "/member/list.do":
 					System.out.println("1.회원 리스트");
@@ -196,7 +196,7 @@ public class MemberController {
 					session.setAttribute("msg", "회원가입이 완료되었습니다.");
 					// 원래는 main으로 가야하나 임시로
 					// /board/list.do로 이동한다.
-					jsp="redirect:/board/list.do";
+					jsp="redirect:/main/main.do";
 					break;
 				case "4":
 					System.out.println("4.내 정보 수정");

@@ -40,6 +40,16 @@
   	<url-pattern>*.do</url-pattern>
   </filter-mapping>
   
+  <filter>
+  	<filter-name>authority</filter-name>
+  	<filter-class>com.jjangplay.util.filter.AuthorityFilter</filter-class>
+  </filter>
+  
+  <filter-mapping>
+  	<filter-name>authority</filter-name>
+  	<url-pattern>*.do</url-pattern>
+  </filter-mapping>
+  
 </web-app>
 
 
