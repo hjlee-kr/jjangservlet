@@ -78,6 +78,7 @@ public class DispatcherServlet extends HttpServlet {
 		// main처리 - localhost, localhost/main.do,
 		if (uri.equals("/") || uri.equals("/main.do")) {
 			response.sendRedirect("/main/main.do");
+			return;
 		}
 		
 		// uri : /module/기능 -> /board/list.do
