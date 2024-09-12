@@ -29,6 +29,7 @@ import com.jjangplay.member.service.MemberChangeStatusService;
 import com.jjangplay.member.service.MemberCheckIdService;
 import com.jjangplay.member.service.MemberListService;
 import com.jjangplay.member.service.MemberLoginService;
+import com.jjangplay.member.service.MemberUpdateService;
 import com.jjangplay.member.service.MemberViewService;
 import com.jjangplay.member.service.MemberWriteService;
 import com.jjangplay.notice.dao.NoticeDAO;
@@ -111,6 +112,7 @@ public class Init {
 		serviceMap.put("/member/list.do", new MemberListService());
 		serviceMap.put("/member/view.do", new MemberViewService());
 		serviceMap.put("/member/write.do", new MemberWriteService());
+		serviceMap.put("/member/update.do", new MemberUpdateService());
 		serviceMap.put("/ajax/checkId.do", new MemberCheckIdService());
 		serviceMap.put("/member/changeGradeNo.do", new MemberChangeGradeNoService());
 		serviceMap.put("/member/changeStatus.do", new MemberChangeStatusService());
@@ -119,6 +121,7 @@ public class Init {
 		serviceMap.get("/member/list.do").setDAO(daoMap.get("memberDAO"));
 		serviceMap.get("/member/view.do").setDAO(daoMap.get("memberDAO"));
 		serviceMap.get("/member/write.do").setDAO(daoMap.get("memberDAO"));
+		serviceMap.get("/member/update.do").setDAO(daoMap.get("memberDAO"));
 		serviceMap.get("/ajax/checkId.do").setDAO(daoMap.get("memberDAO"));
 		serviceMap.get("/member/changeGradeNo.do").setDAO(daoMap.get("memberDAO"));
 		serviceMap.get("/member/changeStatus.do").setDAO(daoMap.get("memberDAO"));

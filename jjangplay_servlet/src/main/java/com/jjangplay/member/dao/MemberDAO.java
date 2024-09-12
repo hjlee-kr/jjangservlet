@@ -192,7 +192,8 @@ public class MemberDAO extends DAO {
 
  	
  	// 4. 회원정보 수정
- 	// MemberController("4")->Execute->MemberUpdateService->여기까지
+ 	// MemberController("/member/update.do")
+ 	// ->Execute->MemberUpdateService->여기까지
  	public int update(MemberVO vo) throws Exception {
  		// 결과받을변수
  		int result = 0;

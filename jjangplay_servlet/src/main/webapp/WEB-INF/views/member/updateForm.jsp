@@ -136,6 +136,7 @@ $(function() {
 	    	id="photo" name="photo">
 	  </div>
 	</form>
+	
 	<form action="/member/update.do" method="post">
 	  <div class="form-group">
 	    <label for="id">아이디</label>
@@ -143,8 +144,11 @@ $(function() {
 	     name="id" value="${vo.id }">
 	  </div>
 	  <div class="form-group">
-	    <label for="name">이름</label>
-	    <input type="text" class="form-control" readonly
+	  	<label for="name">이름</label>
+	    <input type="text" class="form-control" maxlength="10"
+	    	pattern="^[a-zA-Z가-힝]{2,10}$" required
+	    	placeholder="이름입력"
+	    	title="한글 또는 영문으로 2자이상 10자 이내"
 	    	id="name" name="name" value="${vo.name }">
 	  </div>
 	  <div class="form-group">

@@ -219,14 +219,20 @@ public class MemberController {
 					vo = new MemberVO();
 					vo.setId(request.getParameter("id"));
 					vo.setPw(request.getParameter("pw"));
+					vo.setName(request.getParameter("name"));
 					vo.setGender(request.getParameter("gender"));
 					vo.setBirth(request.getParameter("birth"));
-					vo.setTel(request.getParameter("tek"));
+					vo.setTel(request.getParameter("tel"));
 					vo.setEmail(request.getParameter("email"));
-										
-					Execute.execute(new MemberUpdateService(), vo);
+					
+					// MemberController->Execute->MemberUpdateService
+					// -> MemberDAO.update()
+					Execute.execute(Init.get(uri), vo);
 				
-					update(vo);
+					session.setAttribute("msg", "정보가 수정되었습니다.");
+					
+					jsp="redirect:/member/view.do?id="+vo.getId();
+				//	jsp="redirect:/member/view.do";
 					break;
 				case "5":
 					System.out.println("5.회원탈퇴");

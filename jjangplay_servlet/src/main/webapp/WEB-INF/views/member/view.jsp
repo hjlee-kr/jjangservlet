@@ -28,8 +28,17 @@
 		  		<i class="fa fa-user-circle-o" style="font-size:100px"></i>
 	  		</c:if>
 	  		<c:if test="${ !empty vo.photo}">
-		  		<img alt="image" src="${vo.photo }" style="width:100px; height:100px;">
+		  		<div class="card">
+					  <img class="card-img-top" src="${vo.photo }" alt="image"
+					  	 style="width:100px; height:100px;">
+							<a href="${vo.photo }" class="btn btn-success" download>다운로드</a>
+					</div>
 	  		</c:if>
+	  		<!-- Button to Open the Modal -->
+				<button type="button" class="btn btn-primary"
+					 data-toggle="modal" data-target="#imageChangeModal">
+				  이미지변경
+				</button>
 	  	</div>
 	  	<div class="row">
 			  <div class="col-md-3"><i class="fa fa-check"></i> 성별</div>

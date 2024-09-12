@@ -12,6 +12,7 @@ public class MemberUpdateService implements Service {
 	@Override
 	public void setDAO(DAO dao) {
 		// TODO Auto-generated method stub
+		// Init class에서 처리하는 부분
 		this.dao = (MemberDAO) dao;
 	}
 
@@ -20,7 +21,7 @@ public class MemberUpdateService implements Service {
 		// TODO Auto-generated method stub
 		// MemberController -> Execute -> 여기 (MemberUpdateService)
 		// 여기 -> MemberDAO().update(MemberVO)
-		return new MemberDAO().update((MemberVO)obj);
+		return dao.update((MemberVO)obj);
 	}
 
 }
