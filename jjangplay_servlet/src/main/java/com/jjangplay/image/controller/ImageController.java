@@ -1,33 +1,21 @@
 package com.jjangplay.image.controller;
 
 import java.io.File;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-
-import com.jjangplay.board.service.BoardDeleteService;
-import com.jjangplay.board.service.BoardListService;
-import com.jjangplay.board.service.BoardUpdateService;
-import com.jjangplay.board.service.BoardViewService;
-import com.jjangplay.board.service.BoardWriteService;
-import com.jjangplay.board.vo.BoardVO;
 import com.jjangplay.image.vo.ImageVO;
 import com.jjangplay.main.controller.Init;
 import com.jjangplay.member.vo.LoginVO;
 import com.jjangplay.util.exe.Execute;
-import com.jjangplay.util.io.BoardPrint;
-import com.jjangplay.util.io.In;
 import com.jjangplay.util.page.PageObject;
-import com.jjangplay.util.page.ReplyPageObject;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 // Image(이미지게시판) 의 메뉴를 선택하고, 데이터 수집(기능별), 예외처리
 public class ImageController {
 
-	@SuppressWarnings("unchecked")
 	public String execute(HttpServletRequest request) {
 		System.out.println("ImageController.execute() ----------------");
 
@@ -93,7 +81,7 @@ public class ImageController {
 					System.out.println("2. 이미지 글보기");
 					// 상세글보기
 					//[ImageController] -> (Execute) ->
-					// ImageViewService -> BoardDAO.view()
+					// ImageViewService -> ImageDAO.view()
 					no = Long.parseLong(request.getParameter("no"));
 					
 					// 전달데이터는 글번호만

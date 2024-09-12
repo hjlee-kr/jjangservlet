@@ -16,7 +16,7 @@ public class NoticeWriteService implements Service{
 	@Override
 	public Integer service(Object obj) throws Exception {
 		// TODO Auto-generated method stub
-		return new NoticeDAO().write((NoticeVO)obj);
+		return dao.write((NoticeVO)obj);
 	}
 
 }

@@ -11,7 +11,6 @@ import com.jjangplay.util.page.ReplyPageObject;
 // Board(일반게시판) 의 메뉴를 선택하고, 데이터 수집(기능별), 예외처리
 public class BoardController {
 
-	@SuppressWarnings("unchecked")
 	public String execute(HttpServletRequest request) {
 		System.out.println("BoardController.execute() ----------------");
 

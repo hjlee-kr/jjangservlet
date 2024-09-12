@@ -2,8 +2,6 @@ package com.jjangplay.image.service;
 
 import java.util.List;
 
-import com.jjangplay.board.dao.BoardDAO;
-import com.jjangplay.board.vo.BoardVO;
 import com.jjangplay.image.dao.ImageDAO;
 import com.jjangplay.image.vo.ImageVO;
 import com.jjangplay.main.dao.DAO;

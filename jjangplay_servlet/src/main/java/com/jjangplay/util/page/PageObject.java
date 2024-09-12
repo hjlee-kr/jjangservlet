@@ -23,6 +23,10 @@ public class PageObject {
 	private String key; // twc
 	private String word; // 검색어
 	
+	// 공지분류(기간)를 적용시키는 변수 선언
+	// pre: 현재공지, old: 지난공지, res: 예약공지, all: 전체공지
+	private String period;
+	
 	public PageObject() {
 		this.page = 1;
 		this.perPageNum = 10;
@@ -32,6 +36,8 @@ public class PageObject {
 		setPerGroupPageNum(10);
 		startPage = 1;
 		endPage = 1;
+		
+		period = "pre";
 	}
 	
 	public static PageObject getInstance(HttpServletRequest request) {
@@ -167,13 +173,23 @@ public class PageObject {
 			+ "&" + getNotPageQuery();
 	}
 
+	public String getPeriod() {
+		return period;
+	}
+
+	public void setPeriod(String period) {
+		this.period = period;
+	}
+
 	@Override
 	public String toString() {
 		return "PageObject [page=" + page + ", perPageNum=" + perPageNum + ", startRow=" + startRow + ", endRow="
 				+ endRow + ", perGroupPageNum=" + perGroupPageNum + ", startPage=" + startPage + ", endPage=" + endPage
-				+ ", totalPage=" + totalPage + ", totalRow=" + totalRow + ", key=" + key + ", word=" + word + "]";
+				+ ", totalPage=" + totalPage + ", totalRow=" + totalRow + ", key=" + key + ", word=" + word
+				+ ", period=" + period + "]";
 	}
 
+	
 	
 }
 

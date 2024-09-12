@@ -67,6 +67,7 @@ public class NoticeDAO extends DAO {
 			// 2. DB 연결
 			con = DB.getConnection();
 			// 3. SQL 작성
+			System.out.println("LIST_SQL = " + getListSQL(pageObject));
 			// 4. 실행객체에 데이터세팅
 			pstmt = con.prepareStatement(getListSQL(pageObject));
 			int idx = 0;
@@ -251,6 +252,7 @@ public class NoticeDAO extends DAO {
 	private String getListSQL(PageObject pageObject) {
 		String sql = LIST;
 		sql += getSearch(pageObject);
+		sql += getPeriod(pageObject);
 		sql += " order by updateDate, no desc)) ";
 		sql += " where rnum>=? and rnum<=?";
 		return sql;
@@ -261,13 +263,36 @@ public class NoticeDAO extends DAO {
 		String key = pageObject.getKey();
 		String word = pageObject.getWord();
 		if (word != null && !word.equals("")) {
-			sql += " where 1=0 "; //or 조건을 만들때 1=0을 준다.
+			sql += " and ( 1=0 "; //or 조건을 만들때 1=0을 준다.
 			// key 값에 조건이 있다 t : title, c : content
 			if (key.indexOf("t") >= 0) sql += " or title like ? ";
 			if (key.indexOf("c") >= 0) sql += " or content like ? ";
+			sql += " ) ";
 			
 		}
 		
+		return sql;
+	}
+	
+	// 공지사항 기간 조건을 주는 SQL
+	private String getPeriod(PageObject pageObject) {
+		String sql = "";
+		String period = pageObject.getPeriod();
+		
+		sql += " and ((1=1) ";
+		if (period.equals("pre")) {
+			// 현재공지
+			sql += " and (trunc(sysdate) between trunc(startDate) and trunc(EndDate)) ";
+		}
+		else if (period.equals("old")) {
+			// 지난공지
+			sql += " and (trunc(sysdate) > trunc(endDate)) ";
+		}
+		else if (period.equals("res")) {
+			// 예약공지
+			sql += " and (trunc(sysdate) < trunc(startDate)) ";
+		}
+		sql += " ) ";
 		return sql;
 	}
 	
@@ -292,9 +317,7 @@ public class NoticeDAO extends DAO {
 			+ " (select no, title,"
 			+ " to_char(startDate, 'yyyy-mm-dd') startDate, "
 			+ " to_char(endDate, 'yyyy-mm-dd') endDate "
-			+ " from Notice ";
-			
-			
+			+ " from Notice where ( 1=1 ) ";
 			
 		//	" order by updateDate, no desc)) "
 		//	+ " where rnum>=? and rnum<=?";

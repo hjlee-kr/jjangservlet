@@ -1,26 +1,17 @@
 package com.jjangplay.notice.controller;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
-import javax.swing.plaf.synth.SynthOptionPaneUI;
+import javax.servlet.http.HttpSession;
 
 import com.jjangplay.main.controller.Init;
-import com.jjangplay.notice.service.NoticeDeleteService;
-import com.jjangplay.notice.service.NoticeListService;
-import com.jjangplay.notice.service.NoticeUpdateService;
-import com.jjangplay.notice.service.NoticeViewService;
-import com.jjangplay.notice.service.NoticeWriteService;
+import com.jjangplay.member.vo.LoginVO;
 import com.jjangplay.notice.vo.NoticeVO;
 import com.jjangplay.util.exe.Execute;
-import com.jjangplay.util.io.In;
-import com.jjangplay.util.io.NoticePrint;
 import com.jjangplay.util.page.PageObject;
 
 public class NoticeController {
 
 	public String execute(HttpServletRequest request) {
-
 			
 			// uri
 			String uri = request.getRequestURI();
@@ -32,7 +23,21 @@ public class NoticeController {
 			
 			// 입력 받는 데이터 (글번호를 위한)
 			Long no = 0L;
-		
+			
+			// 처리 결과 표시(모달창)과 로그인 여부 확인 위한
+			// session을 가져온다.
+			HttpSession session = request.getSession();
+			
+			String id = null;
+			int gradeNo = 0;
+			LoginVO login = (LoginVO) session.getAttribute("login");
+			
+			if (login != null) {
+				// login != null 이면 로그인 상태임
+				// 아이디와 회원등급을 가져온다.
+				id = login.getId();
+				gradeNo = login.getGradeNo();
+			}
 			
 			try {
 				switch (uri) {
@@ -42,6 +47,22 @@ public class NoticeController {
 					System.out.println("1. 공지사항 리스트");
 					// 페이지 처리를 위한 객체, 넘어오는 페이지와 검색정보를 세팅
 					PageObject pageObject = PageObject.getInstance(request);
+					// 공지사항 표시정보
+					String period = request.getParameter("period");
+					
+					System.out.println("period=" + period);
+					
+					if (gradeNo == 9) {
+						// 관리자는 공지사항 기본이 모든공지 리스트 보기 
+						if (period == null || period == "") {
+							period = "all";
+						}
+					}
+					else {
+						period = "pre";
+					}
+					pageObject.setPeriod(period);
+					
 					// DB에서 데이터 가져오기
 					result = Execute.execute(Init.get(uri), pageObject);
 					// 가져온 데이터 담기

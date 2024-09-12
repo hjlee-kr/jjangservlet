@@ -1,28 +1,14 @@
 package com.jjangplay.member.controller;
 
-import java.awt.Label;
 import java.io.File;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.swing.plaf.synth.SynthOptionPaneUI;
 
-import com.jjangplay.image.vo.ImageVO;
 import com.jjangplay.main.controller.Init;
-import com.jjangplay.main.controller.Main;
-import com.jjangplay.member.service.MemberConUpdateService;
-import com.jjangplay.member.service.MemberDeleteService;
-import com.jjangplay.member.service.MemberListService;
-import com.jjangplay.member.service.MemberLoginService;
-import com.jjangplay.member.service.MemberUpdateService;
-import com.jjangplay.member.service.MemberViewService;
-import com.jjangplay.member.service.MemberWriteService;
 import com.jjangplay.member.vo.LoginVO;
 import com.jjangplay.member.vo.MemberVO;
 import com.jjangplay.util.exe.Execute;
-import com.jjangplay.util.io.In;
-import com.jjangplay.util.io.MemberPrint;
 import com.jjangplay.util.page.PageObject;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
@@ -54,7 +40,6 @@ public class MemberController {
 		Object result = null;
 		
 		// 입력받는데이터
-		Long no = 0L;
 		String pw;
 		MemberVO vo;
 		
@@ -377,57 +362,7 @@ public class MemberController {
 		return jsp;
 	} // end of execute()
 	
-	// 정보수정DB처리를 위한 메서드
-	private void update(MemberVO vo) throws Exception {
-		// 가져온 데이터 수정
-		while (true) {
-			new MemberPrint().print(vo);
-			System.out.println();
-			System.out.println("---------------------------------");
-			System.out.println("-- 1.이름, 2.성별, 3.생년월일,     --");
-			System.out.println("-- 4.연락처, 5.이메일, 6.사진,     --");
-			System.out.println("-- 9.수정취소, 0.수정완료          --");
-			System.out.println("---------------------------------");
-			String menu = In.getStr("수정항목선택");
-			switch(menu) {
-			case "1":
-				vo.setName(In.getStr("이름"));
-				break;
-			case "2":
-				vo.setGender(In.getStr("성별(남자/여자)"));
-				break;
-			case "3":
-				vo.setBirth(In.getStr("생년월일(YYYY-MM-DD)"));
-				break;
-			case "4":
-				vo.setTel(In.getStr("연락처"));
-				break;
-			case "5":
-				vo.setEmail(In.getStr("이메일"));
-				break;
-			case "6":
-				vo.setPhoto(In.getStr("사진"));
-				break;
-			case "9":
-				System.out.println();
-				System.out.println("*** 수정이 취소 되었습니다. ***");
-				return; // update()메서드를 빠져나간다.
-			case "0":
-				// 수정하기전 본인확인용 비밀번호를 받는다.
-				vo.setPw(In.getStr("비밀번호"));
-				// DB 처리
-				// 여기 (MemberController) -> Execute -> MemberUpdateService
-				// -> MemberDAO().update()
-				Execute.execute(new MemberUpdateService(), vo);
-				return; // update()메서드를 빠져나간다. - 수정완료
-			default:
-				System.out.println("###########################");
-				System.out.println("## 항목를 잘못 선택 하셨습니다. ##");
-				System.out.println("## [0~6,9] 를 선택 하세요.   ##");
-				System.out.println("###########################");
-			} // end of switch
-		} // end of while()
-	} // end of update()
+
 } // end of class
 
 

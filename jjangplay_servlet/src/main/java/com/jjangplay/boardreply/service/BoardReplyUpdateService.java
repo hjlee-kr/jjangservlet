@@ -1,7 +1,5 @@
 package com.jjangplay.boardreply.service;
 
-import com.jjangplay.board.dao.BoardDAO;
-import com.jjangplay.board.vo.BoardVO;
 import com.jjangplay.boardreply.dao.BoardReplyDAO;
 import com.jjangplay.boardreply.vo.BoardReplyVO;
 import com.jjangplay.main.dao.DAO;

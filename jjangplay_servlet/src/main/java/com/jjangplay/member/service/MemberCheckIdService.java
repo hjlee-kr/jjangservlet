@@ -1,12 +1,9 @@
 package com.jjangplay.member.service;
 
-import java.util.List;
 
 import com.jjangplay.main.dao.DAO;
 import com.jjangplay.main.service.Service;
 import com.jjangplay.member.dao.MemberDAO;
-import com.jjangplay.member.vo.MemberVO;
-import com.jjangplay.util.page.PageObject;
 
 public class MemberCheckIdService implements Service {
 

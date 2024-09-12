@@ -2,16 +2,14 @@ package com.jjangplay.util.exe;
 
 import java.util.Arrays;
 
-import com.jjangplay.board.service.BoardListService;
 import com.jjangplay.main.service.Service;
-import com.jjangplay.util.auth.Authority;
 
 public class Execute {
 
 	// 서비스를 실행시키고 로그를 출력하는 메서드
 	public static Object execute(Service service, Object obj) throws Exception {
-		// 권한처리
-		Authority.checkAuth(service);
+		// 권한처리 -> 권한처리는 AuthorityFilter로 구현
+		//Authority.checkAuth(service);
 		
 		// 처리된 결과를 저장하는 변수 -> 리턴
 		Object result = null;

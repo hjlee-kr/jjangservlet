@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.jjangplay.board.vo.BoardVO;
 import com.jjangplay.image.vo.ImageVO;
 import com.jjangplay.main.dao.DAO;
 import com.jjangplay.util.db.DB;
@@ -82,7 +81,7 @@ public class ImageDAO extends DAO {
 					if (list == null) list = new ArrayList<ImageVO>();
 					//rs -> BoardVO
 					ImageVO vo = new ImageVO(); // 클래스를 사용하는 기본형식
-					// BoardVO 안의 no 변수에 rs 안에 no 컬럼에 저장되어있는 값을 넘겨받는다  
+					// ImageVO 안의 no 변수에 rs 안에 no 컬럼에 저장되어있는 값을 넘겨받는다  
 					vo.setNo(rs.getLong("no"));
 					vo.setTitle(rs.getString("title"));
 					vo.setId(rs.getString("id"));
@@ -111,53 +110,8 @@ public class ImageDAO extends DAO {
 		return list;
 	} // end of list()
 	
-	// 2-1. 글보기 (조회수 증가)
-	// [BoardController] -> (Execute) -> BoardViewService -> [BoardDAO.increase()]
-	public int increase(Long no) throws Exception {
-		// 결과값 저장을 위한 변수 선언
-		int result = 0;
-		
-		try {
-			// 1.드라이버 확인 - 이미했음
-			// 2.DB연결
-			con = DB.getConnection();
-			// 3.SQL (INCREASE)
-			// 4.실행객체에 데이터 전달
-			pstmt = con.prepareStatement(INCREASE);
-			pstmt.setLong(1, no);
-			// 5.실행 - update : executeUpdate() -> int 로 결과값 리턴
-			result = pstmt.executeUpdate();
-			// 6.표시
-			if (result == 0) {
-				// 글번호가 존재하지 않으면 예외로 처리합니다.
-				throw new Exception("예외발생 : 글번호가 존재하지 않습니다.");
-				// 예외상황을 만들어서 catch 블럭으로 넘어간다.
-			}
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-			//글번호가 존재하지 않는 오류
-			if (e.getMessage().indexOf("예외발생") >= 0) {
-				throw e;
-			}
-			else {
-				// 그외오류
-				throw new Exception("예외발생 : 게시판 글보기 조회수 DB 처리중 예외발생");
-			}
-		} finally {
-			try {
-				// 7. DB닫기
-				DB.close(con, pstmt);
-			} catch (Exception e) {
-				// TODO: handle exception
-				e.printStackTrace();
-			}
-		}// end of try~catch~finally
-		
-		return result;
-	} // end of increase
-	
-	// 2-2. 글보기 (글번호의 상세페이지)
+
+	// 2. 글보기 (글번호의 상세페이지)
 	// [ImageController] -> (Execute) -> ImageViewService
 	// -> [ImageDAO.view()]
 	// Image table 에서 한줄의 데이터를 가져옵니다. 
@@ -200,9 +154,6 @@ public class ImageDAO extends DAO {
 				e.printStackTrace();
 			}
 		}
-		
-		
-		
 		
 		// DB에서 받은 데이터를 리턴
 		return vo;
@@ -406,17 +357,17 @@ public class ImageDAO extends DAO {
 	
 	final String TOTALROW = "select count(*) from image";
 
-	final String INCREASE = "update board set hit = hit + 1 "
-			+ " where no = ?";
 	final String VIEW = "select i.no, i.title, i.content,"
 			+ " i.id, m.name, "
 			+ " to_char(i.writeDate, 'yyyy-mm-dd') writeDate"
 			+ " , i.fileName "
 			+ " from image i, member m"
 			+ " where (i.no = ?) and (i.id = m.id)"; 
+
 	final String WRITE = "insert into image "
 			+ " (no, title, content, id, fileName) "
 			+ " values (image_seq.nextval, ?, ?, ?, ?)";
+
 	final String UPDATE = "update image "
 			+ " set title = ?, content = ? "
 			+ " where no = ? and id = ?";

@@ -17,6 +17,10 @@ $(function(){
 	//  2. 라이브러리 등록확인 
 	console.log("jquery loading......");
 	
+	// 리스트 페이지로 들어올때 공지기간 선택옵션을 체크하는 명령?
+	// ===> 태그선택을 id로 세팅한다.
+	$("#${pageObject.period}").prop('checked', true);
+	
 	// 이벤트 처리
 	$("#perPageNum").change(function(){
 		$("#searchForm").submit();
@@ -27,6 +31,21 @@ $(function(){
 	$("#perPageNum")
 		.val("${(empty pageObject.perPageNum)?'10':pageObject.perPageNum}");
 	
+	$(".periodOption").change(function() {
+		if (this.period[0].checked) {
+			location = "/notice/list.do?period=pre";
+		}
+		else if (this.period[1].checked) {
+			location = "/notice/list.do?period=old";
+		}
+		else if (this.period[2].checked) {
+			location = "/notice/list.do?period=res";
+		}
+		else if (this.period[3].checked) {
+			location = "/notice/list.do?period=all";
+		}
+	});
+	
 });
 </script>
 
@@ -35,6 +54,34 @@ $(function(){
 
 <div class="container p-3 my-3">
 	<h1><i class="fa fa-align-justify"></i> 공지사항 리스트</h1>
+	<c:if test="${!empty login && login.gradeNo == 9 }">
+	<form class="periodOption">
+	  <div class="custom-control custom-radio custom-control-inline">
+	    <input type="radio" class="custom-control-input"
+	     id="pre" name="period" value="pre">
+	    <label class="custom-control-label" for="pre">현재공지</label>
+	  </div>
+	  <div class="custom-control custom-radio custom-control-inline">
+	    <input type="radio" class="custom-control-input"
+	     id="old" name="period" value="old">
+	    <label class="custom-control-label" for="old">지난공지</label>
+	  </div>
+	  <div class="custom-control custom-radio custom-control-inline">
+	    <input type="radio" class="custom-control-input"
+	     id="res" name="period" value="res">
+	    <label class="custom-control-label" for="res">예약공지</label>
+	  </div>
+	  <div class="custom-control custom-radio custom-control-inline">
+	    <input type="radio" class="custom-control-input"
+	     id="all" name="period" value="all">
+	    <label class="custom-control-label" for="all">모든공지</label>
+	  </div>
+	</form>
+	
+	
+	</c:if>
+	
+	
 	<form action="list.do" id="searchForm">
 		<div class="row">
 			<div class="col-md-8">
