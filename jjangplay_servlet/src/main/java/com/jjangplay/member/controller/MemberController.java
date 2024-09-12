@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.swing.plaf.synth.SynthOptionPaneUI;
 
+import com.jjangplay.image.vo.ImageVO;
 import com.jjangplay.main.controller.Init;
 import com.jjangplay.main.controller.Main;
 import com.jjangplay.member.service.MemberConUpdateService;
@@ -325,6 +326,43 @@ public class MemberController {
 					jsp = "redirect:list.do?" + pageObject.getPageQuery();
 					break;
 
+				case "/member/changePhoto.do":
+					System.out.println("회원정보 사진 바꾸기 처리");
+					// 이미지 업로드 처리
+					// new MultipartRequest(request, 실제저장위치, 사이즈제한,
+					//	encoding, 중복처리객체-다른이름으로)
+					// request를 multi에 담으면 request의 내용은 사라진다.
+					multi =
+						new MultipartRequest(request, realSavePath, sizeLimit,
+							"utf-8", new DefaultFileRenamePolicy());
+					
+					// 데이터 수집(사용자:form->서버->request->multi)
+					// 글번호, 새로운 이미지 경로+파일이름
+					id = multi.getParameter("id");
+					photo = multi.getFilesystemName("imageFile");
+					
+					String deleteFileName = multi.getParameter("deleteFileName");
+					
+					// 변수 vo에 id와 photo를 담는다.
+					vo = new MemberVO();
+					vo.setId(id);
+					vo.setPhoto(savePath + "/" +photo);
+					
+					// 서비스로 간다.
+					// MemberController -> Execute
+					// -> MemberChangePhotoService()
+					// -> MemberDAO.changePhoto()
+					Execute.execute(Init.get(uri), vo);
+					
+					// 기존 이미지 파일을 지운다. (존재하면)
+					File deleteFile = new File(request.getServletContext()
+							.getRealPath(deleteFileName));
+					if (deleteFile.exists()) deleteFile.delete();
+					
+					session.setAttribute("msg", "사진 바꾸기가 성공했습니다.");
+					
+					jsp = "redirect:view.do?id=" + id;
+					break;
 				default:
 					request.setAttribute("uri", uri);
 					jsp = "error/404";

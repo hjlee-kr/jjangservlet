@@ -81,6 +81,44 @@
 	  	<button onclick="history.back()" class="btn btn-success">되돌아가기</button>
 	  </div>
 	</div>
-</div>
+</div> <!-- end of class="container" -->
+
+	<!-- The Modal -->
+	<div class="modal" id="imageChangeModal">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	
+	      <!-- Modal Header -->
+	      <div class="modal-header">
+	        <h4 class="modal-title">바꿀사진 선택하기</h4>
+	        <button type="button" class="close" data-dismiss="modal">&times;</button>
+	      </div>
+	      
+	      <form action="changePhoto.do" method="post" enctype="multipart/form-data">
+	      	<!-- 숨겨서 넘겨야 할 데이터 : 회원id, 현재화일이름(삭제를 위해서) -->
+	      	<input name="id" value="${vo.id }" type="hidden">
+	      	<input name="deleteFileName" value="${vo.photo }" type="hidden">
+		      <!-- Modal body -->
+		      <div class="modal-body">
+		        <div class="form-group">
+				      <label for="imageFile">첨부이미지</label>
+				      <input type="file" class="form-control"
+				       id="imageFile" required
+				      	name="imageFile">
+				    </div>
+		      </div>
+		
+		      <!-- Modal footer -->
+		      <div class="modal-footer">
+		      	<button class="btn btn-primary">바꾸기</button>
+		        <button type="button" class="btn btn-danger"
+		         data-dismiss="modal">취소</button>
+		      </div>
+				</form>
+	    </div>
+	  </div>
+	</div>
+
+
 </body>
 </html>

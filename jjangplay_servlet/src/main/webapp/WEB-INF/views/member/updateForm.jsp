@@ -129,14 +129,6 @@ $(function() {
 <!-- 알파벳과한글사용가능한패턴이 3,20자 => ^[a-z가-힣]{3,20}$ -->
 <!-- 공백을 제외한 모든가 가능한 3,20자 => ^[^ .]{3,20}$ -->
 <div class="container">
-	<form action="/member/update.do" method="post" enctype="multipart/form-data">
-		<div class="form-group">
-	    <label for="photo">사진</label>
-	    <input type="file" class="form-control"
-	    	id="photo" name="photo">
-	  </div>
-	</form>
-	
 	<form action="/member/update.do" method="post">
 	  <div class="form-group">
 	    <label for="id">아이디</label>
