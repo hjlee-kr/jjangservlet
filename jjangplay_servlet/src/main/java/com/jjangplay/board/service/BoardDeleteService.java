@@ -18,7 +18,7 @@ public class BoardDeleteService implements Service {
 	@Override
 	public Integer service(Object obj) throws Exception {
 		// [BoardController] -> (Execute) -> BoardDeleteService -> [BoardDAO.delete()]
-		return new BoardDAO().delete((BoardVO)obj);
+		return dao.delete((BoardVO)obj);
 	}
 
 }

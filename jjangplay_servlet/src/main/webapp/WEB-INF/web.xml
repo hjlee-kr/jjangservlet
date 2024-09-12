@@ -20,6 +20,12 @@
   	<url-pattern>*.do</url-pattern>
   </servlet-mapping>
   
+  <!-- filter 사용
+  1. <filter>,<filter-mapping>의 <filter-name>을 동일하게 입력
+  2. <filter> <filter-class>는 구현한 Filter Class 패키지 경로+이름
+  3. <filter-mapping> <url-pattern>은 필터에 들어오는 uri 패턴 or 값을 적어줍니다.
+   -->
+  
   <filter>
   	<filter-name>sitemesh</filter-name>
   	<filter-class>com.opensymphony.sitemesh.webapp.SiteMeshFilter</filter-class>
@@ -47,6 +53,16 @@
   
   <filter-mapping>
   	<filter-name>authority</filter-name>
+  	<url-pattern>*.do</url-pattern>
+  </filter-mapping>
+  
+  <filter>
+  	<filter-name>conUpdate</filter-name>
+  	<filter-class>com.jjangplay.util.filter.ConUpdateFilter</filter-class>
+  </filter>
+  
+  <filter-mapping>
+  	<filter-name>conUpdate</filter-name>
   	<url-pattern>*.do</url-pattern>
   </filter-mapping>
   

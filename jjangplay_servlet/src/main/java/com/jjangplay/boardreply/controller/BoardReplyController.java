@@ -27,8 +27,6 @@ public class BoardReplyController {
 		// 초기값 null 을 주어서 데이터를 받았는지 체크하고 처리한다.
 		Object result = null;
 			
-		Long no = 0L;
-			
 		// 이동할 jsp 주소를 담아놀 변수
 		String jsp = null;
 			

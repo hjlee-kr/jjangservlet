@@ -16,10 +16,10 @@ public class MemberConUpdateService implements Service {
 
 	@Override
 	public Integer service(Object obj) throws Exception {
-		// MemberController(로그인이 되면)->Execute
+		// (페이지가 빠뀔때마다 로그인 상태이면 )ConUpdateFilter -> Execute
 		// -> 여기로 옴
 		// -> 여기에서 -> MemberDAO().conUpdate(id)
-		return new MemberDAO().conUpdate((String)obj);
+		return dao.conUpdate((String)obj);
 	}
 
 }

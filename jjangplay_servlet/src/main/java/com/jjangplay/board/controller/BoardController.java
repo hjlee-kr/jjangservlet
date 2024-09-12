@@ -1,19 +1,10 @@
 package com.jjangplay.board.controller;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 
-import com.jjangplay.board.service.BoardDeleteService;
-import com.jjangplay.board.service.BoardListService;
-import com.jjangplay.board.service.BoardUpdateService;
-import com.jjangplay.board.service.BoardViewService;
-import com.jjangplay.board.service.BoardWriteService;
 import com.jjangplay.board.vo.BoardVO;
 import com.jjangplay.main.controller.Init;
 import com.jjangplay.util.exe.Execute;
-import com.jjangplay.util.io.BoardPrint;
-import com.jjangplay.util.io.In;
 import com.jjangplay.util.page.PageObject;
 import com.jjangplay.util.page.ReplyPageObject;
 
@@ -96,7 +87,7 @@ public class BoardController {
 				case "/board/write.do":
 					System.out.println("3. 일반게시판 글쓰기 처리");
 					
-					// 데이터 수집(키보드) : 제목, 내용, 작성자, 비밀번호
+					// 데이터 수집(WriteForm) : 제목, 내용, 작성자, 비밀번호
 					String title = request.getParameter("title");
 					String content = request.getParameter("content");
 					String writer = request.getParameter("writer");

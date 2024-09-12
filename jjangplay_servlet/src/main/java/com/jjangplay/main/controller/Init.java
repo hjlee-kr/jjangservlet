@@ -28,6 +28,7 @@ import com.jjangplay.member.service.MemberChangeGradeNoService;
 import com.jjangplay.member.service.MemberChangePhotoService;
 import com.jjangplay.member.service.MemberChangeStatusService;
 import com.jjangplay.member.service.MemberCheckIdService;
+import com.jjangplay.member.service.MemberConUpdateService;
 import com.jjangplay.member.service.MemberDeleteService;
 import com.jjangplay.member.service.MemberListService;
 import com.jjangplay.member.service.MemberLoginService;
@@ -120,6 +121,7 @@ public class Init {
 		serviceMap.put("/member/changeGradeNo.do", new MemberChangeGradeNoService());
 		serviceMap.put("/member/changeStatus.do", new MemberChangeStatusService());
 		serviceMap.put("/member/changePhoto.do", new MemberChangePhotoService());
+		serviceMap.put("/member/conUpdate.do", new MemberConUpdateService());
 		// 조립 dao->service
 		serviceMap.get("/member/login.do").setDAO(daoMap.get("memberDAO"));
 		serviceMap.get("/member/list.do").setDAO(daoMap.get("memberDAO"));
@@ -131,6 +133,7 @@ public class Init {
 		serviceMap.get("/member/changeGradeNo.do").setDAO(daoMap.get("memberDAO"));
 		serviceMap.get("/member/changeStatus.do").setDAO(daoMap.get("memberDAO"));
 		serviceMap.get("/member/changePhoto.do").setDAO(daoMap.get("memberDAO"));
+		serviceMap.get("/member/conUpdate.do").setDAO(daoMap.get("memberDAO"));
 		
 		
 		// dao를 생성

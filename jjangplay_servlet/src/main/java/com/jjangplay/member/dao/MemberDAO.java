@@ -333,9 +333,9 @@ public class MemberDAO extends DAO {
 			// 1.드라이버확인
 			// 2.DB연결
 			con = DB.getConnection();
-			// 3.SQL (UPDATE_CONDATE)
+			// 3.SQL (CONUPDATE)
 			// 4.실행객체에 데이터세팅
-			pstmt = con.prepareStatement(UPDATE_CONDATE);
+			pstmt = con.prepareStatement(CONUPDATE);
 			pstmt.setString(1, id);
 			// 5.실행
 			result = pstmt.executeUpdate();
@@ -524,7 +524,7 @@ public class MemberDAO extends DAO {
 			+ " where (id = ? and pw = ? and status = '정상') "
 			+ " and (g.gradeNo = m.gradeNo)";
 	
-	final String UPDATE_CONDATE = "update member "
+	final String CONUPDATE = "update member "
 			+ " set conDate = sysDate where id = ?";
 	
 	
