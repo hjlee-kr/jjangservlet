@@ -236,7 +236,7 @@ public class MemberDAO extends DAO {
  	}
 
  	// 5. 회원 탈퇴 처리 - 상태를 '탈퇴'로 변경
- 	// MemberController("5")->Execute->MemberDeleteService->여기까지
+ 	// MemberController("/member/delete.do")->Execute->MemberDeleteService->여기까지
  	public int delete(MemberVO vo) throws Exception {
  		// 결과 저장을 위한 변수
  		int result = 0;

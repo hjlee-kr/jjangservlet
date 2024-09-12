@@ -13,6 +13,26 @@
 		margin: 0 10px;
 	}
 </style>
+<script type="text/javascript">
+$(function() {
+	
+	// 탈퇴를 위한 모달창을 보여주고 닫는 이벤트
+	$("#deleteBtn").click(function(){
+		console.log("deleteBtn event......");
+		// 비밀번호 입력창 clear
+		$("#pw").val("");
+		$("#deleteModal").modal("show");
+	});
+	
+	$("#deleteCancelBtn").click(function(){
+		console.log("deleteCancelBtn event......");
+		$("#pw").val("");
+		$("#deleteModal").modal("hide");
+	});
+	// 이벤트 끝 (탈퇴 모달창)
+	
+});
+</script>
 </head>
 <body>
 <div class="container">
@@ -76,7 +96,8 @@
 	  <div class="card-footer">
 	  	<c:if test="${vo.id == login.id }">
 		  	<a href="/member/updateForm.do?id=${vo.id }" class="btn btn-primary">수정</a>
-		  	<a href="/member/delete.do?id=${vo.id }" class="btn btn-danger">탈퇴</a>
+		  	<button type="button" class="btn btn-danger"
+		  		id="deleteBtn">탈퇴</button>
 	  	</c:if>
 	  	<button onclick="history.back()" class="btn btn-success">되돌아가기</button>
 	  </div>
@@ -119,6 +140,44 @@
 	  </div>
 	</div>
 
+
+  <!-- The Modal - 삭제를 위한 -->
+  <div class="modal fade" id="deleteModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">탈퇴를 위한 비밀번호를 입력하세요</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+					<!-- 삭제시 비밀번호 입력을 위한 form태그 사용 -->
+					<form action="delete.do" method="post" id="deleteForm">
+						<!-- type="hidden"은 form태그에 보이지는 않지만
+						값을 같이 넘겨야 할때 사용합니다.
+						값을 넘길때 가장중요한 프로퍼티는 name 이다. -->
+						<input type="hidden" name="id" value="${vo.id }">
+						<!-- required : 반드시 작성되어야 한다는 의미 -->
+						<!-- pattern ^로 시작해서 $로 끝난다. -->
+						<!-- .은 \n 빼로 전부 다 사용가능 -->
+						<!-- pw는 3자에서 20자 이내로 써야한다. -->
+						<!-- title의 내용은 툴팁으로 모여준다. -->
+						<input name="pw" required maxlength="20"
+							pattern="^.{3,20}$"
+							title="3~20자 입력 가능"
+							placeHolder="본인 확인용 비밀번호">
+						<button  class="btn btn-danger">탈퇴</button>
+						<button type="button" class="btn btn-success"
+							id="deleteCancelBtn">취소</button>
+					</form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
 
 </body>
 </html>

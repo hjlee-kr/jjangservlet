@@ -18,9 +18,9 @@ public class MemberDeleteService implements Service{
 	@Override
 	public Integer service(Object obj) throws Exception {
 		// TODO Auto-generated method stub
-		// MemberController:"5"->Execute->여기(MemberDeleteService)
+		// MemberController:"/member/delete.do"->Execute->여기(MemberDeleteService)
 		// 여기에서 -> MemberDAO().delete(MemberVO)
-		return new MemberDAO().delete((MemberVO)obj);
+		return dao.delete((MemberVO)obj);
 	}
 
 }
