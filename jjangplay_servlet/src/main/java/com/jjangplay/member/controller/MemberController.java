@@ -200,16 +200,32 @@ public class MemberController {
 					// /board/list.do로 이동한다.
 					jsp="redirect:/main/main.do";
 					break;
-				case "4":
-					System.out.println("4.내 정보 수정");
-					// 가장먼저 login 되어있는지 확인
-					if (Main.login == null) throw new Exception("예외발생 : 로그인이 필요합니다.");
+				case "/member/updateForm.do":
+					System.out.println("4-1. 내 정보 수정 폼");
+					id = request.getParameter("id");
+
+					// id를 가지고 DB에서 데이터 가져옵니다.
+					// 여기서(MemberController)->Execute->MemberViewService->MemberDAO.view()
+					result = Execute.execute(Init.get("/member/view.do"), id);
 					
-					// 내정보 가져오기
-					id = Main.login.getId();
-					vo = (MemberVO) Execute.execute(new MemberViewService(), id);
-					
+					request.setAttribute("vo", result);
+
+					jsp = "member/updateForm";
+					break;
+				case "/member/update.do":
+					System.out.println("4.내 정보 수정 처리");
+				
 					// 정보수정과 DB처리 메서드를 이용
+					vo = new MemberVO();
+					vo.setId(request.getParameter("id"));
+					vo.setPw(request.getParameter("pw"));
+					vo.setGender(request.getParameter("gender"));
+					vo.setBirth(request.getParameter("birth"));
+					vo.setTel(request.getParameter("tek"));
+					vo.setEmail(request.getParameter("email"));
+										
+					Execute.execute(new MemberUpdateService(), vo);
+				
 					update(vo);
 					break;
 				case "5":

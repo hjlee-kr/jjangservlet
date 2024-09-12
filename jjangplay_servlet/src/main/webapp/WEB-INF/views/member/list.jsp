@@ -18,12 +18,16 @@ $(function(){
 	console.log("jquery loading......");
 
 	// 이벤트 처리
-	function dataRowClick() {
-		alert("dataRow 클릭");
+	function dataRowClick(id) {
+	//	alert("dataRow 클릭, id=" + id);
+		// 내정보보기와 회원정보보기는 동일한 프로그램을 사용합니다.
+		// id 정보를 가지고 내정보보기와 회원정보보기를 사용합니다.
+		location="view.do?id=" + id;
 	};
 		
 	$(".dataRow").on("click", function() {
-		dataRowClick();
+		let id = $(this).find(".id").text();
+		dataRowClick(id);
 	});
 		
 		
@@ -32,7 +36,8 @@ $(function(){
 	}).on("mouseout", function() {
 		//dataRow click이벤트를 다시 설정한다.
 		$(".dataRow").on("click", function() {
-			dataRowClick();			
+			let id = $(this).find(".id").text();
+			dataRowClick(id);			
 		});
 	});
 
@@ -137,7 +142,7 @@ $(function(){
 					 style="font-size:30px"></i>
 				</c:if>
 			</td>
-			<td>${vo.id}</td>
+			<td class="id">${vo.id}</td>
 			<td>${vo.name}</td>
 			<td>${vo.birth}</td>
 			<td>${vo.tel}</td>

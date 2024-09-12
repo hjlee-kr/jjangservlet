@@ -66,7 +66,7 @@
 		</div>
 	  <div class="card-footer">
 	  	<c:if test="${vo.id == login.id }">
-		  	<a href="/member/update.do?id=${vo.id }" class="btn btn-primary">수정</a>
+		  	<a href="/member/updateForm.do?id=${vo.id }" class="btn btn-primary">수정</a>
 		  	<a href="/member/delete.do?id=${vo.id }" class="btn btn-danger">탈퇴</a>
 	  	</c:if>
 	  	<button onclick="history.back()" class="btn btn-success">되돌아가기</button>
