@@ -11,6 +11,7 @@
 		<pattern>/notice/*</pattern>
 		<pattern>/image/*</pattern>
 		<pattern>/member/*</pattern>
+		<pattern>/goods/*</pattern>
 	</decorator>
 	
 <!-- 	<decorator name="admin" page="admin_decorator.jsp"> -->
