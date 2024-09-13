@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.jjangplay.ajax.controller.AjaxController;
 import com.jjangplay.board.controller.BoardController;
 import com.jjangplay.boardreply.controller.BoardReplyController;
+import com.jjangplay.goods.controller.GoodsController;
 import com.jjangplay.image.controller.ImageController;
 import com.jjangplay.member.controller.MemberController;
 import com.jjangplay.notice.controller.NoticeController;
@@ -41,7 +42,8 @@ public class DispatcherServlet extends HttpServlet {
 	private MemberController memberController = new MemberController();
 	private ImageController imageController = new ImageController();
 	private MainController mainController = new MainController();
-	private AjaxController ajaxControlller = new AjaxController();
+	private AjaxController ajaxController = new AjaxController();
+	private GoodsController goodsController = new GoodsController();
        
 	/**
 	 * @see Servlet#init(ServletConfig)
@@ -120,11 +122,15 @@ public class DispatcherServlet extends HttpServlet {
 			break;
 		case "/ajax":
 			System.out.println("===아이디 중복 체크===");
-			jsp = ajaxControlller.execute(request);
+			jsp = ajaxController.execute(request);
 			break;
 		case "/image":
 			System.out.println("===이미지게시판===");
 			jsp = imageController.execute(request);
+			break;
+		case "/goods":
+			System.out.println("===상품관리===");
+			jsp = goodsController.execute(request);
 			break;
 		default:
 			request.setAttribute("uri", uri);
