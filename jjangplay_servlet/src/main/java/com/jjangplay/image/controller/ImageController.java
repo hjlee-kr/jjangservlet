@@ -46,6 +46,12 @@ public class ImageController {
 			// 용량제한
 			int sizeLimit = 100 * 1024 * 1024;//100MB
 			
+			File realSavePathFile = new File(realSavePath);
+			// 폴더가 존재하지 않으면 만들어 준다.
+			if (!realSavePathFile.exists()) {
+				realSavePathFile.mkdir();
+			}
+			
 			try {
 				// 메뉴처리 CRUD
 				switch (uri) {

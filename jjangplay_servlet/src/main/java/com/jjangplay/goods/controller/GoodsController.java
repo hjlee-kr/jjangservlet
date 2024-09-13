@@ -5,6 +5,7 @@ import java.io.File;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.jjangplay.goods.vo.GoodsVO;
 import com.jjangplay.main.controller.Init;
 import com.jjangplay.member.vo.LoginVO;
 import com.jjangplay.util.exe.Execute;
@@ -45,6 +46,14 @@ public class GoodsController {
 			// 용량제한
 			int sizeLimit = 100 * 1024 * 1024;//100MB
 			
+			System.out.println("realSavePath = " + realSavePath);
+			
+			File realSavePathFile = new File(realSavePath);
+			// 폴더가 존재하지 않으면 만들어 준다.
+			if (!realSavePathFile.exists()) {
+				realSavePathFile.mkdir();
+			}
+			
 			try {
 				// 메뉴처리 CRUD
 				switch (uri) {
@@ -70,6 +79,37 @@ public class GoodsController {
 					break;
 				case "/goods/write.do":
 					System.out.println("3. 상품관리 등록 처리====");
+					
+					MultipartRequest multi =
+						new MultipartRequest(request, realSavePath,
+							sizeLimit, "utf-8", new DefaultFileRenamePolicy());
+					
+					// writeForm에 기록된 데이터를 세팅한다. (DB처리전)
+					GoodsVO vo = new GoodsVO();
+				//	vo.setGno(Long.parseLong(multi.getParameter("gno")));
+					vo.setName(multi.getParameter("name"));
+					vo.setContent(multi.getParameter("content"));
+					vo.setProductDate(multi.getParameter("productDate"));
+					vo.setModelNo(multi.getParameter("modelNo"));
+					vo.setCompany(multi.getParameter("company"));
+					vo.setDelivery_cost(Long.parseLong(multi.getParameter("delivery_cost")));
+//					vo.setStd_price(Long.parseLong(request.getParameter("std_price")));
+//					vo.setDiscount(Long.parseLong(request.getParameter("discount")));
+//					vo.setRate(Double.parseDouble(request.getParameter("rate")));
+//					vo.setStartDate(request.getParameter("startDate"));
+//					vo.setEndDate(request.getParameter("endDate"));
+					// 이미지는 경로와 파일이름을 같이 DB에 등록한다. 
+					vo.setImageName(savePath + "/" + multi.getFilesystemName("imageName"));
+					
+					// DB처리
+					// GoodsController -> Execute -> GoodsWriteService
+					// 상품데이블 등록 실행후 가격데이블 등록 실행
+					// GoodsDAO.goodsWrite(), GoodsDAO.priceWrite()
+					Execute.execute(Init.get(uri), vo);
+					
+					// 처리가 끝나면 리스트로 돌아간다.
+					jsp = "redirect:/goods/list.do?perPageNum=" +
+						multi.getParameter("perPageNum");
 					break;
 				default:
 					request.setAttribute("uri", uri);

@@ -18,18 +18,16 @@
 		<!-- 데이터의 제목 줄 표시 -->
 		<tr>
 			<!-- th : table head - 테이블의 제목줄에 사용 -->
-			<!-- 리스트 : 상품번호, 상품명, 모델NO, 기본가격, 판매시작일, 판매종료일 -->
+			<!-- 리스트 : 상품번호, 상품명, 모델NO, 제조사 -->
 			<th>상품번호</th>
 			<th>상품명</th>
 			<th>모델No</th>
-			<th>가격</th>
-			<th>판매시작일</th>
-			<th>판매종료일</th>
+			<th>제조사</th>
 		</tr>
 		<!-- 실제 데이터 : 데이터가 있는 만큼 <tr></tr> -->
 		<c:if test="${empty list }">
 			<tr>
-				<td colspan="6">
+				<td colspan="4">
 					등록된 상품이 없습니다.
 				<td>
 			</tr>
@@ -40,15 +38,14 @@
 					<td class="gno">${vo.gno}</td>
 					<td>${vo.name}</td>
 					<td>${vo.modelNo}</td>
-					<td>${vo.std_price}</td>
-					<td>${vo.startDate}</td>
-					<td>${vo.endDate}</td>
+					<td>${vo.company}</td>
 				</tr>
 			</c:forEach>
 		</c:if>
 		<tr>
-			<td colspan="6">
-				<a href="writeForm.do?perPageNum=${pageObject.perPageNum }"><button class="btn btn-primary">등록</button></a>
+			<td colspan="4">
+				<a href="writeForm.do?perPageNum=${pageObject.perPageNum }"
+					class="btn btn-primary">상품등록</a>
 			</td>
 		</tr>
   </table>

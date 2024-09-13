@@ -84,34 +84,6 @@ $(function() {
       	placeholder="배송료 입력" name="delivery_cost">
     </div>
     <div class="form-group">
-      <label for="std_price">정가</label>
-      <input type="text" class="form-control" id="std_price"
-      	required title="숫자만 입력"
-      	placeholder="정가 입력" name="std_price">
-    </div>
-    <div class="form-group">
-      <label for="discount">할인가</label>
-      <input type="text" class="form-control" id="discount"
-      	title="숫자만 입력"
-      	placeholder="할인가 입력" name="discount">
-    </div>
-    <div class="form-group">
-      <label for="rate">할인율</label>
-      <input type="text" class="form-control" id="rate"
-      	title="할인율 입력"
-      	placeholder="할인율 입력" name="rate">
-    </div>
-    <div class="form-group">
-      <label for="startDate">판매시작일</label>
-      <input type="text" class="form-control datepicker" id="startDate"
-      	name="startDate">
-    </div>
-    <div class="form-group">
-      <label for="endDate">판매종료일</label>
-      <input type="text" class="form-control datepicker" id="endDate"
-      	name="endDate">
-    </div>
-    <div class="form-group">
       <label for="imageName">제품이미지</label>
       <input type="file" class="form-control" id="imageName" required
       	name="imageName">

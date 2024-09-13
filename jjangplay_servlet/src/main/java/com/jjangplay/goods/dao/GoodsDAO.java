@@ -33,9 +33,7 @@ public class GoodsDAO extends DAO {
 					vo.setGno(rs.getLong("gno"));
 					vo.setName(rs.getString("name"));
 					vo.setModelNo(rs.getString("modelNo"));
-					vo.setStd_price(rs.getLong("std_price"));
-					vo.setStartDate(rs.getString("startDate"));
-					vo.setEndDate(rs.getString("endDate"));
+					vo.setCompany(rs.getString("company"));
 					
 					list.add(vo);
 				}
@@ -52,20 +50,96 @@ public class GoodsDAO extends DAO {
 	}
 
 	
+	// 3-1.상품등록
+	public Integer goodsWrite(GoodsVO vo) throws Exception {
+		// 결과값을 받을 변수 선언
+		int result = 0;
+		
+		try {
+			// 1. 드라이버 확인 - DispatcherServlet.init()
+			// 2. DB연결
+			con = DB.getConnection();
+			// 3. SQL작성 (상수: GOODSWRITE) -> 클래스 하단에
+			// 4. 실행객체에 데이터세팅
+			pstmt = con.prepareStatement(GOODSWRITE);
+			pstmt.setString(1, vo.getName());
+			pstmt.setString(2, vo.getContent());
+			pstmt.setString(3, vo.getProductDate());
+			pstmt.setString(4, vo.getModelNo());
+			pstmt.setString(5, vo.getCompany());
+			pstmt.setString(6, vo.getImageName());
+			pstmt.setLong(7, vo.getDelivery_cost());
+			// 5. SQL 실행
+			result = pstmt.executeUpdate();
+			// 6. 결과확인 (받은 데이터를 list에 저장)
+			System.out.println("GoodsWrite() result = " + result);
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		} finally {
+			// 7. DB 닫기
+			DB.close(con, pstmt);
+		}
+		return result;
+	}
+
 	
+	// 3-2.가격등록
+	public Integer priceWrite(GoodsVO vo) throws Exception {
+		// 결과값을 받을 변수 선언
+		int result = 0;
+		
+		try {
+			// 1. 드라이버 확인 - DispatcherServlet.init()
+			// 2. DB연결
+			con = DB.getConnection();
+			// 3. SQL작성 (상수: PRICESWRITE) -> 클래스 하단에
+			// 4. 실행객체에 데이터세팅
+			pstmt = con.prepareStatement(PRICESWRITE);
+			pstmt.setLong(1, vo.getGno());
+			pstmt.setLong(2, vo.getStd_price());
+			pstmt.setLong(3, vo.getDiscount());
+			pstmt.setDouble(4, vo.getRate());
+			pstmt.setString(5, vo.getStartDate());
+			pstmt.setString(6, vo.getEndDate());
+			// 5. SQL 실행
+			result = pstmt.executeUpdate();
+			// 6. 결과확인 (받은 데이터를 list에 저장)
+			System.out.println("PriceWrite() result = " + result);
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		} finally {
+			// 7. DB 닫기
+			DB.close(con, pstmt);
+		}
+		return result;
+	}
 	
 	// SQL 쿼리
 	final static String LIST = ""
-		+ "select g.gno, g.name, g.modelNo,"
-		+ " p.std_price,"
-		+ " to_char(p.startDate, 'yyyy-mm-dd') startDate,"
-		+ " to_char(p.endDate, 'yyyy-mm-dd') endDate "
-		+ " from goods g, price p "
-		+ " where g.gno = p.gno "
+		+ "select gno, name, modelNo, company "
+		+ " from goods "
 		+ " order by gno desc";
 
+	final static String GOODSWRITE = ""
+		+ "insert into goods (gno, name, content, productDate, modelNo, "
+		+ " company, imageName, delivery_cost) "
+		+ " values (goods_seq.nextval, ?, ?, ?, ?, ?, ?, ?)";
 	
+	final static String PRICESWRITE = ""
+		+ "insert into price (pno, gno, std_price, discount,"
+		+ " rate, startDate, endDate) "
+		+ " values (price_seq.nextval, ?, ?, ?, ?, ?, ?)";
 } // end of class
+
+
+
+
+
+
 
 
 
