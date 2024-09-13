@@ -101,7 +101,7 @@ $(function(){
 	</tr>
 	<!-- 실제 데이터 : 데이터가 있는 만큼 <tr></tr> -->
 	<c:forEach items="${list }" var="vo">
-		<tr onclick="location='view.do?no=${vo.no}&inc=1'" class="dataRow">
+		<tr class="dataRow">
 			<td class="no">${vo.no}</td>
 			<td>${vo.title}</td>
 			<td>${vo.writer}</td>

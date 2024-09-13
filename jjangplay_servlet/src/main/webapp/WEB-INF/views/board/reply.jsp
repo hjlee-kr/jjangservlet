@@ -24,8 +24,8 @@
 		  			<pre class="replyContent">${replyVO.content }</pre>
 		  		</div>
 		  		<div class="card-footer">
-		  			<button class="btn btn-sucess replyUpdateBtn">수정</button>
-		  			<button class="btn btn-dager replyDeleteBtn">삭제</button>
+		  			<button class="btn btn-success replyUpdateBtn">수정</button>
+		  			<button class="btn btn-danger replyDeleteBtn">삭제</button>
 		  		</div>
 		  	</div>
    		</c:forEach>
@@ -66,17 +66,17 @@
           <!-- 내용 / 작성자 / 비밀번호 -->
           <div class="form-group" id="contentDiv">
           	<label for="content">내용</label>
-          	<textarea class="form-group" rows="3" id="content"
+          	<textarea class="form-control" rows="3" id="content"
           	name="content"></textarea>
           </div>
           <div class="form-group" id="writerDiv">
           	<label for="writer">작성자</label>
-          	<input type="text" class="form-group"
+          	<input type="text" class="form-control"
           	id="writer" name="writer">
           </div>
           <div class="form-group" id="pwDiv">
           	<label for="pwr">비밀번호</label>
-          	<input type="password" class="form-group"
+          	<input type="password" class="form-control"
           	id="pwr" name="pw">
           </div>
         </div>
