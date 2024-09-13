@@ -8,6 +8,16 @@
 <head>
 <meta charset="UTF-8">
 <title>상품 리스트</title>
+<script type="text/javascript">
+$(function() {
+
+	$(".dataRow").click(function() {
+		let gno = $(this).find(".gno").text();
+		console.log("gno = " + gno);
+		location="view.do?gno=" + gno;
+	});
+});
+</script>
 
 </head>
 <body>

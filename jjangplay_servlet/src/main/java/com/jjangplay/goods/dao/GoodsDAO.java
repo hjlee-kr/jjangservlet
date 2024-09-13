@@ -49,6 +49,49 @@ public class GoodsDAO extends DAO {
 		return list;
 	}
 
+	// 2.상품 상세 페이지
+	public GoodsVO view(Long gno) throws Exception {
+		// 결과값을 받을 변수 선언
+		GoodsVO vo = null;
+		
+		try {
+			// 1. 드라이버 확인 - DispatcherServlet.init()
+			// 2. DB연결
+			con = DB.getConnection();
+			// 3. SQL작성 (상수: VIEW) -> 클래스 하단에
+			// 4. 실행객체에 데이터세팅
+			pstmt = con.prepareStatement(VIEW);
+			pstmt.setLong(1, gno);
+			// 5. SQL 실행
+			rs = pstmt.executeQuery();
+			// 6. 결과확인 (받은 데이터를 vo에 저장)
+			if (rs != null && rs.next()) {
+				vo = new GoodsVO();
+				vo.setGno(rs.getLong("gno"));
+				vo.setName(rs.getString("name"));
+				vo.setContent(rs.getString("content"));
+				vo.setWriteDate(rs.getString("writeDate"));
+				vo.setProductDate(rs.getString("productDate"));
+				System.out.println("중간점검1");
+				vo.setModelNo(rs.getString("modelNo"));
+				System.out.println("중간점검2");
+				vo.setCompany(rs.getString("company"));
+				vo.setImageName(rs.getString("imageName"));
+				vo.setDelivery_cost(rs.getLong("delivery_cost"));
+				
+			}
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		} finally {
+			// 7. DB 닫기
+			DB.close(con, pstmt, rs);
+		}
+		return vo;
+	}
+
+
 	
 	// 3-1.상품등록
 	public Integer goodsWrite(GoodsVO vo) throws Exception {
@@ -123,6 +166,11 @@ public class GoodsDAO extends DAO {
 		+ "select gno, name, modelNo, company "
 		+ " from goods "
 		+ " order by gno desc";
+	
+	final static String VIEW = ""
+		+ "select gno, name, content, writeDate, productDate, modelNo, "
+		+ " company, imageName, delivery_cost from goods "
+		+ " where gno = ?";
 
 	final static String GOODSWRITE = ""
 		+ "insert into goods (gno, name, content, productDate, modelNo, "

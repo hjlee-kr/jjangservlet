@@ -70,8 +70,23 @@ public class GoodsController {
 					
 					// jsp에서 보여주기위해 결과값을 담는다.
 					request.setAttribute("list", result);
-
+					
 					jsp = "goods/list";
+					break;
+				case "/goods/view.do":
+					System.out.println("2. 상품 상세 페이지=====");
+					
+					Long gno = Long.parseLong(request.getParameter("gno"));
+					
+					// DB 처리
+					result = Execute.execute(Init.get(uri), gno);
+					
+					System.out.println("result" + result);
+					
+					// 받은 결과를 request에 담아 jsp로 넘긴다.
+					request.setAttribute("vo", result);
+					
+					jsp = "goods/view";
 					break;
 				case "/goods/writeForm.do":
 					System.out.println("3. 상품관리 등록 폼====");

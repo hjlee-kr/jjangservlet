@@ -120,6 +120,7 @@ public class AuthorityFilter extends HttpFilter implements Filter {
 		
 		// 상품등록 권한지정
 		authMap.put("/goods/list.do", 9);
+		authMap.put("/goods/view.do", 9);
 		authMap.put("/goods/writeForm.do", 9);
 		authMap.put("/goods/write.do", 9);
 	}
