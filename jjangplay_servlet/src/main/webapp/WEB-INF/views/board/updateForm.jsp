@@ -52,6 +52,10 @@ $(function(){
 <div class="container">
   <h2><i class="fa fa-pencil-square-o"></i> 일반 게시판 글 수정 폼</h2>
   <form action="update.do" method="post" id="updateForm">
+  	<input type="hidden" name="page" value="${param.page }">
+  	<input type="hidden" name="perPageNum" value="${param.perPageNum }">
+  	<input type="hidden" name="key" value="${param.key }">
+  	<input type="hidden" name="word" value="${param.word }">
     <div class="form-group">
       <label for="no">번호</label>
       <input type="text" class="form-control"

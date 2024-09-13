@@ -32,6 +32,7 @@ public class MainController {
 				PageObject pageObject = new PageObject();
 				
 				// 공지사항 리스트
+				if (gradeNo == 9) pageObject.setPeriod("all");
 				pageObject.setPerPageNum(5);
 				result = Execute.execute(Init.get("/notice/list.do"), pageObject);
 				request.setAttribute("noticeList", result);

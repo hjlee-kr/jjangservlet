@@ -17,6 +17,17 @@ $(function(){
 	//  2. 라이브러리 등록확인 
 	console.log("jquery loading......");
 	
+	// tag에 onclick을 지정하는대신 scirpt에 별도로 작성
+	// 데이터를 클릭했을때 이벤트
+	$(".dataRow").click(function() {
+		// 글번호수집 (view.do로 이동하기 위해)
+		let no = $(this).find(".no").text();
+		console.log("no = " + no);
+		// 페이지처리를 위해 page정보를 같이 넘긴다.
+		location="view.do?no=" + no +
+				"&inc=1&${pageObject.pageQuery}";
+	});
+	
 	// 이벤트 처리
 	$("#perPageNum").change(function(){
 		$("#searchForm").submit();
@@ -91,7 +102,7 @@ $(function(){
 	<!-- 실제 데이터 : 데이터가 있는 만큼 <tr></tr> -->
 	<c:forEach items="${list }" var="vo">
 		<tr onclick="location='view.do?no=${vo.no}&inc=1'" class="dataRow">
-			<td>${vo.no}</td>
+			<td class="no">${vo.no}</td>
 			<td>${vo.title}</td>
 			<td>${vo.writer}</td>
 			<td>${vo.writeDate}</td>
@@ -100,7 +111,7 @@ $(function(){
 	</c:forEach>
 	<tr>
 		<td colspan="5">
-			<a href="writeForm.do"><button class="btn btn-primary">등록</button></a>
+			<a href="writeForm.do?perPageNum=${pageObject.perPageNum }"><button class="btn btn-primary">등록</button></a>
 		</td>
 	</tr>
   </table>

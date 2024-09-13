@@ -74,6 +74,10 @@ public class BoardController {
 						Execute.execute(Init.get("/boardreply/list.do"), replyPageObject)
 						);
 					
+					// 댓글 페이지 정보를 request에 담아서 /board/view.jsp에 전달
+					// 앞에 "replyPageObject" 는 jsp에서 사용하는것과 동일한 이름
+					// 뒤에 replyPageObject는 위에서 선언한 변수이름과 동일
+					request.setAttribute("replyPageObject", replyPageObject);
 					// DispatcherServlet에서
 					// "/WEB-INF/views/board/view.jsp" 경로를 만들어서
 					// forword 한다.
@@ -105,7 +109,8 @@ public class BoardController {
 					
 					// jsp 정보앞에 "redirect:" 가 붙어있으면 redirect로 처리
 					// 없으면 forword
-					jsp = "redirect:list.do";
+					jsp = "redirect:list.do?perPageNum="
+						+ request.getParameter("perPageNum");
 					break;
 				case "/board/updateForm.do":
 					System.out.println("4-1. 일반게시판 글수정 폼");
@@ -137,10 +142,13 @@ public class BoardController {
 					vo.setWriter(writer);
 					vo.setPw(pw);
 					
-					
 					Execute.execute(Init.get(uri), vo);
 					
-					jsp="redirect:view.do?no="+no+"&inc=0";
+					// 페이지정보를 받고 uri뒤에 붙인다.
+					pageObject = PageObject.getInstance(request);
+							
+					jsp="redirect:view.do?no="+no+"&inc=0&"
+						+pageObject.getPageQuery();
 					break;
 				case "/board/delete.do":
 					System.out.println("5. 일반게시판 글삭제");

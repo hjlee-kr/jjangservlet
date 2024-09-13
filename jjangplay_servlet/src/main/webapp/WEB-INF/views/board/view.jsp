@@ -79,11 +79,11 @@ $(function(){
       ${ vo.hit }</div>
     </div>
     <div class="row">
-      <a href="updateForm.do?no=${param.no }">
+      <a href="updateForm.do?no=${param.no }&page=${param.page }&perPageNum=${param.perPageNum}&key=${param.key}&word=${param.word}">
       	<button class="btn btn-primary">수정</button></a>
 			<button class="btn btn-danger"
 				id="deleteBtn">삭제</button>
-			<a href="list.do">
+			<a href="list.do?page=${param.page }&perPageNum=${param.perPageNum}&key=${param.key}&word=${param.word}">
 			<button class="btn btn-success">리스트</button></a>
 			
     </div>

@@ -53,6 +53,7 @@ $(function() {
 <div class="container">
   <h2><i class="fa fa-edit"></i> 일반 게시판 글 등록 폼</h2>
   <form action="write.do" method="post" id="writeForm">
+  	<input type="hidden" name="perPageNum" value="${param.perPageNum }">
     <div class="form-group">
       <label for="title">제목</label>
       <input type="text" class="form-control" id="title"

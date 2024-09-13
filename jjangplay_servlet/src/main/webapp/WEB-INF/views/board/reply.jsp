@@ -34,7 +34,7 @@
   </div>
   <div class="card-footer">
   	<pageNav:replayPageNav listURI="view.do"
-  		 pageObject="${replyPageObject}"></pageNav:replayPageNav>
+  		 pageObject="${replyPageObject}" query="&inc=0"></pageNav:replayPageNav>
   </div>
 </div>
 
@@ -58,6 +58,9 @@
           	<input type="hidden" name="no" value="${param.no }">
           	<input type="hidden" name="page" value="${param.page }">
           	<input type="hidden" name="perPageNum" value="${param.perPageNum }">
+          	<!-- 검색어관련 -->
+          	<input type="hidden" name="key" value="${param.key }">
+          	<input type="hidden" name="word" value="${param.word }">
         <!-- Modal body 시작 -->
         <div class="modal-body">
           <!-- 내용 / 작성자 / 비밀번호 -->

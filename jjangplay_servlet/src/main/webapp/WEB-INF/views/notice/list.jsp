@@ -10,7 +10,7 @@
 <title>공지사항 리스트</title>
 
 <!-- 4. 우리가 만든 라이브러리 등록 -->
-<script type="text/javascript" src="boardInputUtil.js"></script>
+<script type="text/javascript" src="/js/boardInputUtil.js"></script>
 
 <script type="text/javascript">
 $(function(){
