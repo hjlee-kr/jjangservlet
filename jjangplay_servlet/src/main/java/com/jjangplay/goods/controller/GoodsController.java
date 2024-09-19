@@ -205,7 +205,35 @@ public class GoodsController {
 					
 					jsp = "redirect:view.do?gno=" + vo.getGno();
 					break;
+				case "/goods/updateForm.do":
+					System.out.println("4-1. 상품정보 수정 폼====");
+					// 기존정보를 가져온다. gno로 DB처리후 데이터 받음
+					gno = Long.parseLong(request.getParameter("gno"));
+					result = Execute.execute(Init.get("/goods/view.do"), gno);
 					
+					// jsp로 넘기기위해 request에 담는다.
+					request.setAttribute("vo", result);
+					
+					jsp = "goods/updateForm";
+					break;
+				case "/goods/update.do":
+					System.out.println("4-2. 상품정보 수정 처리====");
+					// 폼에서 작성한 데이터를 세팅
+					vo = new GoodsVO();
+					vo.setGno(Long.parseLong(request.getParameter("gno")));
+					vo.setName(request.getParameter("name"));
+					vo.setContent(request.getParameter("content"));
+					vo.setModelNo(request.getParameter("modelNo"));
+					vo.setProductDate(request.getParameter("productDate"));
+					vo.setCompany(request.getParameter("company"));
+					vo.setDelivery_cost(Long.parseLong(request.getParameter("delivery_cost")));
+					
+					// GoodsUpdateService()
+					Execute.execute(Init.get(uri), vo);
+					
+					
+					
+					break;
 				case "/goods/updatePriceForm.do":
 					System.out.println("4-3. 상품가격정보 수정 폼====");
 					// 기존정보를 받아오기 위해 gno를 세팅

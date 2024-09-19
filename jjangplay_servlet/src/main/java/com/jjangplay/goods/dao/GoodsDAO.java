@@ -199,6 +199,41 @@ public class GoodsDAO extends DAO {
 		return result;
 	}
 
+	// 4-1.상품정보수정
+	public Integer update(GoodsVO vo) throws Exception {
+		// 결과값을 받을 변수 선언
+		int result = 0;
+		
+		try {
+			// 1. 드라이버 확인 - DispatcherServlet.init()
+			// 2. DB연결
+			con = DB.getConnection();
+			// 3. SQL작성 (상수: UPDATE) -> 클래스 하단에
+			// 4. 실행객체에 데이터세팅
+			pstmt = con.prepareStatement(UPDATE);
+			pstmt.setString(1, vo.getName());
+			pstmt.setString(2, vo.getContent());
+			pstmt.setString(3, vo.getProductDate());
+			pstmt.setString(4, vo.getModelNo());
+			pstmt.setString(5, vo.getCompany());
+			pstmt.setLong(6, vo.getDelivery_cost());
+			pstmt.setLong(7, vo.getGno());
+			// 5. SQL 실행
+			result = pstmt.executeUpdate();
+			// 6. 결과확인
+			System.out.println("update() result = " + result);
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		} finally {
+			// 7. DB 닫기
+			DB.close(con, pstmt);
+		}
+		return result;
+	}
+
+	
 	// 4-2.가격수정
 	public Integer updatePrice(GoodsVO vo) throws Exception {
 		// 결과값을 받을 변수 선언
@@ -265,6 +300,10 @@ public class GoodsDAO extends DAO {
 		+ " rate, startDate, endDate) "
 		+ " values (price_seq.nextval, ?, ?, ?, ?, ?, ?)";
 	
+	final static String UPDATE = ""
+		+ "update goods set name = ?, content = ?, productDate = ?, "
+		+ " modelNo = ?, company = ?, delivery_cost = ? "
+		+ " where gno = ? ";
 	
 	final static String UPDATEPRICE = ""
 		+ "update price set std_price = ?, discount = ?, "
