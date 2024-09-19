@@ -110,9 +110,9 @@ $(function(){
 		<a href="updateForm.do?gno=${param.gno }&page=${param.page}&perPageNum=${param.perPageNum}&key=${param.key}&word=${param.word}"
 			class="btn btn-primary" title="이미지를 제외한 정보만 수정합니다."
 			data-toggle="tooltip" data-placement="top" id="updateBtn">수정</a>
-		<a href="delete.do?no=${param.no }&deleteFileName=${vo.imageName}&perPageNum=${param.perPageNum}"
+		<a href="delete.do?gno=${param.gno }&deleteFileName=${vo.imageName}&perPageNum=${param.perPageNum}"
 			class="btn btn-danger" id="deleteBtn">삭제</a>
-		<a href="list.do?no=${param.no }&page=${param.page}&perPageNum=${param.perPageNum}&key=${param.key}&word=${param.word}"
+		<a href="list.do?gno=${param.gno }&page=${param.page}&perPageNum=${param.perPageNum}&key=${param.key}&word=${param.word}"
 			class="btn btn-info">리스트</a>
 		<c:if test="${!empty vo.pno }">
 			<a href="updatePriceForm.do?gno=${param.gno }&name=${vo.name }&page=${param.page}&perPageNum=${param.perPageNum}&key=${param.key}&word=${param.word}"
@@ -138,12 +138,12 @@ $(function(){
 	
 	      <!-- Modal Header -->
 	      <div class="modal-header">
-	        <h4 class="modal-title">바꿀이미지 선택하기</h4>
+	        <h4 class="modal-title">바꿀상품이미지 선택하기</h4>
 	        <button type="button" class="close" data-dismiss="modal">&times;</button>
 	      </div>
 	      
 	      <form action="imageChange.do" method="post" enctype="multipart/form-data">
-	      	<!-- 숨겨서 넘겨야 할 데이터 : 이미지번호, 현재화일이름(삭제를 위해서) -->
+	      	<!-- 숨겨서 넘겨야 할 데이터 : 상품번호, 현재화일이름(삭제를 위해서) -->
 	      	<input name="gno" value="${vo.gno }" type="hidden">
 	      	<input name="deleteFileName" value="${vo.imageName }" type="hidden">
 					<!-- 페이지 정보도 넘겨줍니다. -->

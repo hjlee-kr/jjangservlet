@@ -7,7 +7,6 @@
 <title>상품 가격 수정</title>
 	<!-- datepicker -->
 	<link rel="stylesheet" href="https://code.jquery.com/ui/1.14.0/themes/base/jquery-ui.css">
-	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 	<script src="https://code.jquery.com/ui/1.14.0/jquery-ui.js"></script>
 
 <script type="text/javascript">
@@ -37,7 +36,14 @@ $(function() {
 		
 	});
 	
+	// id = "deleteBtn" click 이벤트 처리
+	$("#deleteBtn").click(function() {
+		$("#deleteModal").modal("show");
+	});
 	
+	$("#deleteCancelBtn").click(function() {
+		$("#deleteModal").modal("hide");
+	});
 });
 </script>
 </head>
@@ -92,8 +98,35 @@ $(function() {
     <button type="reset" class="btn btn-secondary">새로입력</button>
     <button type="button" class="btn btn-success" onclick="history.back();"
     	id="cencelBtn">취소</button>
+    <button type="button" class="btn btn-danger" id="deleteBtn">삭제</button>
   </form>
 </div>
+
+  <!-- The Modal -->
+  <div class="modal fade" id="deleteModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">삭제하시겠습니까?</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+					<form action="deletePrice.do" method="post" id="deleteForm">
+						<input type="hidden" name="gno" value="${param.gno }">
+						<button  class="btn btn-danger">삭제</button>
+						<button type="button" class="btn btn-success"
+							id="deleteCancelBtn">취소</button>
+					</form>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+
+
 </body>
 </html>
 

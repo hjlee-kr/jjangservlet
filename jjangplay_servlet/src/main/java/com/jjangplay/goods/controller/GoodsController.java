@@ -231,8 +231,9 @@ public class GoodsController {
 					// GoodsUpdateService()
 					Execute.execute(Init.get(uri), vo);
 					
+					session.setAttribute("msg", "상품정보가 수정되었습니다.");
 					
-					
+					jsp = "redirect:view.do?gno=" + vo.getGno();
 					break;
 				case "/goods/updatePriceForm.do":
 					System.out.println("4-3. 상품가격정보 수정 폼====");
@@ -288,6 +289,59 @@ public class GoodsController {
 					session.setAttribute("msg", "상품가격이 수정되었습니다.");
 					
 					jsp = "redirect:view.do?gno=" + vo.getGno();
+					break;
+				case "/goods/delete.do":
+					System.out.println("5-1. 상품 정보 삭제 처리====");
+					// 상품번호를 가지고 상품정보를 삭제한다.
+					gno = Long.parseLong(request.getParameter("gno"));
+					
+					// 상품정보를 삭제하기 전에 상품가격정보가 있으면 먼저 가격정보를 삭제한다.
+					// 가격정보는 상품정보가 삭제되면 자동삭제되도록 DB에서 설정을 했다.
+					
+					Execute.execute(Init.get(uri), gno);
+					
+					session.setAttribute("msg", "상품정보가 삭제되었습니다.");
+					
+					// 상품리스트로 이동
+					jsp = "redirect:list.do?perPageNum=" + request.getParameter("perPageNum");
+					break;
+					
+				case "/goods/deletePrice.do":
+					System.out.println("5-2. 상품 가격 정보 삭제 처리====");
+					// 상품번호를 가지고 상품가격정보를 삭제한다.
+					gno = Long.parseLong(request.getParameter("gno"));
+					
+					// GoodsDeletePriceService() : DB처리
+					Execute.execute(Init.get(uri), gno);
+					
+					session.setAttribute("msg", "상품가격이 삭제되었습니다.");
+					jsp = "redirect:view.do?gno=" + gno;
+					break;
+				case "/goods/imageChange.do":
+					System.out.println("6. 상품사진바꾸기 처리====");
+					multi =
+						new MultipartRequest(request, realSavePath,
+							sizeLimit, "utf-8", new DefaultFileRenamePolicy());
+					
+					// 데이터 수집 (상품번호, 새로운 파일과 경로)
+					gno = Long.parseLong(multi.getParameter("gno"));
+					String imageName = multi.getFilesystemName("imageName");
+					String deleteFileName = multi.getParameter("deleteFileName");
+					
+					vo = new GoodsVO();
+					vo.setGno(gno);
+					vo.setImageName(savePath + "/" + imageName);
+					
+					// 서비스 : GoodsImageChangeService()
+					Execute.execute(Init.get(uri), vo);
+					
+					// 기존 이미지 파일을  삭제
+					File deleteFile
+						= new File(request.getServletContext().getRealPath(deleteFileName));
+					if (deleteFile.exists()) deleteFile.delete();
+					
+					session.setAttribute("msg", "이미지 바꾸기가 성공했습니다.");
+					jsp = "redirect:view.do?gno=" + gno;
 					break;
 				default:
 					request.setAttribute("uri", uri);

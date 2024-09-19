@@ -267,8 +267,93 @@ public class GoodsDAO extends DAO {
 		return result;
 	}
 
+	// 5-1.상품정보삭제
+	public Integer delete(Long gno) throws Exception {
+		// 결과값을 받을 변수 선언
+		int result = 0;
+		
+		try {
+			// 1. 드라이버 확인 - DispatcherServlet.init()
+			// 2. DB연결
+			con = DB.getConnection();
+			// 3. SQL작성 (상수: DELETE) -> 클래스 하단에
+			// 4. 실행객체에 데이터세팅 (SQL문의 ?순서대로 세팅)
+			pstmt = con.prepareStatement(DELETE);
+			pstmt.setLong(1, gno);
+			// 5. SQL 실행
+			result = pstmt.executeUpdate();
+			// 6. 결과확인
+			System.out.println("delete() result = " + result);
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		} finally {
+			// 7. DB 닫기
+			DB.close(con, pstmt);
+		}
+		return result;
+	}
+
 
 	
+	// 5-2.가격정보삭제
+	public Integer deletePrice(Long gno) throws Exception {
+		// 결과값을 받을 변수 선언
+		int result = 0;
+		
+		try {
+			// 1. 드라이버 확인 - DispatcherServlet.init()
+			// 2. DB연결
+			con = DB.getConnection();
+			// 3. SQL작성 (상수: DELETEPRICE) -> 클래스 하단에
+			// 4. 실행객체에 데이터세팅 (SQL문의 ?순서대로 세팅)
+			pstmt = con.prepareStatement(DELETEPRICE);
+			pstmt.setLong(1, gno);
+			// 5. SQL 실행
+			result = pstmt.executeUpdate();
+			// 6. 결과확인
+			System.out.println("deletePrice() result = " + result);
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		} finally {
+			// 7. DB 닫기
+			DB.close(con, pstmt);
+		}
+		return result;
+	}
+
+	// 6.상품사진수정
+	public Integer imageChange(GoodsVO vo) throws Exception {
+		// 결과값을 받을 변수 선언
+		int result = 0;
+		
+		try {
+			// 1. 드라이버 확인 - DispatcherServlet.init()
+			// 2. DB연결
+			con = DB.getConnection();
+			// 3. SQL작성 (상수: IMAGECHANGE) -> 클래스 하단에
+			// 4. 실행객체에 데이터세팅
+			pstmt = con.prepareStatement(IMAGECHANGE);
+			pstmt.setString(1, vo.getImageName());
+			pstmt.setLong(2, vo.getGno());
+			// 5. SQL 실행
+			result = pstmt.executeUpdate();
+			// 6. 결과확인
+			System.out.println("imageChange() result = " + result);
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		} finally {
+			// 7. DB 닫기
+			DB.close(con, pstmt);
+		}
+		return result;
+	}
+
 	
 	
 	// SQL 쿼리
@@ -309,6 +394,15 @@ public class GoodsDAO extends DAO {
 		+ "update price set std_price = ?, discount = ?, "
 		+ " rate = ?, startDate = ?, endDate = ? "
 		+ " where gno = ?";
+	
+	final static String DELETE = ""
+		+ "delete from goods where gno = ?";
+	
+	final static String DELETEPRICE = ""
+		+ "delete from price where gno = ?";
+	
+	final static String IMAGECHANGE = ""
+		+ "update goods set imageName = ? where gno = ?";
 } // end of class
 
 
