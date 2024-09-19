@@ -63,16 +63,16 @@ $(function(){
 	<!-- a tag : 데이터를 클릭하면 href 정보를 가져와서 페이지이동 -->
 
 		<a href="updateForm.do?no=${param.no }&page=${param.page}&perPageNum=${param.perPageNum}&key=${param.key}&word=${param.word}"
-		class="btn btn-primary" title="이미지를 제외한 정보만 수정합니다."
-		data-toggle="tooltip" data-placement="top"
-		id="updateBtn">수정</a>
+			class="btn btn-primary" title="이미지를 제외한 정보만 수정합니다."
+			data-toggle="tooltip" data-placement="top" id="updateBtn">수정</a>
 		<a href="delete.do?no=${param.no }&deleteFileName=${vo.imageName}&perPageNum=${param.perPageNum}"
-		class="btn btn-danger" id="deleteBtn">삭제</a>
+			class="btn btn-danger" id="deleteBtn">삭제</a>
+		<a href="list.do?no=${param.no }&page=${param.page}&perPageNum=${param.perPageNum}&key=${param.key}&word=${param.word}"
+			class="btn btn-info">리스트</a>
+		<a href="writePriceForm.do?gno=${param.gno }&name=${vo.name }&page=${param.page}&perPageNum=${param.perPageNum}&key=${param.key}&word=${param.word}"
+			class="btn btn-success">가격정보등록</a>
 
-	<a href="list.do?no=${param.no }&page=${param.page}&perPageNum=${param.perPageNum}&key=${param.key}&word=${param.word}"
-		class="btn btn-info">리스트</a>
-	
-	
+
 </div> <!-- end of class="container" -->
 
 

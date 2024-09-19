@@ -89,11 +89,11 @@ public class GoodsController {
 					jsp = "goods/view";
 					break;
 				case "/goods/writeForm.do":
-					System.out.println("3. 상품관리 등록 폼====");
+					System.out.println("3-1. 상품관리 등록 폼====");
 					jsp = "goods/writeForm";
 					break;
 				case "/goods/write.do":
-					System.out.println("3. 상품관리 등록 처리====");
+					System.out.println("3-2. 상품관리 등록 처리====");
 					
 					MultipartRequest multi =
 						new MultipartRequest(request, realSavePath,
@@ -125,6 +125,40 @@ public class GoodsController {
 					// 처리가 끝나면 리스트로 돌아간다.
 					jsp = "redirect:/goods/list.do?perPageNum=" +
 						multi.getParameter("perPageNum");
+					break;
+				case "/goods/writePriceForm.do":
+					System.out.println("3-3. 상품가격정보 등록 폼=====");
+					// 상품가격정보를 위해 반드시 필요한것은?
+					// 상품번호가 필요합니다.
+					gno = Long.parseLong(request.getParameter("gno"));
+					String name = request.getParameter("name");
+					
+					vo = new GoodsVO();
+					vo.setGno(gno);
+					vo.setName(name);
+					
+					request.setAttribute("vo", vo);
+					
+					jsp = "goods/writePriceForm";
+					break;
+				case "/goods/writePrice.do":
+					System.out.println("3-4. 상품가격정보 등록 처리=====");
+					// 등록하기 위한 자료 저장 (폼에서 받은 데이터)
+					gno = Long.parseLong(request.getParameter("gno"));
+					Long std_price = Long.parseLong(request.getParameter("std_price"));
+					Long discount = Long.parseLong(request.getParameter("discount"));
+					Double rate = Double.parseDouble(request.getParameter("rate"));
+					String startDate = request.getParameter("startDate");
+					String endDate = request.getParameter("endDate");
+					
+					vo = new GoodsVO();
+					vo.setGno(gno);
+					vo.setStd_price(std_price);
+					vo.setDiscount(discount);
+					vo.setRate(rate);
+					vo.setStartDate(startDate);
+					vo.setEndDate(endDate);
+					
 					break;
 				default:
 					request.setAttribute("uri", uri);
