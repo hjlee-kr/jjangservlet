@@ -33,8 +33,14 @@ $(function(){
   <h1><i class="fa fa-file-text-o"></i> 상품 상세 보기</h1>
   <div class="card">
 	  <div class="card-header">
-	  	<b>상품명 : ${vo.name }</b><br>
-	  	<b>상품번호 : ${vo.gno }</b> 
+	  	<div class="row">
+	  		<div class="col-md-3 text-center font-weight-bolder">상품명</div>
+	  		<div class="col-md-9 font-weight-bolder">${vo.name }</div>
+	  	</div>
+	  	<div class="row">
+	  		<div class="col-md-3 text-center font-weight-bolder">상품번호</div>
+	  		<div class="col-md-9 font-weight-bolder">${vo.gno }</div>
+	  	</div>
 	  </div>
 	  <div class="card-body">
 	  	<div class="card">
@@ -48,14 +54,53 @@ $(function(){
 					</button>
 			  </div>
 			  <div class="card-body">
-			    <p class="card-text">
-			    	<pre>${vo.content }</pre>
-					</p>
-					<p>모델No : ${vo.modelNo }</p>
-					<p>제조사 : ${vo.company }</p>
-					<p>제조일 : ${vo.productDate }</p>
-					<p>작성일 : ${vo.writeDate }</p>
-					<p>배송비 : ${vo.delivery_cost }원</p>
+			  	<div class="row">
+			  		<div class="col-md-3 text-center">상품설명</div>
+			  		<div class="col-md-9"><pre>${vo.content }</pre></div>
+			  	</div>
+			  	<div class="row">
+			  		<div class="col-md-3 text-center">모델No</div>
+			  		<div class="col-md-9">${vo.modelNo }</div>
+			  	</div>
+			  	<div class="row">
+			  		<div class="col-md-3 text-center">제조사</div>
+			  		<div class="col-md-9">${vo.company }</div>
+			  	</div>
+			  	<div class="row">
+			  		<div class="col-md-3 text-center">제조일</div>
+			  		<div class="col-md-9">${vo.productDate }</div>
+			  	</div>
+			  	<div class="row">
+			  		<div class="col-md-3 text-center">작성일</div>
+			  		<div class="col-md-9">${vo.writeDate }</div>
+			  	</div>
+			  	<div class="row">
+			  		<div class="col-md-3 text-center">배송비</div>
+			  		<div class="col-md-9">${vo.delivery_cost }원</div>
+			  	</div>
+			  	<!-- pno가 있으면 가격정보가 등록이 된것이다. -->
+			  	<c:if test="${!empty vo.pno }">
+			  		<div class="row">
+				  		<div class="col-md-3 text-center">정가</div>
+				  		<div class="col-md-9">${vo.std_price }원</div>
+				  	</div>
+			  		<div class="row">
+				  		<div class="col-md-3 text-center">할인가</div>
+				  		<div class="col-md-9">${vo.discount }원</div>
+				  	</div>
+			  		<div class="row">
+				  		<div class="col-md-3 text-center">할인율</div>
+				  		<div class="col-md-9">${vo.rate }</div>
+				  	</div>
+			  		<div class="row">
+				  		<div class="col-md-3 text-center">판매시작일</div>
+				  		<div class="col-md-9">${vo.startDate }</div>
+				  	</div>
+			  		<div class="row">
+				  		<div class="col-md-3 text-center">판매종료일</div>
+				  		<div class="col-md-9">${vo.endDate }</div>
+				  	</div>
+			  	</c:if>
 			  </div>
 			</div>
 		</div>
@@ -69,8 +114,14 @@ $(function(){
 			class="btn btn-danger" id="deleteBtn">삭제</a>
 		<a href="list.do?no=${param.no }&page=${param.page}&perPageNum=${param.perPageNum}&key=${param.key}&word=${param.word}"
 			class="btn btn-info">리스트</a>
-		<a href="writePriceForm.do?gno=${param.gno }&name=${vo.name }&page=${param.page}&perPageNum=${param.perPageNum}&key=${param.key}&word=${param.word}"
-			class="btn btn-success">가격정보등록</a>
+		<c:if test="${!empty vo.pno }">
+			<a href="updatePriceForm.do?gno=${param.gno }&name=${vo.name }&page=${param.page}&perPageNum=${param.perPageNum}&key=${param.key}&word=${param.word}"
+				class="btn btn-success">가격정보수정</a>
+		</c:if>
+		<c:if test="${empty vo.pno }">
+			<a href="writePriceForm.do?gno=${param.gno }&name=${vo.name }&page=${param.page}&perPageNum=${param.perPageNum}&key=${param.key}&word=${param.word}"
+				class="btn btn-success">가격정보등록</a>
+		</c:if>
 
 
 </div> <!-- end of class="container" -->

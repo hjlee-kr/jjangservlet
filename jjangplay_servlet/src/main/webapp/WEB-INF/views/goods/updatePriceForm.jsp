@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>상품 가격 등록</title>
+<title>상품 가격 수정</title>
 	<!-- datepicker -->
 	<link rel="stylesheet" href="https://code.jquery.com/ui/1.14.0/themes/base/jquery-ui.css">
 	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
@@ -44,8 +44,8 @@ $(function() {
 <body>
 
 <div class="container">
-  <h2><i class="fa fa-edit"></i> 상품 가격 등록</h2>
-  <form action="writePrice.do" method="post">
+  <h2><i class="fa fa-edit"></i> 상품 가격 수정</h2>
+  <form action="updatePrice.do" method="post">
   	<input type="hidden" name="perPageNum" value="${param.perPageNum }">
   	<input type="hidden" name="page" value="${param.page }">
   	<input type="hidden" name="key" value="${param.key }">
@@ -64,31 +64,31 @@ $(function() {
       <label for="std_price">상품가격</label>
       <input type="text" class="form-control" id="std_price"
       	required title="숫자만 입력"
-      	placeholder="상품 정가 입력" name="std_price">
+      	placeholder="상품 정가 입력" name="std_price" value="${vo.std_price }">
     </div>
     <div class="form-group">
       <label for="discount">할인가격</label>
       <input type="text" class="form-control" id="discount"
       	title="숫자만 입력"
-      	placeholder="상품 할인가 입력" name="discount">
+      	placeholder="상품 할인가 입력" name="discount" value="${vo.discount }">
     </div>
     <div class="form-group">
       <label for="rate">할인율</label>
       <input type="text" class="form-control" id="rate"
       	title="할인율 입력"
-      	placeholder="상품 할인율 입력" name="rate">
+      	placeholder="상품 할인율 입력" name="rate" value="${vo.rate }">
     </div>
     <div class="form-group">
       <label for="startDate">판매시작일</label>
       <input type="text" class="form-control datepicker" id="startDate"
-      	name="startDate">
+      	name="startDate" value="${vo.startDate }">
     </div>
     <div class="form-group">
       <label for="endDate">판매종료일</label>
       <input type="text" class="form-control datepicker" id="endDate"
-      	name="endDate">
+      	name="endDate" value="${vo.endDate }">
     </div>
-    <button type="submit" class="btn btn-primary">등록</button>
+    <button type="submit" class="btn btn-primary">수정</button>
     <button type="reset" class="btn btn-secondary">새로입력</button>
     <button type="button" class="btn btn-success" onclick="history.back();"
     	id="cencelBtn">취소</button>

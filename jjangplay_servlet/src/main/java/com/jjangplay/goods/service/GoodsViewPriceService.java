@@ -1,12 +1,10 @@
 package com.jjangplay.goods.service;
 
-
 import com.jjangplay.goods.dao.GoodsDAO;
-import com.jjangplay.goods.vo.GoodsVO;
 import com.jjangplay.main.dao.DAO;
 import com.jjangplay.main.service.Service;
 
-public class GoodsWriteService implements Service {
+public class GoodsViewPriceService implements Service {
 
 	private GoodsDAO dao;
 	
@@ -17,12 +15,11 @@ public class GoodsWriteService implements Service {
 	}
 	
 	@Override
-	public Integer service(Object obj) throws Exception {
-		// [GoodsController] -> (Execute)
-		// -> GoodsWriteService ->
-		// [GoodsDAO.write()]
-		// Object 로 선언된 obj 를 다운캐스팅해서 넘겨준다.
-		return dao.write((GoodsVO)obj);
+	public Object service(Object obj) throws Exception {
+		// GoodsController -> execute() ->
+		// [GoodsViewPriceSevice] - GoodsDAO.viewPrice()
+		return dao.viewPrice((Long)obj);
+
 	}
 
 }

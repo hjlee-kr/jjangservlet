@@ -78,13 +78,34 @@ public class GoodsController {
 					
 					Long gno = Long.parseLong(request.getParameter("gno"));
 					
-					// DB 처리
+					GoodsVO vo = new GoodsVO();
+					
+					// DB 처리(상품관리) -> GoodsViewService
 					result = Execute.execute(Init.get(uri), gno);
 					
 					System.out.println("result" + result);
+					// 상품관리에서 받은 데이터를 vo에 담는다.
+					vo = (GoodsVO) result;
+					
+					// DB처리(가격관리) -> GoodsViewPriceService
+					result = Execute.execute(Init.get("/goods/viewPrice.do"), gno);
+					
+					// 받아온 가격정보를 상품관리정보가 담겨있는 vo 같이 담는다.
+					if (result != null) {
+						GoodsVO priceVO = new GoodsVO();
+						priceVO = (GoodsVO) result;
+						// null이면 가격정보가 등록이 안되어있는 경우이고
+						// not null 이면 등록이 되어있는 경우이다.
+						vo.setPno(priceVO.getPno());
+						vo.setStd_price(priceVO.getStd_price());
+						vo.setDiscount(priceVO.getDiscount());
+						vo.setRate(priceVO.getRate());
+						vo.setStartDate(priceVO.getStartDate());
+						vo.setEndDate(priceVO.getEndDate());
+					}
 					
 					// 받은 결과를 request에 담아 jsp로 넘긴다.
-					request.setAttribute("vo", result);
+					request.setAttribute("vo", vo);
 					
 					jsp = "goods/view";
 					break;
@@ -100,7 +121,7 @@ public class GoodsController {
 							sizeLimit, "utf-8", new DefaultFileRenamePolicy());
 					
 					// writeForm에 기록된 데이터를 세팅한다. (DB처리전)
-					GoodsVO vo = new GoodsVO();
+					vo = new GoodsVO();
 				//	vo.setGno(Long.parseLong(multi.getParameter("gno")));
 					vo.setName(multi.getParameter("name"));
 					vo.setContent(multi.getParameter("content"));
@@ -119,7 +140,7 @@ public class GoodsController {
 					// DB처리
 					// GoodsController -> Execute -> GoodsWriteService
 					// 상품데이블 등록 실행후 가격데이블 등록 실행
-					// GoodsDAO.goodsWrite(), GoodsDAO.priceWrite()
+					// GoodsDAO.write(), GoodsDAO.writePrice()
 					Execute.execute(Init.get(uri), vo);
 					
 					// 처리가 끝나면 리스트로 돌아간다.
@@ -146,8 +167,24 @@ public class GoodsController {
 					// 등록하기 위한 자료 저장 (폼에서 받은 데이터)
 					gno = Long.parseLong(request.getParameter("gno"));
 					Long std_price = Long.parseLong(request.getParameter("std_price"));
-					Long discount = Long.parseLong(request.getParameter("discount"));
-					Double rate = Double.parseDouble(request.getParameter("rate"));
+					Long discount;
+					// writePriceForm.do에서 discount 항목을 적지 않았을때 예외상황 피해가기
+					String strNum = request.getParameter("discount");
+					if (strNum == null || strNum.equals("")) {
+						discount = std_price;
+					}
+					else {
+						discount = Long.parseLong(strNum);
+					}
+					Double rate;
+					// writePriceForm.do에서 rate 항목을 적지 않았을때 예외상황 피해가기
+					strNum = request.getParameter("rate");
+					if (strNum == null || strNum.equals("")) {
+						rate = 0.0;
+					}
+					else {
+						rate = Double.parseDouble(strNum);
+					}
 					String startDate = request.getParameter("startDate");
 					String endDate = request.getParameter("endDate");
 					
@@ -159,6 +196,70 @@ public class GoodsController {
 					vo.setStartDate(startDate);
 					vo.setEndDate(endDate);
 					
+					// GoodsWritePriceService()->GoodsDAO.writePrice()
+					// DB 처리를 한다.
+					Execute.execute(Init.get(uri), vo);
+
+					// 메세지 출력
+					session.setAttribute("msg", "상품가격이 등록되었습니다.");
+					
+					jsp = "redirect:view.do?gno=" + vo.getGno();
+					break;
+					
+				case "/goods/updatePriceForm.do":
+					System.out.println("4-3. 상품가격정보 수정 폼====");
+					// 기존정보를 받아오기 위해 gno를 세팅
+					gno = Long.parseLong(request.getParameter("gno"));
+					name = request.getParameter("name");
+					// DB에서 기존 가격 정보를 받아온다.
+					result = Execute.execute(Init.get("/goods/viewPrice.do"), gno);
+					// jsp로 넘길 데이터 세팅(request)
+					request.setAttribute("vo", result);
+					
+					jsp = "goods/updatePriceForm";
+					break;
+					
+				case "/goods/updatePrice.do":
+					System.out.println("4-4. 상품가격정보 수정 처리====");
+					// 수정하기 위한 자료 저장 (폼에서 받은 데이터)
+					gno = Long.parseLong(request.getParameter("gno"));
+					std_price = Long.parseLong(request.getParameter("std_price"));
+
+					// updatePriceForm.do에서 discount 항목을 적지 않았을때 예외상황 피해가기
+					strNum = request.getParameter("discount");
+					if (strNum == null || strNum.equals("")) {
+						discount = std_price;
+					}
+					else {
+						discount = Long.parseLong(strNum);
+					}
+					// updatePriceForm.do에서 rate 항목을 적지 않았을때 예외상황 피해가기
+					strNum = request.getParameter("rate");
+					if (strNum == null || strNum.equals("")) {
+						rate = 0.0;
+					}
+					else {
+						rate = Double.parseDouble(strNum);
+					}
+					startDate = request.getParameter("startDate");
+					endDate = request.getParameter("endDate");
+					
+					vo = new GoodsVO();
+					vo.setGno(gno);
+					vo.setStd_price(std_price);
+					vo.setDiscount(discount);
+					vo.setRate(rate);
+					vo.setStartDate(startDate);
+					vo.setEndDate(endDate);
+					
+					// GoodsUpdatePriceService()->GoodsDAO.updatePrice()
+					// DB 처리를 한다.
+					Execute.execute(Init.get(uri), vo);
+
+					// 메세지 출력
+					session.setAttribute("msg", "상품가격이 수정되었습니다.");
+					
+					jsp = "redirect:view.do?gno=" + vo.getGno();
 					break;
 				default:
 					request.setAttribute("uri", uri);
