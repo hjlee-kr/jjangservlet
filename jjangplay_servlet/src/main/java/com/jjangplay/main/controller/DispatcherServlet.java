@@ -14,6 +14,7 @@ import com.jjangplay.goods.controller.GoodsController;
 import com.jjangplay.image.controller.ImageController;
 import com.jjangplay.member.controller.MemberController;
 import com.jjangplay.notice.controller.NoticeController;
+import com.jjangplay.shop.controller.ShopController;
 
 // Servlet Project 만드는 순서
 // 1. Dynamic Web Project 생성 : web.xml check해서
@@ -44,6 +45,7 @@ public class DispatcherServlet extends HttpServlet {
 	private MainController mainController = new MainController();
 	private AjaxController ajaxController = new AjaxController();
 	private GoodsController goodsController = new GoodsController();
+	private ShopController shopController = new ShopController();
        
 	/**
 	 * @see Servlet#init(ServletConfig)
@@ -131,6 +133,10 @@ public class DispatcherServlet extends HttpServlet {
 		case "/goods":
 			System.out.println("===상품관리===");
 			jsp = goodsController.execute(request);
+			break;
+		case "/shop":
+			System.out.println("===쇼핑몰===");
+			jsp = shopController.execute(request);
 			break;
 		default:
 			request.setAttribute("uri", uri);
