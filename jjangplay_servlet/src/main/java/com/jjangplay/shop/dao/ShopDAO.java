@@ -93,6 +93,50 @@ public class ShopDAO extends DAO {
 		System.out.println("ShopDAO.list() 끝----");
 		return list;
 	}
+
+	// 2. 상품상세페이지
+	public ShopVO view(Long gno) throws Exception  {
+		ShopVO vo = null;
+		System.out.println("ShopDAO.view() 시작-----");
+		try {
+			// 1.드라이버확인
+			// 2.DB연결
+			con = DB.getConnection();
+			// 3.SQL(VIEW)
+			System.out.println(VIEW);
+			// 4.실행객체에 데이터 세팅
+			pstmt = con.prepareStatement(VIEW);
+			pstmt.setLong(1, gno);
+			// 5.실행 및 데이터 받기
+			rs = pstmt.executeQuery();
+			// 6.데이터 저장
+			if (rs != null && rs.next()) {
+				vo = new ShopVO();
+				vo.setGno(rs.getLong("gno"));
+				vo.setName(rs.getString("name"));
+				vo.setStd_price(rs.getLong("std_price"));
+				vo.setDiscount(rs.getLong("discount"));
+				vo.setImageName(rs.getString("imageName"));
+				vo.setCompany(rs.getString("company"));
+				vo.setModelNo(rs.getString("modelNo"));
+				vo.setContent(rs.getString("content"));
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			throw new Exception("예외발생 : 쇼핑몰 판매제품상세보기 DB 처리중 예외발생");
+		} finally {
+			// 7.DB닫기
+			DB.close(con, pstmt, rs);
+		}
+		
+		
+		
+		System.out.println("ShopDAO.view() 끝-----");
+		return vo;
+	}
+	
+	
 	
 	private String getPeriod(PageObject pageObject) {
 		String sql = "";
@@ -113,16 +157,23 @@ public class ShopDAO extends DAO {
 	}
 	
 	// SQL 문
-	final String TOTALROW = ""
+	static final String TOTALROW = ""
 			+ " select count(*) from goods g, price p where g.gno = p.gno";
 	
 	// LIST의 페이지 처리
-	final String LIST = ""
+	static final String LIST = ""
 			+ " select gno, name, company, imageName, std_price, discount "
 			+ " from (select rownum rnum, gno, name, company, imageName, std_price, discount "
 			+ " from (select g.gno, g.name, g.company, g.imageName, p.std_price, p.discount "
 			+ " from goods g, price p "
 			// where 1=1 and (일반조건) and (조인조건)
 			+ " where 1=1 ";
-	
+
+
+	static final String VIEW = ""
+			+ " select g.gno, g.name, g.content,"
+			+ " p.std_price, p.discount, "
+			+ " g.imageName, g.company, g.modelNo "
+			+ " from goods g, price p "
+			+ " where g.gno = ? and g.gno=p.gno ";
 }

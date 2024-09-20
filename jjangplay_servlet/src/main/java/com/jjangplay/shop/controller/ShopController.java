@@ -45,6 +45,17 @@ public class ShopController {
 				break;
 			case "/shop/view.do":
 				System.out.println("2. 판매 제품 상세보기===");
+				// 상품상세페이지를 보기위한 상품번호 수집
+				Long gno = Long.parseLong(request.getParameter("gno"));
+				
+				// 서비스 실행 - 전달데이터는 상품번호
+				result = Execute.execute(Init.get(uri), gno);
+				
+				// DB에서 받은 데이터를 담는다.
+				request.setAttribute("vo", result);
+
+				// 데이터를 보여줄 페이지로 이동
+				jsp = "shop/view";
 				break;
 			default:
 				request.setAttribute("uri", uri);

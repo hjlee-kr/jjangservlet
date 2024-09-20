@@ -54,6 +54,7 @@ import com.jjangplay.notice.service.NoticeViewService;
 import com.jjangplay.notice.service.NoticeWriteService;
 import com.jjangplay.shop.dao.ShopDAO;
 import com.jjangplay.shop.service.ShopListService;
+import com.jjangplay.shop.service.ShopViewService;
 
 public class Init {
 
@@ -198,8 +199,10 @@ public class Init {
 		daoMap.put("shopDAO", new ShopDAO());
 		//서비스생생
 		serviceMap.put("/shop/list.do", new ShopListService());
+		serviceMap.put("/shop/view.do", new ShopViewService());
 		//조립
 		serviceMap.get("/shop/list.do").setDAO(daoMap.get("shopDAO"));
+		serviceMap.get("/shop/view.do").setDAO(daoMap.get("shopDAO"));
 	}
 	
 	
