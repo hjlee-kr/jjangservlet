@@ -55,8 +55,23 @@ $(function(){
 				  		<div class="col-sm-3">할인가</div>
 				  		<div class="col-sm-9"><h4>${vo.discount }</h4></div>
 				  	</div>	
+				  	<div class="row">
+				  		<div class="col-sm-3">배송료</div>
+				  		<div class="col-sm-9"><h4>${vo.delivery_cost }</h4></div>
+				  	</div>
 				  	<div class="row" style="padding:10px 20px;">
 				  		<pre>${vo.content }</pre>
+				  	</div>
+				  	<div class="row">
+				  		<form action="/cart/add.do" method="get">
+				  			<input type="hidden" name="gno" value="${vo.gno }">
+				  			<input type="hidden" name="name" value="${vo.name }">
+				  			<input type="hidden" name="imageName" value="${vo.imageName }">
+				  			<input type="hidden" name="std_price" value="${vo.std_price }">
+				  			<input type="hidden" name="discount" value="${vo.discount }">
+				  			<input type="hidden" name="delivery_cost" value="${vo.delivery_cost }">
+				  			<button class="btn btn-primary">장바구니담기</button>
+				  		</form>
 				  	</div>
 				  </div>
 	  		</div>
@@ -66,7 +81,7 @@ $(function(){
 	<!-- a tag : 데이터를 클릭하면 href 정보를 가져와서 페이지이동 -->
 	<a href="list.do?page=${param.page}&perPageNum=${param.perPageNum}&key=${param.key}&word=${param.word}"
 		class="btn btn-info">리스트</a>
-	
+		
 	
 </div> <!-- end of class="container" -->
 

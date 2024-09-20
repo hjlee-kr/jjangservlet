@@ -1,4 +1,4 @@
-package com.jjangplay.shop.dao;
+package com.jjangplay.cart.dao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -120,7 +120,6 @@ public class ShopDAO extends DAO {
 				vo.setCompany(rs.getString("company"));
 				vo.setModelNo(rs.getString("modelNo"));
 				vo.setContent(rs.getString("content"));
-				vo.setDelivery_cost(rs.getLong("delivery_cost"));
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -172,7 +171,7 @@ public class ShopDAO extends DAO {
 
 
 	static final String VIEW = ""
-			+ " select g.gno, g.name, g.content, g.delivery_cost, "
+			+ " select g.gno, g.name, g.content,"
 			+ " p.std_price, p.discount, "
 			+ " g.imageName, g.company, g.modelNo "
 			+ " from goods g, price p "

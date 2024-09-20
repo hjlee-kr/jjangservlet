@@ -151,7 +151,7 @@
 						<a class="nav-link" href="/member/view.do">내정보보기</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="/card/list.do">장바구니</a>
+						<a class="nav-link" href="/cart/list.do">장바구니</a>
 					</li>
 				</c:if>
 			</ul>

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.jjangplay.ajax.controller.AjaxController;
 import com.jjangplay.board.controller.BoardController;
 import com.jjangplay.boardreply.controller.BoardReplyController;
+import com.jjangplay.cart.controller.CartController;
 import com.jjangplay.goods.controller.GoodsController;
 import com.jjangplay.image.controller.ImageController;
 import com.jjangplay.member.controller.MemberController;
@@ -46,6 +47,7 @@ public class DispatcherServlet extends HttpServlet {
 	private AjaxController ajaxController = new AjaxController();
 	private GoodsController goodsController = new GoodsController();
 	private ShopController shopController = new ShopController();
+	private CartController cartController = new CartController();
        
 	/**
 	 * @see Servlet#init(ServletConfig)
@@ -137,6 +139,10 @@ public class DispatcherServlet extends HttpServlet {
 		case "/shop":
 			System.out.println("===쇼핑몰===");
 			jsp = shopController.execute(request);
+			break;
+		case "/cart":
+			System.out.println("===장바구니===");
+			jsp = cartController.execute(request);
 			break;
 		default:
 			request.setAttribute("uri", uri);
